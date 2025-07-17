@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Portfolio</title>
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Material UI CSS -->
+    <link href="https://unpkg.com/@material-ui/core@4.12.4/umd/material-ui.development.js" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body class="font-sans bg-gray-50 text-gray-800">
+    <!-- App Bar -->
+    <header class="fixed top-0 left-0 right-0 bg-white shadow-sm z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#home" class="text-2xl font-bold text-indigo-600">Aslam Muhammed</a>
+            <nav class="hidden md:block">
+                <ul class="flex space-x-6">
+                    <li><a href="#home" class="text-gray-700 hover:text-indigo-600 transition">Home</a></li>
+                    <li><a href="#about" class="text-gray-700 hover:text-indigo-600 transition">About</a></li>
+                    <li><a href="#projects" class="text-gray-700 hover:text-indigo-600 transition">Projects</a></li>
+                    <li><a href="#skills" class="text-gray-700 hover:text-indigo-600 transition">Skills</a></li>
+                    <li><a href="#contact" class="text-gray-700 hover:text-indigo-600 transition">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="md:hidden text-gray-700 focus:outline-none">
+                <i class="material-icons">menu</i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu (hidden by default) -->
+    <div class="fixed top-16 left-0 right-0 bg-white shadow-lg z-40 hidden" id="mobileMenu">
+        <ul class="py-2">
+            <li><a href="#home" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Home</a></li>
+            <li><a href="#about" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">About</a></li>
+            <li><a href="#projects" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Projects</a></li>
+            <li><a href="#skills" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Skills</a></li>
+            <li><a href="#contact" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Contact</a></li>
+        </ul>
+    </div>
+
+    <!-- Home Section -->
+    <section id="home" class="section hero flex items-center">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-10 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-4">Hi, I'm <span class="text-indigo-600">Aslam Muhammed</span></h1>
+                    <h2 class="text-2xl md:text-3xl text-gray-600 mb-6">Senior Software Developer</h2>
+                    <p class="text-lg text-gray-700 mb-8">Dynamic Senior Software Developer with over 3 years of experience in crafting and supporting .NET web and mobile applications. Proficient in HTML, CSS, Angular.js, and backend technologies including .NET Core and SQL Server. Successfully collaborated in project teams to ensure timely delivery, while optimizing application performance through diagnosing technical issues. Eager to leverage unique technical expertise in meeting client demands and enhancing project outcomes.</p>
+                    <div class="flex space-x-4">
+                        <!-- <a href="#projects" class="mui-button mui-button-contained">View My Work</a> -->
+                        <a href="./doc/resume.pdf" download class="mui-button mui-button-contained">Download Resume</a>
+                        <a href="#contact" class="mui-button mui-button-outlined">Contact Me</a>
+                        
+                    </div>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <div class="w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-white shadow-xl">
+                        <img src="./images/aslam.jpg" 
+                             alt="Profile" class="w-full h-full object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="section bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">About Me</h2>
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2 mui-card p-6">
+                    <h3 class="text-xl font-semibold mb-4">Who I Am</h3>
+                    <p class="text-gray-700 mb-4">
+                        Senior Software Developer based in Kollam, India, with a strong background in .NET web and mobile applications, front-end and back-end technologies, and a passion for delivering high-quality solutions.
+                    </p>
+                    <p class="text-gray-700 mb-4">
+                        Experienced in collaborating with teams, diagnosing technical issues, and optimizing application performance. Eager to leverage technical expertise to meet client demands and enhance project outcomes.
+                    </p>
+                    <p class="text-gray-700">
+                        Languages: Malayalam, English, Tamil, Hindi
+                    </p>
+                </div>
+                <div class="md:w-1/2 flex flex-col gap-6">
+                    <div class="mui-card p-6">
+                        <h3 class="text-xl font-semibold mb-4">Experience</h3>
+                        <div class="space-y-4">
+                            <div class="border-l-2 border-indigo-500 pl-4">
+                                <h4 class="font-medium">Senior Software Developer</h4>
+                                <p class="text-gray-600 text-sm">Skien Labs • Sept 2023 – Present</p>
+                                <p class="text-gray-700 mt-1">Engineered and sustained professional .NET web and mobile applications for business clients. Utilized HTML, CSS, Angular.js, and jQuery for frontline web application development. Executed .NET Core 6, C#, .NET MVC, Entity Framework, and SQL Server for robust backend solutions. Developed Skien.Suite (ERP) and contributed to Skien.eCommerce (AI-driven eCommerce).</p>
+                            </div>
+                            <div class="border-l-2 border-indigo-500 pl-4">
+                                <h4 class="font-medium">Software Developer</h4>
+                                <p class="text-gray-600 text-sm">SKIEN LABS • Oct 2021 – Sept 2023</p>
+                                <p class="text-gray-700 mt-1">Engineered and maintained .NET web and mobile applications for business clients. Developed and enhanced front-end applications using HTML, CSS, Angular.js, and jQuery. Built backend solutions with .NET Core 6, C#, .NET MVC, Entity Framework, and SQL Server. Assisted in troubleshooting, debugging, and resolving software issues.</p>
+                            </div>
+                            <div class="border-l-2 border-indigo-500 pl-4">
+                                <h4 class="font-medium">Onsite Support</h4>
+                                <p class="text-gray-600 text-sm">FOODWORLD, Bahrain • May 2023 – Feb 2024</p>
+                                <p class="text-gray-700 mt-1">Administered onsite support to ensure seamless application performance while resolving technical issues. Facilitated data correction and collaborated with the client to implement fixes and optimize performance.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mui-card p-6">
+                        <h3 class="text-xl font-semibold mb-4">Education</h3>
+                        <div class="space-y-4">
+                            <div class="border-l-2 border-indigo-500 pl-4">
+                                <h4 class="font-medium">Bachelor of Computer Application</h4>
+                                <p class="text-gray-600 text-sm">UNIVERSITY OF CALICUT • Mar 2018 – Mar 2021</p>
+                                <p class="text-gray-700 mt-1">Perinthalmanna, India</p>
+                            </div>
+                            <div class="border-l-2 border-indigo-500 pl-4">
+                                <h4 class="font-medium">Secondary School</h4>
+                                <p class="text-gray-600 text-sm">VIVEKANANDA VOCATIONAL HIGHER SECONDARY SCHOOL • Mar 2016 – Mar 2018</p>
+                                <p class="text-gray-700 mt-1">Poredom</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="section bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">My Projects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Project 1 -->
+                <div class="project-card mui-card overflow-hidden">
+                    <img src="./images/skien.png" 
+                         alt="Project 1" class="w-full h-48 object-cover" style="object-fit: contain;">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Skien.Suite</h3>
+                        <p class="text-gray-700 mb-4">A comprehensive ERP solution, integrating core business modules for seamless operations, collaboration, and efficiency.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">.NET Core</span>
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">SQL Server</span>
+                            <!-- <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">MongoDB</span> -->
+                        </div>
+                        <!-- <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">View Project →</a> -->
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <!-- <div class="project-card mui-card overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80" 
+                         alt="Project 2" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Task Management App</h3>
+                        <p class="text-gray-700 mb-4">A productivity application for organizing tasks with drag-and-drop functionality and team collaboration.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Vue.js</span>
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">Firebase</span>
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">TailwindCSS</span>
+                        </div>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">View Project →</a>
+                    </div>
+                </div> -->
+                
+                <!-- Project 3 -->
+                <!-- <div class="project-card mui-card overflow-hidden">
+                    <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" 
+                         alt="Project 3" class="w-full h-48 object-cover">
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">Health & Fitness Tracker</h3>
+                        <p class="text-gray-700 mb-4">An application for tracking workouts, nutrition, and health metrics with data visualization.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">React Native</span>
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">GraphQL</span>
+                            <span class="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm">PostgreSQL</span>
+                        </div>
+                        <a href="#" class="text-indigo-600 hover:text-indigo-800 font-medium">View Project →</a>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="section bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">My Skills</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="mui-card p-6">
+                    <h3 class="text-xl font-semibold mb-6">Technical Skills</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="font-medium">.NET Core / .NET Framework / ASP.NET MVC</span>
+                                <span>95%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 95%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="font-medium">C# / Entity Framework / SQL Server</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="font-medium">HTML / CSS / JavaScript / Angular.js / jQuery</span>
+                                <span>90%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 90%"></div>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between mb-1">
+                                <span class="font-medium">RESTful API / Web Services</span>
+                                <span>85%</span>
+                            </div>
+                            <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                <div class="bg-indigo-600 h-2.5 rounded-full" style="width: 85%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mui-card p-6">
+                    <h3 class="text-xl font-semibold mb-6">Professional Skills</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="flex items-center space-x-2">
+                            <i class="material-icons text-indigo-600">group</i>
+                            <span>Team Collaboration</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="material-icons text-indigo-600">chat</i>
+                            <span>Communication</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="material-icons text-indigo-600">lightbulb</i>
+                            <span>Problem Solving</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="material-icons text-indigo-600">schedule</i>
+                            <span>Time Management</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="material-icons text-indigo-600">code</i>
+                            <span>Detail-oriented</span>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            <i class="material-icons text-indigo-600">check_circle</i>
+                            <span>Self-Directed Work Ethic</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-semibold mt-8 mb-4">Tools & Technologies</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full">Git</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full">SQL Server</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full">Visual Studio</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full">Postman</span>
+                        <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full">Jira</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12">Get In Touch</h2>
+            <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2 mui-card p-6">
+                    <h3 class="text-xl font-semibold mb-4">Contact Information</h3>
+                    <p class="text-gray-700 mb-6">Feel free to reach out to me for any questions or opportunities!</p>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <i class="material-icons text-indigo-600 mt-1">email</i>
+                            <div>
+                                <h4 class="font-medium">Email</h4>
+                                <p class="text-gray-700">aslammhdms@gmail.com</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <i class="material-icons text-indigo-600 mt-1">phone</i>
+                            <div>
+                                <h4 class="font-medium">Phone</h4>
+                                <p class="text-gray-700">+91 8301073018</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <i class="material-icons text-indigo-600 mt-1">location_on</i>
+                            <div>
+                                <h4 class="font-medium">Location</h4>
+                                <p class="text-gray-700">Kollam, India</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <h4 class="font-medium mb-4">Connect with me</h4>
+                        <div class="flex space-x-4">
+                            <a href="https://www.linkedin.com/in/aslammhdms" class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 hover:bg-indigo-600 hover:text-white transition">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="md:w-1/2 mui-card p-6">
+                    <h3 class="text-xl font-semibold mb-6">Send Me a Message</h3>
+                    <form id="contactForm">
+                        <div class="mui-input">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="mui-input">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="mui-input">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" required>
+                        </div>
+                        <div class="mui-input">
+                            <label for="message">Message</label>
+                            <textarea id="message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="mui-button mui-button-contained w-full mt-4">Send Message</button>
+                    </form>
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-2xl font-bold">Aslam Muhammed</h3>
+                    <p class="text-gray-400">Senior Software Developer</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#home" class="text-gray-400 hover:text-white">Home</a>
+                    <a href="#about" class="text-gray-400 hover:text-white">About</a>
+                    <a href="#projects" class="text-gray-400 hover:text-white">Projects</a>
+                    <a href="#skills" class="text-gray-400 hover:text-white">Skills</a>
+                    <a href="#contact" class="text-gray-400 hover:text-white">Contact</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 Aslam Muhammed. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="./js/script.js"></script>
+
+</body>
+</html>
