@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /a \"C:\\Portfolio\")",
+      "Bash(powershell -Command \"Get-Item -Path ''C:\\Portfolio'' -Force | Get-Member\")",
+      "Bash(powershell -Command \"Get-ChildItem -Path ''C:\\Portfolio'' -Force -Recurse | Select-Object FullName\")",
+      "Bash(powershell -Command \"Get-ChildItem -Path ''C:\\'' -Directory | Select-Object Name\")",
+      "Bash(powershell -Command \"Get-ChildItem -Path ''C:\\MyWorks'' -Force | Select-Object Name, FullName\")",
+      "Bash(powershell -Command:*)",
+      "Read(//c/fresh/**)",
+      "Read(//c/Source/**)",
+      "Bash(git clone:*)",
+      "Bash(npm install)",
+      "Bash(npm run dev:*)",
+      "WebFetch(domain:www.linkedin.com)",
+      "Bash(npm run build:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm install:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
