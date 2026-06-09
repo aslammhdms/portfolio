@@ -1,24 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aslam Muhammed | Senior Software Developer</title>
-    <meta name="description" content="Senior Software Developer with 3+ years of experience in .NET, Angular, and full-stack development">
-    <meta name="keywords" content="Software Developer, .NET Developer, Full Stack Developer, React, TypeScript">
-    <meta name="author" content="Aslam Muhammed">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Aslam Muhammed — .NET Developer & IT Systems Engineer</title>
+    <meta name="description" content="Aslam Muhammed — .NET Developer and IT Systems Engineer based in Abu Dhabi. Building enterprise retail systems, full-stack applications, and reliable infrastructure." />
+    <meta name="keywords" content="Aslam Muhammed, .NET Developer, IT Systems Engineer, C#, ASP.NET, React, SQL Server, Abu Dhabi" />
+    <meta name="author" content="Aslam Muhammed" />
+    <meta name="theme-color" content="#0A0C10" />
+
+    <!-- Open Graph / social -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Aslam Muhammed — .NET Developer & IT Systems Engineer" />
+    <meta property="og:description" content="Building enterprise retail systems, full-stack applications, and reliable infrastructure — from Abu Dhabi." />
+    <meta name="twitter:card" content="summary" />
 
     <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="/portfolio/vite.svg">
+    <link rel="icon" type="image/svg+xml" href="/portfolio/favicon.svg" />
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script type="module" crossorigin src="/portfolio/assets/index-BPlG3qO8.js"></script>
-  <link rel="stylesheet" crossorigin href="/portfolio/assets/index-DszODkYl.css">
+    <!-- Set the theme class before paint to avoid a flash of the wrong theme -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t !== 'light' && t !== 'dark') t = 'dark'; // dark-first
+          document.documentElement.classList.remove('light', 'dark');
+          document.documentElement.classList.add(t);
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+
+    <!-- Fonts: Space Grotesk (display), Inter (body), JetBrains Mono (code/labels) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  <script type="module" crossorigin src="/portfolio/assets/index-Ckg96yEr.js"></script>
+  <link rel="stylesheet" crossorigin href="/portfolio/assets/index-UA8-ySTE.css">
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root"></div>
 </body>
 </html>
