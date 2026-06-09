@@ -1,0 +1,11 @@
+# Cloudflare Workers — static-assets-only deployment.
+# Cloudflare runs the build command (`npm run build`) to produce ./dist,
+# then `npx wrangler deploy` ships it using this config. No Worker script
+# is needed; `[assets]` with no `main` serves the built site directly.
+name = "portfolio"
+compatibility_date = "2025-01-01"
+
+[assets]
+directory = "./dist"
+# Single-page site: serve index.html for any unknown path.
+not_found_handling = "single-page-application"
