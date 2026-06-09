@@ -1,72 +1,63 @@
-import { motion } from 'framer-motion';
-import { FaHeart } from 'react-icons/fa';
+import { FaLinkedin } from 'react-icons/fa';
+import { HiOutlineMail } from 'react-icons/hi';
 
-const navLinks = [
-  { name: 'Home', href: '#home' },
+const links = [
   { name: 'About', href: '#about' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Contact', href: '#contact' }
+  { name: 'Stack', href: '#skills' },
+  { name: 'Work', href: '#projects' },
+  { name: 'Contact', href: '#contact' },
 ];
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
+  const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-900 dark:bg-black text-white py-12 px-4">
-      <div className="container mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-          {/* Brand */}
-          <motion.div
-            className="mb-6 md:mb-0 text-center md:text-left"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-2xl font-bold gradient-text mb-2">Aslam Muhammed</h3>
-            <p className="text-gray-400">Software Developer</p>
-          </motion.div>
-
-          {/* Navigation Links */}
-          <motion.nav
-            className="flex flex-wrap justify-center gap-6"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            {navLinks.map((link) => (
-              <motion.a
-                key={link.name}
-                href={link.href}
-                className="text-gray-400 hover:text-white transition-colors"
-                whileHover={{ y: -2 }}
-              >
-                {link.name}
-              </motion.a>
-            ))}
-          </motion.nav>
+    <footer className="border-t border-line py-12">
+      <div className="shell flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
+        <div>
+          <a href="#home" className="flex items-center gap-2.5">
+            <span className="grid h-8 w-8 place-items-center rounded-md border border-line bg-surface font-mono text-sm font-semibold text-accent">
+              A
+            </span>
+            <span className="font-mono text-sm text-fg">aslam<span className="text-accent">.dev</span></span>
+          </a>
+          <p className="mt-3 max-w-xs text-sm text-muted">
+            .NET Developer & IT Systems Engineer — Abu Dhabi, UAE.
+          </p>
         </div>
 
-        {/* Divider */}
-        <div className="border-t border-gray-800 dark:border-gray-900 mb-8" />
+        <nav className="flex flex-wrap gap-x-6 gap-y-2" aria-label="Footer">
+          {links.map((l) => (
+            <a key={l.name} href={l.href} className="font-mono text-sm text-muted transition-colors hover:text-fg">
+              {l.name}
+            </a>
+          ))}
+        </nav>
 
-        {/* Copyright */}
-        <motion.div
-          className="text-center text-gray-400"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-        >
-          <p className="flex items-center justify-center gap-2 flex-wrap">
-            <span>&copy; {currentYear} Aslam Muhammed. All rights reserved.</span>
-            <span className="hidden md:inline">•</span>
-            <span className="flex items-center gap-1">
-              Built with <FaHeart className="text-red-500 animate-pulse" /> using React & TypeScript
-            </span>
-          </p>
-        </motion.div>
+        <div className="flex items-center gap-3">
+          <a
+            href="https://www.linkedin.com/in/aslammhdms"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className="grid h-9 w-9 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-accent/50 hover:text-fg"
+          >
+            <FaLinkedin size={17} />
+          </a>
+          <a
+            href="mailto:aslammhdms@gmail.com"
+            aria-label="Email"
+            className="grid h-9 w-9 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-accent/50 hover:text-fg"
+          >
+            <HiOutlineMail size={19} />
+          </a>
+        </div>
+      </div>
+
+      <div className="shell mt-8 border-t border-line pt-6">
+        <p className="font-mono text-xs text-faint">
+          © {year} Aslam Muhammed · Built with React, TypeScript & Tailwind CSS
+        </p>
       </div>
     </footer>
   );

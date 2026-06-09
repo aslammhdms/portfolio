@@ -4,115 +4,132 @@ import { HiMenu, HiX, HiSun, HiMoon } from 'react-icons/hi';
 import { useTheme } from '../contexts/ThemeContext';
 
 const navItems = [
-  { name: 'Home', href: '#home' },
-  { name: 'About', href: '#about' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Contact', href: '#contact' },
+  { name: 'About', href: '#about', id: 'about' },
+  { name: 'Stack', href: '#skills', id: 'skills' },
+  { name: 'Work', href: '#projects', id: 'projects' },
+  { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [active, setActive] = useState('home');
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
+    const handleScroll = () => setScrolled(window.scrollY > 24);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Track the section currently in view to highlight the matching nav link.
+  useEffect(() => {
+    const ids = ['home', ...navItems.map((i) => i.id)];
+    const sections = ids
+      .map((id) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
+    );
+
+    sections.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  const ThemeButton = (
+    <button
+      onClick={toggleTheme}
+      aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} theme`}
+      className="grid h-9 w-9 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-accent/50 hover:text-fg"
+    >
+      {theme === 'dark' ? <HiSun size={18} /> : <HiMoon size={18} />}
+    </button>
+  );
+
   return (
-    <motion.nav
-      initial={{ y: -100 }}
-      animate={{ y: 0 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? 'bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg shadow-lg'
-          : 'bg-transparent'
+    <motion.header
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+        scrolled ? 'border-b border-line bg-canvas/80 backdrop-blur-md' : 'border-b border-transparent'
       }`}
     >
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex justify-between items-center">
-          <motion.a
-            href="#home"
-            className="text-2xl font-bold gradient-text"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Aslam Muhammed
-          </motion.a>
+      <nav className="shell flex h-16 items-center justify-between" aria-label="Primary">
+        <a href="#home" className="group flex items-center gap-2.5" aria-label="Home">
+          <span className="grid h-8 w-8 place-items-center rounded-md border border-line bg-surface font-mono text-sm font-semibold text-accent transition-colors group-hover:border-accent/50">
+            A
+          </span>
+          <span className="font-mono text-sm text-muted transition-colors group-hover:text-fg">
+            aslam<span className="text-accent">.dev</span>
+          </span>
+        </a>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <motion.a
-                key={item.name}
-                href={item.href}
-                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                {item.name}
-              </motion.a>
-            ))}
-            <motion.button
-              onClick={toggleTheme}
-              className="p-2 rounded-full bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors"
-              whileHover={{ scale: 1.1, rotate: 180 }}
-              whileTap={{ scale: 0.9 }}
+        {/* Desktop nav */}
+        <div className="hidden items-center gap-1 md:flex">
+          {navItems.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className={`rounded-md px-3 py-2 font-mono text-sm transition-colors ${
+                active === item.id ? 'text-accent' : 'text-muted hover:text-fg'
+              }`}
             >
-              {theme === 'dark' ? <HiSun className="text-yellow-400" size={20} /> : <HiMoon className="text-gray-700" size={20} />}
-            </motion.button>
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden flex items-center space-x-4">
-            <motion.button
-              onClick={toggleTheme}
-              className="p-2 rounded-full bg-gray-200 dark:bg-gray-800"
-              whileTap={{ scale: 0.9 }}
-            >
-              {theme === 'dark' ? <HiSun className="text-yellow-400" size={20} /> : <HiMoon className="text-gray-700" size={20} />}
-            </motion.button>
-            <motion.button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-gray-700 dark:text-gray-300"
-              whileTap={{ scale: 0.9 }}
-            >
-              {isOpen ? <HiX size={28} /> : <HiMenu size={28} />}
-            </motion.button>
-          </div>
+              {item.name}
+            </a>
+          ))}
+          <span className="mx-2 h-5 w-px bg-line" aria-hidden="true" />
+          {ThemeButton}
         </div>
 
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {isOpen && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              className="md:hidden mt-4 overflow-hidden"
-            >
-              {navItems.map((item, index) => (
-                <motion.a
+        {/* Mobile controls */}
+        <div className="flex items-center gap-2 md:hidden">
+          {ThemeButton}
+          <button
+            onClick={() => setIsOpen((v) => !v)}
+            aria-label={isOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={isOpen}
+            className="grid h-9 w-9 place-items-center rounded-lg border border-line text-fg"
+          >
+            {isOpen ? <HiX size={20} /> : <HiMenu size={20} />}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.25 }}
+            className="overflow-hidden border-b border-line bg-canvas md:hidden"
+          >
+            <div className="shell flex flex-col py-3">
+              {navItems.map((item) => (
+                <a
                   key={item.name}
                   href={item.href}
-                  className="block py-3 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                  initial={{ x: -50, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: index * 0.1 }}
                   onClick={() => setIsOpen(false)}
+                  className={`rounded-md px-3 py-3 font-mono text-sm transition-colors ${
+                    active === item.id ? 'text-accent' : 'text-muted hover:text-fg'
+                  }`}
                 >
                   {item.name}
-                </motion.a>
+                </a>
               ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
-    </motion.nav>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }

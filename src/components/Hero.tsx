@@ -1,141 +1,170 @@
-import { motion } from 'framer-motion';
-import { HiDownload, HiMail } from 'react-icons/hi';
+import { useEffect, useRef } from 'react';
+import { motion, useReducedMotion } from 'framer-motion';
+import { HiArrowDown, HiOutlineMail } from 'react-icons/hi';
 import { FaLinkedin } from 'react-icons/fa';
+import { FiArrowUpRight } from 'react-icons/fi';
+
+const base = import.meta.env.BASE_URL;
 
 export default function Hero() {
+  const reduce = useReducedMotion();
+  const glowRef = useRef<HTMLDivElement>(null);
+
+  // Soft accent glow that tracks the cursor — desktop + motion-allowed only.
+  useEffect(() => {
+    if (reduce) return;
+    const el = glowRef.current;
+    if (!el) return;
+    let raf = 0;
+    const onMove = (e: MouseEvent) => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const rect = el.getBoundingClientRect();
+        el.style.setProperty('--mx', `${e.clientX - rect.left}px`);
+        el.style.setProperty('--my', `${e.clientY - rect.top}px`);
+      });
+    };
+    el.addEventListener('mousemove', onMove);
+    return () => {
+      el.removeEventListener('mousemove', onMove);
+      cancelAnimationFrame(raf);
+    };
+  }, [reduce]);
+
+  const fade = (delay: number) => ({
+    initial: reduce ? { opacity: 0 } : { opacity: 0, y: 16 },
+    animate: { opacity: 1, y: 0 },
+    transition: { duration: 0.6, delay, ease: [0.4, 0, 0.2, 1] as const },
+  });
+
   return (
-    <section id="home" className="min-h-screen flex items-center justify-center pt-20 px-4 relative overflow-hidden">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 dark:from-gray-900 dark:via-blue-900/20 dark:to-purple-900/20 animate-gradient-x" />
+    <section
+      id="home"
+      ref={glowRef}
+      className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-16"
+      style={{ ['--mx' as string]: '70%', ['--my' as string]: '30%' }}
+    >
+      {/* Dotted grid, faded toward the edges */}
+      <div
+        className="grid-bg pointer-events-none absolute inset-0 opacity-60"
+        style={{ maskImage: 'radial-gradient(ellipse 80% 70% at 50% 40%, black, transparent)', WebkitMaskImage: 'radial-gradient(ellipse 80% 70% at 50% 40%, black, transparent)' }}
+        aria-hidden="true"
+      />
+      {/* Cursor-tracking accent glow */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{ background: 'radial-gradient(420px circle at var(--mx) var(--my), rgb(var(--accent) / 0.10), transparent 70%)' }}
+        aria-hidden="true"
+      />
 
-      <div className="container mx-auto relative z-10">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-          {/* Left Content */}
-          <motion.div
-            className="md:w-1/2 space-y-6"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <h2 className="text-xl md:text-2xl text-gray-600 dark:text-gray-400 font-medium">
-                Hi, I'm
-              </h2>
-              <h1 className="text-5xl md:text-7xl font-bold gradient-text mt-2">
-                Aslam Muhammed
-              </h1>
-            </motion.div>
-
-            <motion.h2
-              className="text-2xl md:text-4xl text-gray-700 dark:text-gray-300 font-semibold"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-            >
-              Software Developer
-            </motion.h2>
-
-            <motion.p
-              className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6 }}
-            >
-              Building Scalable Web & Mobile Solutions | Full Stack Developer with over 4 years of experience in designing, developing,
-              and maintaining robust applications. Currently working at Al Madina Group in Abu Dhabi, UAE. Expert in .NET, HTML, CSS,
-              JavaScript, and DevOps practices.
-            </motion.p>
-
-            <motion.div
-              className="flex flex-wrap gap-4"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
-            >
-              <motion.a
-                href="/doc/resume.pdf"
-                download
-                className="group px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-full font-medium shadow-lg hover:shadow-xl transition-shadow flex items-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <HiDownload className="group-hover:animate-bounce" />
-                Download Resume
-              </motion.a>
-              <motion.a
-                href="#contact"
-                className="px-8 py-3 border-2 border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 rounded-full font-medium hover:bg-blue-600 hover:text-white dark:hover:bg-blue-400 dark:hover:text-gray-900 transition-colors flex items-center gap-2"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <HiMail />
-                Contact Me
-              </motion.a>
-            </motion.div>
-
-            <motion.div
-              className="flex items-center gap-4 pt-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1 }}
-            >
-              <span className="text-gray-600 dark:text-gray-400">Connect:</span>
-              <motion.a
-                href="https://www.linkedin.com/in/aslammhdms"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-3 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors shadow-lg"
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FaLinkedin size={24} />
-              </motion.a>
-            </motion.div>
+      <div className="shell relative z-10 grid items-center gap-12 lg:grid-cols-12">
+        {/* Text column */}
+        <div className="lg:col-span-7">
+          <motion.div {...fade(0)} className="mb-6 flex items-center gap-3">
+            <span className="font-mono text-xs tracking-[0.2em] text-faint">01</span>
+            <span className="flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 font-mono text-xs text-muted">
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
+              </span>
+              Available for full-time roles
+            </span>
           </motion.div>
 
-          {/* Right Content - Profile Image */}
-          <motion.div
-            className="md:w-1/2 flex justify-center"
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
+          <motion.p {...fade(0.08)} className="mb-4 font-mono text-sm text-signal">
+            <span className="text-faint">$</span> whoami
+            <span className="ml-1 inline-block h-4 w-2 translate-y-0.5 animate-blink bg-signal" aria-hidden="true" />
+          </motion.p>
+
+          <motion.h1
+            {...fade(0.16)}
+            className="font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl"
           >
-            <motion.div
-              className="relative"
-              animate={{ y: [0, -20, 0] }}
-              transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+            Aslam Muhammed
+          </motion.h1>
+
+          <motion.h2
+            {...fade(0.24)}
+            className="mt-4 font-display text-2xl font-medium tracking-tight text-muted sm:text-3xl"
+          >
+            .NET Developer <span className="text-fg">&amp;</span>{' '}
+            <span className="text-accent">IT Systems Engineer</span>
+          </motion.h2>
+
+          <motion.p {...fade(0.32)} className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+            Based in Abu Dhabi, with 4+ years building across{' '}
+            <span className="text-fg">enterprise retail systems</span>,{' '}
+            <span className="text-fg">full-stack applications</span>, and{' '}
+            <span className="text-fg">infrastructure</span> — from .NET back ends and SQL Server to
+            production deployments that stay up.
+          </motion.p>
+
+          <motion.div {...fade(0.4)} className="mt-9 flex flex-wrap items-center gap-3">
+            <a href="#projects" className="btn-primary">
+              View work
+            </a>
+            <a
+              href={`${base}doc/Aslam_Muhammed_Resume.pdf`}
+              download="Aslam_Muhammed_Resume.pdf"
+              className="btn-ghost"
             >
-              {/* Glowing ring */}
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 blur-2xl opacity-30 animate-pulse" />
-
-              {/* Profile Image */}
-              <div className="relative w-72 h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-8 border-white dark:border-gray-800 shadow-2xl">
-                <img
-                  src="/images/aslam.jpg"
-                  alt="Aslam Muhammed"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              {/* Decorative elements */}
-              <motion.div
-                className="absolute -top-4 -right-4 w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full blur-xl opacity-60"
-                animate={{ scale: [1, 1.2, 1] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-              <motion.div
-                className="absolute -bottom-4 -left-4 w-24 h-24 bg-gradient-to-r from-blue-400 to-cyan-500 rounded-full blur-xl opacity-60"
-                animate={{ scale: [1.2, 1, 1.2] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-            </motion.div>
+              Résumé <FiArrowUpRight size={16} />
+            </a>
+            <span className="mx-1 hidden h-6 w-px bg-line sm:block" aria-hidden="true" />
+            <a
+              href="https://www.linkedin.com/in/aslammhdms"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="grid h-10 w-10 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-accent/50 hover:text-fg"
+            >
+              <FaLinkedin size={18} />
+            </a>
+            <a
+              href="mailto:aslammhdms@gmail.com"
+              aria-label="Email"
+              className="grid h-10 w-10 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-accent/50 hover:text-fg"
+            >
+              <HiOutlineMail size={20} />
+            </a>
           </motion.div>
         </div>
+
+        {/* Portrait column */}
+        <motion.div
+          {...fade(0.3)}
+          className="flex justify-center lg:col-span-5 lg:justify-end"
+        >
+          <div className="relative">
+            <div
+              className={`absolute -inset-6 rounded-[28px] bg-accent/20 blur-3xl ${reduce ? '' : 'animate-float-slow'}`}
+              aria-hidden="true"
+            />
+            <div className="relative w-64 overflow-hidden rounded-2xl border border-line bg-surface p-2 sm:w-72 lg:w-80">
+              <img
+                src={`${base}images/aslam.jpg`}
+                alt="Portrait of Aslam Muhammed"
+                className="aspect-[4/5] w-full rounded-xl object-cover"
+                loading="eager"
+              />
+              <div className="flex items-center justify-between px-1 pt-2 pb-1 font-mono text-xs text-faint">
+                <span>// Abu Dhabi, UAE</span>
+                <span className="text-signal">● online</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
+
+      {/* Scroll cue */}
+      <motion.a
+        href="#about"
+        {...fade(0.6)}
+        aria-label="Scroll to about"
+        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 text-faint transition-colors hover:text-accent md:block"
+      >
+        <HiArrowDown size={20} className={reduce ? '' : 'animate-float-slow'} />
+      </motion.a>
     </section>
   );
 }

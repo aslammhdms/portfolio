@@ -2,57 +2,131 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================================
+   Terminal Ink — design tokens
+   Dark is the default; .light overrides for the toggle.
+   Colors are space-separated RGB channels so Tailwind's
+   <alpha-value> opacity modifiers work (e.g. bg-accent/12).
+   ============================================================ */
+:root,
+.dark {
+  --canvas: 10 12 16;       /* #0A0C10 */
+  --surface: 18 21 27;      /* #12151B */
+  --elevated: 26 30 38;     /* #1A1E26 */
+  --line: 35 42 53;         /* #232A35 */
+  --fg: 231 234 240;        /* #E7EAF0 */
+  --muted: 144 153 168;     /* #9099A8 */
+  --faint: 113 122 138;     /* #717A8A */
+  --accent: 124 108 255;    /* #7C6CFF */
+  --accent-hover: 148 139 255; /* #948BFF */
+  --signal: 57 224 200;     /* #39E0C8 */
+  --on-accent: 10 12 16;    /* near-black text on the bright accent */
+}
+
+.light {
+  --canvas: 250 250 252;    /* #FAFAFC */
+  --surface: 255 255 255;   /* #FFFFFF */
+  --elevated: 245 246 249;  /* #F5F6F9 */
+  --line: 229 232 238;      /* #E5E8EE */
+  --fg: 19 23 32;           /* #131720 */
+  --muted: 82 91 106;       /* #525B6A */
+  --faint: 124 132 145;     /* #7C8491 */
+  --accent: 91 71 245;      /* #5B47F5 */
+  --accent-hover: 74 56 230;/* #4A38E6 */
+  --signal: 15 181 160;     /* #0FB5A0 */
+  --on-accent: 255 255 255; /* white text on the accent */
+}
+
 @layer base {
   html {
     @apply scroll-smooth;
   }
 
   body {
-    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300;
+    @apply bg-canvas text-fg font-sans antialiased;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  /* Visible, on-brand focus ring for keyboard users */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-canvas rounded-sm;
+  }
+
+  ::selection {
+    background-color: rgb(var(--accent) / 0.3);
+    color: rgb(var(--fg));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+    }
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-shell px-5 sm:px-8;
+  }
+
+  .card {
+    @apply rounded-card border border-line bg-surface;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-md border border-line bg-elevated px-2.5 py-1 font-mono text-xs text-muted;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-on-accent hover:bg-accent-hover;
+  }
+
+  .btn-ghost {
+    @apply btn border border-line bg-transparent text-fg hover:bg-elevated hover:border-accent/50;
+  }
+
+  .mono-label {
+    @apply font-mono text-xs uppercase tracking-[0.18em] text-faint;
   }
 }
 
 @layer utilities {
-  .glass {
-    @apply bg-white/10 dark:bg-gray-800/10 backdrop-blur-lg border border-white/20 dark:border-gray-700/20;
+  /* Subtle dotted grid for the hero backdrop */
+  .grid-bg {
+    background-image: radial-gradient(rgb(var(--line) / 0.7) 1px, transparent 1px);
+    background-size: 28px 28px;
   }
 
-  .glass-card {
-    @apply bg-white/80 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300;
-  }
-
-  .gradient-text {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400;
-  }
-
-  .animate-gradient-x {
-    animation: gradient-x 15s ease infinite;
-    background-size: 200% 200%;
+  .text-gradient {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, rgb(var(--fg)), rgb(var(--accent)));
   }
 }
 
-@keyframes gradient-x {
-  0%, 100% {
-    background-position: left center;
-  }
-  50% {
-    background-position: right center;
-  }
-}
-
-/* Custom scrollbar */
+/* Themed scrollbar */
 ::-webkit-scrollbar {
   width: 10px;
+  height: 10px;
 }
-
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 dark:bg-gray-900;
+  background: rgb(var(--canvas));
 }
-
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 dark:bg-gray-600 rounded-full;
+  background: rgb(var(--line));
+  border-radius: 9999px;
+  border: 2px solid rgb(var(--canvas));
 }
-
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-500 dark:bg-gray-500;
+  background: rgb(var(--faint));
 }
