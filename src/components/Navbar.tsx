@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { HiMenu, HiX, HiSun, HiMoon } from 'react-icons/hi';
 import { useTheme } from '../contexts/ThemeContext';
+import useActiveSection from '../hooks/useActiveSection';
 
 const navItems = [
   { name: 'About', href: '#about', id: 'about' },
@@ -10,10 +11,16 @@ const navItems = [
   { name: 'Contact', href: '#contact', id: 'contact' },
 ];
 
-export default function Navbar() {
+const isMac = typeof navigator !== 'undefined' && /Mac/i.test(navigator.userAgent);
+
+interface NavbarProps {
+  onOpenPalette: () => void;
+}
+
+export default function Navbar({ onOpenPalette }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState('home');
+  const active = useActiveSection();
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -23,26 +30,6 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Track the section currently in view to highlight the matching nav link.
-  useEffect(() => {
-    const ids = ['home', ...navItems.map((i) => i.id)];
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
-    );
-
-    sections.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
-
   const ThemeButton = (
     <button
       onClick={toggleTheme}
@@ -50,6 +37,16 @@ export default function Navbar() {
       className="grid h-9 w-9 place-items-center rounded-lg border border-line text-muted transition-colors hover:border-accent/50 hover:text-fg"
     >
       {theme === 'dark' ? <HiSun size={18} /> : <HiMoon size={18} />}
+    </button>
+  );
+
+  const PaletteButton = (
+    <button
+      onClick={onOpenPalette}
+      aria-label="Open command palette"
+      className="flex h-9 items-center gap-1 rounded-lg border border-line px-2.5 font-mono text-xs text-muted transition-colors hover:border-accent/50 hover:text-fg"
+    >
+      {isMac ? '⌘K' : 'Ctrl K'}
     </button>
   );
 
@@ -86,11 +83,13 @@ export default function Navbar() {
             </a>
           ))}
           <span className="mx-2 h-5 w-px bg-line" aria-hidden="true" />
+          {PaletteButton}
           {ThemeButton}
         </div>
 
         {/* Mobile controls */}
         <div className="flex items-center gap-2 md:hidden">
+          {PaletteButton}
           {ThemeButton}
           <button
             onClick={() => setIsOpen((v) => !v)}

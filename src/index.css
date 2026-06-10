@@ -43,7 +43,7 @@
   }
 
   body {
-    @apply bg-canvas text-fg font-sans antialiased;
+    @apply bg-canvas text-fg font-sans antialiased pb-7;
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
@@ -111,6 +111,22 @@
   .text-gradient {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, rgb(var(--fg)), rgb(var(--accent)));
+  }
+}
+
+/* Konami code easter egg — full-page barrel roll (disabled by reduced-motion) */
+.konami {
+  animation: barrel-roll 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes barrel-roll {
+  from {
+    transform: rotate(0deg) scale(1);
+  }
+  50% {
+    transform: rotate(180deg) scale(0.92);
+  }
+  to {
+    transform: rotate(360deg) scale(1);
   }
 }
 

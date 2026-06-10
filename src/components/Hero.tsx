@@ -3,6 +3,8 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { HiArrowDown, HiOutlineMail } from 'react-icons/hi';
 import { FaLinkedin } from 'react-icons/fa';
 import { FiArrowUpRight } from 'react-icons/fi';
+import Terminal from './Terminal';
+import AsciiPortrait from './AsciiPortrait';
 
 const base = import.meta.env.BASE_URL;
 
@@ -41,7 +43,7 @@ export default function Hero() {
     <section
       id="home"
       ref={glowRef}
-      className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-16"
+      className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-20"
       style={{ ['--mx' as string]: '70%', ['--my' as string]: '30%' }}
     >
       {/* Dotted grid, faded toward the edges */}
@@ -58,7 +60,7 @@ export default function Hero() {
       />
 
       <div className="shell relative z-10 grid items-center gap-12 lg:grid-cols-12">
-        {/* Text column */}
+        {/* Text + terminal column */}
         <div className="lg:col-span-7">
           <motion.div {...fade(0)} className="mb-6 flex items-center gap-3">
             <span className="font-mono text-xs tracking-[0.2em] text-faint">01</span>
@@ -71,35 +73,29 @@ export default function Hero() {
             </span>
           </motion.div>
 
-          <motion.p {...fade(0.08)} className="mb-4 font-mono text-sm text-signal">
-            <span className="text-faint">$</span> whoami
-            <span className="ml-1 inline-block h-4 w-2 translate-y-0.5 animate-blink bg-signal" aria-hidden="true" />
-          </motion.p>
-
           <motion.h1
-            {...fade(0.16)}
+            {...fade(0.08)}
             className="font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-7xl"
           >
             Aslam Muhammed
           </motion.h1>
 
           <motion.h2
-            {...fade(0.24)}
+            {...fade(0.16)}
             className="mt-4 font-display text-2xl font-medium tracking-tight text-muted sm:text-3xl"
           >
             .NET Developer <span className="text-fg">&amp;</span>{' '}
             <span className="text-accent">IT Systems Engineer</span>
           </motion.h2>
 
-          <motion.p {...fade(0.32)} className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+          <motion.p {...fade(0.24)} className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
             Based in Abu Dhabi, with 4+ years building across{' '}
             <span className="text-fg">enterprise retail systems</span>,{' '}
             <span className="text-fg">full-stack applications</span>, and{' '}
-            <span className="text-fg">infrastructure</span> — from .NET back ends and SQL Server to
-            production deployments that stay up.
+            <span className="text-fg">infrastructure</span>.
           </motion.p>
 
-          <motion.div {...fade(0.4)} className="mt-9 flex flex-wrap items-center gap-3">
+          <motion.div {...fade(0.32)} className="mt-7 flex flex-wrap items-center gap-3">
             <a href="#projects" className="btn-primary">
               View work
             </a>
@@ -128,25 +124,22 @@ export default function Hero() {
               <HiOutlineMail size={20} />
             </a>
           </motion.div>
+
+          {/* The working terminal — the hero's signature piece */}
+          <motion.div {...fade(0.42)} className="mt-9 max-w-xl">
+            <Terminal />
+          </motion.div>
         </div>
 
         {/* Portrait column */}
-        <motion.div
-          {...fade(0.3)}
-          className="flex justify-center lg:col-span-5 lg:justify-end"
-        >
+        <motion.div {...fade(0.3)} className="flex justify-center lg:col-span-5 lg:justify-end">
           <div className="relative">
             <div
               className={`absolute -inset-6 rounded-[28px] bg-accent/20 blur-3xl ${reduce ? '' : 'animate-float-slow'}`}
               aria-hidden="true"
             />
             <div className="relative w-64 overflow-hidden rounded-2xl border border-line bg-surface p-2 sm:w-72 lg:w-80">
-              <img
-                src={`${base}images/aslam.jpg`}
-                alt="Portrait of Aslam Muhammed"
-                className="aspect-[4/5] w-full rounded-xl object-cover"
-                loading="eager"
-              />
+              <AsciiPortrait />
               <div className="flex items-center justify-between px-1 pt-2 pb-1 font-mono text-xs text-faint">
                 <span>// Abu Dhabi, UAE</span>
                 <span className="text-signal">● online</span>
@@ -156,12 +149,12 @@ export default function Hero() {
         </motion.div>
       </div>
 
-      {/* Scroll cue */}
+      {/* Scroll cue (sits above the status bar) */}
       <motion.a
         href="#about"
         {...fade(0.6)}
         aria-label="Scroll to about"
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 text-faint transition-colors hover:text-accent md:block"
+        className="absolute bottom-12 left-1/2 hidden -translate-x-1/2 text-faint transition-colors hover:text-accent md:block"
       >
         <HiArrowDown size={20} className={reduce ? '' : 'animate-float-slow'} />
       </motion.a>

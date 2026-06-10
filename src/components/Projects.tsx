@@ -75,6 +75,34 @@ const projects: Project[] = [
   },
   {
     index: '03',
+    name: 'Madina Insight',
+    tagline: 'Competitive pricing intelligence for hypermarket retail.',
+    role: 'Software Developer · Al Madina Group',
+    period: '2025',
+    problem:
+      'Competitor promotional flyers were reviewed by hand — no structured way to compare their prices against the product catalog across branches, or to spot where the chain was being undercut.',
+    build: [
+      'Full-stack .NET 10 MVC application analyzing competitor flyers against the product catalog across branches.',
+      'PDF / image upload and processing pipeline for flyer ingestion.',
+      'Intelligent product-matching engine that surfaces pricing gaps and opportunities.',
+      'SQL Server backend with historical data for price-trend analysis.',
+    ],
+    stack: ['.NET 10 MVC', 'C#', 'EF Core', 'SQL Server', 'JavaScript'],
+    outcome:
+      'Management makes data-driven pricing decisions from structured competitor data instead of manual flyer reviews.',
+    link: { label: 'Internal / private' },
+    visual: {
+      chrome: 'madina-insight — pricing',
+      isBrowser: false,
+      tiles: [
+        { label: 'Ingest', value: 'PDF' },
+        { label: 'Matching', value: 'Auto' },
+        { label: 'Trends', value: 'SQL' },
+      ],
+    },
+  },
+  {
+    index: '04',
     name: 'AssetCore',
     tagline: 'IT asset-lifecycle management — the asset module of Al Madina’s IT platform.',
     role: 'Software Developer · Al Madina Group',
@@ -101,7 +129,37 @@ const projects: Project[] = [
     },
   },
   {
-    index: '04',
+    index: '05',
+    name: 'Retail Mobile Apps',
+    tagline: 'Price-checking on Zebra handhelds, plus Al Madina’s customer-facing retail app.',
+    role: 'Software Developer · Al Madina Group',
+    period: '2025',
+    problem:
+      'Floor staff had no instant way to verify prices and stock on the shop floor, and the customer app needed better product browsing and offer visibility — both against live ERP data.',
+    build: [
+      'Built a React Native price-checker for Zebra handheld devices with barcode scanning (Zebra SDK).',
+      'Real-time price and stock lookups for floor staff, straight from the ERP.',
+      'Enhanced the customer retail app: product browsing and promotional-offer visibility.',
+      'Integrated both apps with the Gravity ERP backend over RESTful APIs.',
+    ],
+    stack: ['React Native', 'REST APIs', 'Zebra SDK', 'SQL Server'],
+    outcome: 'In daily use by floor staff across branches; the customer app is live on the app stores.',
+    link: {
+      label: 'Al Madina AUH on Google Play',
+      href: 'https://play.google.com/store/apps/details?id=com.almadinahypermarket.mobileapp',
+    },
+    visual: {
+      chrome: 'pricecheck — zebra handheld',
+      isBrowser: false,
+      tiles: [
+        { label: 'Device', value: 'Zebra' },
+        { label: 'ERP', value: 'Gravity' },
+        { label: 'Data', value: 'Live' },
+      ],
+    },
+  },
+  {
+    index: '06',
     name: 'Skien.Suite',
     tagline: 'Modular ERP integrating core business operations for SME clients.',
     role: 'Senior Software Developer · Skien Software Lab',

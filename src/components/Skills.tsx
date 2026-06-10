@@ -30,12 +30,12 @@ const groups: StackGroup[] = [
   {
     title: 'Frontend',
     icon: HiOutlineDesktopComputer,
-    items: ['React', 'Angular.js', 'jQuery', 'Tailwind CSS', 'Bootstrap'],
+    items: ['React', 'React Native', 'Angular.js', 'jQuery', 'Tailwind CSS', 'Bootstrap'],
   },
   {
     title: 'Data',
     icon: HiOutlineDatabase,
-    items: ['SQL Server', 'T-SQL', 'EF Core', 'Schema design'],
+    items: ['SQL Server', 'T-SQL', 'EF Core', 'Schema design', 'DB optimization'],
   },
   {
     title: 'DevOps & Infrastructure',
@@ -45,7 +45,7 @@ const groups: StackGroup[] = [
   {
     title: 'Tools & Practices',
     icon: HiOutlineTerminal,
-    items: ['Visual Studio', 'VS Code', 'Postman', 'Jira', 'Agile / Scrum'],
+    items: ['Visual Studio', 'VS Code', 'Postman', 'Jira', 'Agile / Scrum', 'Zebra SDK', '.NET MAUI'],
   },
 ];
 
