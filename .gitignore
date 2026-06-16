@@ -30,3 +30,6 @@ dist-ssr
 
 # Windows
 desktop.ini
+
+# Raw Higgsfield exports — only the re-encoded clips in public/videos/ are committed
+public/videos/src/

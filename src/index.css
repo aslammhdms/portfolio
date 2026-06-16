@@ -76,8 +76,9 @@
     @apply mx-auto w-full max-w-shell px-5 sm:px-8;
   }
 
+  /* Translucent + blurred so the scene video reads through behind content panels */
   .card {
-    @apply rounded-card border border-line bg-surface;
+    @apply rounded-card border border-line bg-surface/80 backdrop-blur-md;
   }
 
   .chip {
@@ -111,6 +112,54 @@
   .text-gradient {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, rgb(var(--fg)), rgb(var(--accent)));
+  }
+
+  /* ------------------------------------------------------------------
+     Scroll-scene backdrops
+     z-scale: backdrop 0 (aria-hidden, no pointer events) · section content
+     & Terminal & AsciiPortrait 10 · StatusBar 40 · Navbar 50 ·
+     CommandPalette 90 · skip link 100.
+     ------------------------------------------------------------------ */
+
+  /* On-brand CSS placeholder shown until/without a real clip (deepest fallback). */
+  .scene-placeholder {
+    background-color: rgb(var(--canvas));
+    background-repeat: no-repeat;
+    background-size: 200% 200%, 200% 200%;
+    animation: scene-drift 26s ease-in-out infinite alternate;
+  }
+  .scene-placeholder--indigo {
+    background-image: radial-gradient(60% 60% at 32% 26%, rgb(var(--accent) / 0.18), transparent 70%),
+      radial-gradient(55% 55% at 76% 70%, rgb(var(--signal) / 0.08), transparent 70%);
+  }
+  .scene-placeholder--teal {
+    background-image: radial-gradient(60% 60% at 28% 30%, rgb(var(--signal) / 0.16), transparent 70%),
+      radial-gradient(55% 55% at 78% 66%, rgb(var(--accent) / 0.10), transparent 70%);
+  }
+  .scene-placeholder--duo {
+    background-image: radial-gradient(55% 55% at 24% 34%, rgb(var(--signal) / 0.16), transparent 70%),
+      radial-gradient(55% 55% at 78% 30%, rgb(var(--accent) / 0.16), transparent 70%);
+  }
+}
+
+@keyframes scene-drift {
+  from {
+    background-position: 0% 0%, 100% 100%;
+  }
+  to {
+    background-position: 100% 50%, 0% 50%;
+  }
+}
+
+/* The scrubbed/looping video is decoration only — drop it for reduced motion and print. */
+@media (prefers-reduced-motion: reduce) {
+  .scene-video {
+    display: none !important;
+  }
+}
+@media print {
+  .scene-backdrop {
+    display: none !important;
   }
 }
 

@@ -8,11 +8,15 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import StatusBar from './components/StatusBar';
 import CommandPalette from './components/CommandPalette';
+import ScrollScene from './components/scroll/ScrollScene';
+import { useEngineMode } from './hooks/useEngineMode';
+import { clips } from './scenes/clips';
 
 const KONAMI = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
 
 function App() {
   const [paletteOpen, setPaletteOpen] = useState(false);
+  const mode = useEngineMode();
 
   // ⌘K / Ctrl+K toggles the command palette.
   useEffect(() => {
@@ -51,7 +55,7 @@ function App() {
   }, []);
 
   return (
-    <div className="relative overflow-x-hidden">
+    <div className="relative overflow-x-clip">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-on-accent"
@@ -60,11 +64,21 @@ function App() {
       </a>
       <Navbar onOpenPalette={() => setPaletteOpen(true)} />
       <main id="main">
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Contact />
+        <ScrollScene clip={clips.hero} mode={mode} pin>
+          <Hero />
+        </ScrollScene>
+        <ScrollScene clip={clips.about} mode={mode}>
+          <About />
+        </ScrollScene>
+        <ScrollScene clip={clips.skills} mode={mode}>
+          <Skills />
+        </ScrollScene>
+        <ScrollScene clip={clips.projects} mode={mode}>
+          <Projects />
+        </ScrollScene>
+        <ScrollScene clip={clips.contact} mode={mode}>
+          <Contact />
+        </ScrollScene>
       </main>
       <Footer />
       <StatusBar />
