@@ -46,13 +46,7 @@ export default function Hero() {
       className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-20"
       style={{ ['--mx' as string]: '70%', ['--my' as string]: '30%' }}
     >
-      {/* Dotted grid, faded toward the edges */}
-      <div
-        className="grid-bg pointer-events-none absolute inset-0 opacity-60"
-        style={{ maskImage: 'radial-gradient(ellipse 80% 70% at 50% 40%, black, transparent)', WebkitMaskImage: 'radial-gradient(ellipse 80% 70% at 50% 40%, black, transparent)' }}
-        aria-hidden="true"
-      />
-      {/* Cursor-tracking accent glow */}
+      {/* Cursor-tracking accent glow (the scene's video + scrim provide the grid backdrop) */}
       <div
         className="pointer-events-none absolute inset-0"
         style={{ background: 'radial-gradient(420px circle at var(--mx) var(--my), rgb(var(--accent) / 0.10), transparent 70%)' }}
