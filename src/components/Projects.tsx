@@ -20,6 +20,32 @@ interface Project {
 const projects: Project[] = [
   {
     index: '01',
+    name: 'Tricore ERP Migration',
+    tagline: 'Moving Tristar Engineering & Construction off its legacy ERP, as the company’s only developer.',
+    role: 'Software Engineer · Tristar Engineering & Construction',
+    period: '2026 – now',
+    problem:
+      'The company runs on ePROMIS, an aging ERP. Moving to Tricore ERP means rebuilding daily workflows and moving years of data without stopping operations.',
+    build: [
+      'Tricore inventory module: material issues, receipts, returns and transfers, matched to how each store already works.',
+      'SQL Server scripts to migrate ePROMIS data and grant store-level access, with checks before every change and audit logging.',
+      'Both systems run side by side during testing so staff can switch over without disruption.',
+    ],
+    stack: ['SQL Server', 'T-SQL', 'ePROMIS', 'Tricore ERP'],
+    outcome: 'In progress. Inventory screens are in testing against live store workflows.',
+    link: { label: 'Internal / private' },
+    visual: {
+      chrome: 'tricore — migration',
+      isBrowser: false,
+      tiles: [
+        { label: 'Developer', value: 'Solo' },
+        { label: 'From', value: 'ePROMIS' },
+        { label: 'Status', value: 'Live dev' },
+      ],
+    },
+  },
+  {
+    index: '02',
     name: 'Al Madina Hypermarket',
     tagline: 'Production marketing & store-locator site for a 50-year-old UAE retail chain.',
     role: 'Frontend Developer · Al Madina Group',
@@ -46,13 +72,13 @@ const projects: Project[] = [
     },
   },
   {
-    index: '02',
+    index: '03',
     name: 'Helpdesk Portal',
-    tagline: 'Al Madina’s internal IT operations platform — a service desk that grew into the backbone for 80+ outlets.',
-    role: 'Software Developer · Al Madina Group',
+    tagline: 'Al Madina’s internal IT operations platform, used by 100+ staff across 19 branches.',
+    role: 'Software Engineer · Al Madina Group',
     period: '2025',
     problem:
-      'IT support, asset tracking, procurement and inventory across 80+ outlets ran on scattered tools, spreadsheets and manual processes — with no single auditable system or real-time visibility.',
+      'IT support, asset tracking, procurement and inventory across 19 branches ran on scattered tools, spreadsheets and manual processes — with no single auditable system or real-time visibility.',
     build: [
       'Service-desk core: ticket intake, assignment and tracking with real-time SignalR updates.',
       'Grew into modules for asset management, procurement, inventory checks, fleet and HR incident / warning workflows.',
@@ -61,23 +87,23 @@ const projects: Project[] = [
       'Integrated the Gravity ERP and added AI-assisted theft detection from CCTV (YOLOv8).',
     ],
     stack: ['.NET 10', 'ASP.NET Core MVC', 'C#', 'EF Core', 'SQL Server', 'SignalR', 'React Native'],
-    outcome: 'Production platform spanning ~90 data entities across dozens of modules, serving 80+ outlets on Windows Server.',
+    outcome: 'Production platform spanning ~90 data entities across dozens of modules, used by 100+ staff across 19 branches, on Windows Server.',
     link: { label: 'Internal / private' },
     visual: {
       chrome: 'helpdesk — service desk',
       isBrowser: false,
       tiles: [
-        { label: 'Outlets', value: '80+' },
+        { label: 'Branches', value: '19' },
         { label: 'Modules', value: '90+' },
         { label: 'Mobile', value: 'RN' },
       ],
     },
   },
   {
-    index: '03',
+    index: '04',
     name: 'Madina Insight',
     tagline: 'Competitive pricing intelligence for hypermarket retail.',
-    role: 'Software Developer · Al Madina Group',
+    role: 'Software Engineer · Al Madina Group',
     period: '2025',
     problem:
       'Competitor promotional flyers were reviewed by hand — no structured way to compare their prices against the product catalog across branches, or to spot where the chain was being undercut.',
@@ -102,10 +128,10 @@ const projects: Project[] = [
     },
   },
   {
-    index: '04',
+    index: '05',
     name: 'AssetCore',
     tagline: 'IT asset-lifecycle management — the asset module of Al Madina’s IT platform.',
-    role: 'Software Developer · Al Madina Group',
+    role: 'Software Engineer · Al Madina Group',
     period: '2025',
     problem:
       'Devices moved between branches with no single source of truth — service history went untracked and reporting was manual.',
@@ -129,10 +155,10 @@ const projects: Project[] = [
     },
   },
   {
-    index: '05',
+    index: '06',
     name: 'Retail Mobile Apps',
     tagline: 'Price-checking on Zebra handhelds, plus Al Madina’s customer-facing retail app.',
-    role: 'Software Developer · Al Madina Group',
+    role: 'Software Engineer · Al Madina Group',
     period: '2025',
     problem:
       'Floor staff had no instant way to verify prices and stock on the shop floor, and the customer app needed better product browsing and offer visibility — both against live ERP data.',
@@ -159,7 +185,7 @@ const projects: Project[] = [
     },
   },
   {
-    index: '06',
+    index: '07',
     name: 'Skien.Suite',
     tagline: 'Modular ERP integrating core business operations for SME clients.',
     role: 'Senior Software Developer · Skien Software Lab',
@@ -173,14 +199,14 @@ const projects: Project[] = [
       'Mentored junior developers and led technical initiatives.',
     ],
     stack: ['.NET Core 6', 'C#', 'ASP.NET MVC', 'Entity Framework', 'SQL Server', 'Angular.js'],
-    outcome: 'Shipped to multiple business clients over four years.',
+    outcome: 'Shipped to multiple business clients over four years, with 2 to 3 client implementations running at a time.',
     link: { label: 'Internal / private' },
     visual: {
       chrome: 'skien.suite — erp',
       isBrowser: false,
       tiles: [
         { label: 'Modules', value: 'ERP' },
-        { label: 'Clients', value: 'Multi' },
+        { label: 'Clients', value: '2–3 live' },
         { label: 'Tenure', value: '4 yrs' },
       ],
     },

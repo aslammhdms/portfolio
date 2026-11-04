@@ -58,13 +58,6 @@ export default function Hero() {
         <div className="lg:col-span-7">
           <motion.div {...fade(0)} className="mb-6 flex items-center gap-3">
             <span className="font-mono text-xs tracking-[0.2em] text-faint">01</span>
-            <span className="flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 font-mono text-xs text-muted">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-signal opacity-60" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-signal" />
-              </span>
-              Available for full-time roles
-            </span>
           </motion.div>
 
           <motion.h1
@@ -83,8 +76,8 @@ export default function Hero() {
           </motion.h2>
 
           <motion.p {...fade(0.24)} className="mt-5 max-w-xl text-lg leading-relaxed text-muted">
-            Based in Abu Dhabi, with 4+ years building across{' '}
-            <span className="text-fg">enterprise retail systems</span>,{' '}
+            Based in Abu Dhabi, with 5 years building{' '}
+            <span className="text-fg">enterprise ERP and retail systems</span>,{' '}
             <span className="text-fg">full-stack applications</span>, and{' '}
             <span className="text-fg">infrastructure</span>.
           </motion.p>

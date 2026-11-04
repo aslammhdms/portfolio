@@ -2,11 +2,19 @@ import { HiOutlineBriefcase, HiOutlineAcademicCap, HiOutlineBadgeCheck } from 'r
 import SectionHeader from './SectionHeader';
 import Reveal from './Reveal';
 
-const experiences = [
+const experiences: { title: string; company: string; period: string; location?: string; description: string }[] = [
   {
-    title: 'Software Developer',
+    title: 'Software Engineer',
+    company: 'Tristar Engineering & Construction',
+    period: 'Sep 2026 – Present',
+    location: 'Abu Dhabi, UAE',
+    description:
+      'Sole developer leading the company’s move from the legacy ePROMIS ERP to Tricore ERP. Building the inventory module (material issues, receipts, returns and transfers), writing SQL Server migration and access scripts, and running both systems side by side so staff can switch without disruption.',
+  },
+  {
+    title: 'Software Engineer',
     company: 'Al Madina Group',
-    period: 'Sep 2025 – Present',
+    period: 'Sep 2025 – Aug 2026',
     location: 'Abu Dhabi, UAE',
     description:
       'Building and maintaining enterprise applications for a 50-year-old retail group — including the production company website — and supporting the systems and infrastructure that keep them running.',
@@ -15,7 +23,6 @@ const experiences = [
     title: 'Senior Software Developer',
     company: 'Skien Software Lab',
     period: 'Sep 2023 – Sep 2025',
-    location: 'Trivandrum, India',
     description:
       'Led .NET web and mobile delivery for business clients. Built backend services with .NET Core, C#, EF Core and SQL Server, and front ends with Angular.js and jQuery. Core contributor to Skien.Suite (ERP) and Skien.eCommerce; mentored junior developers.',
   },
@@ -23,13 +30,12 @@ const experiences = [
     title: 'Software Developer',
     company: 'Skien Software Lab',
     period: 'Oct 2021 – Sep 2023',
-    location: 'Trivandrum, India',
     description:
       'Engineered and maintained .NET applications end to end — backend APIs, data models and front-end features — and handled troubleshooting and performance fixes for client systems.',
   },
   {
     title: 'Onsite Support Engineer',
-    company: 'FOODWORLD, Bahrain',
+    company: 'Foodworld Group',
     period: 'May 2023 – Feb 2024',
     location: 'Bahrain',
     description:
@@ -38,16 +44,15 @@ const experiences = [
 ];
 
 const education = [
-  { degree: 'B.C.A. Computer Applications', school: 'University of Calicut', period: '2018 – 2021' },
-  { degree: 'Higher Secondary', school: 'Vivekananda VHSS', period: '2016 – 2018' },
+  { degree: 'Bachelor of Computer Applications (BCA)', school: 'University of Calicut', period: '2018 – 2021' },
 ];
 
 const certifications = [{ title: '1 Million Prompters', issuer: 'AI & Prompt Engineering', year: '2024' }];
 
 const facts = [
-  { label: 'Experience', value: '4+ years' },
+  { label: 'Experience', value: '5 years' },
   { label: 'Based in', value: 'Abu Dhabi, UAE' },
-  { label: 'Languages', value: 'EN · ML · HI · TA · AR' },
+  { label: 'Languages', value: 'English · Arabic' },
 ];
 
 export default function About() {
@@ -65,10 +70,10 @@ export default function About() {
           <div className="space-y-6">
             <Reveal className="card p-6">
               <p className="leading-relaxed text-muted">
-                I'm a results-driven developer who likes owning a problem end to end — designing the
+                I like owning a problem end to end — designing the
                 data model, writing the backend, shipping the UI, and making sure it deploys cleanly
                 and stays reliable. Most of my work has been in{' '}
-                <span className="text-fg">enterprise retail</span>, where correctness, auditability
+                <span className="text-fg">ERP and enterprise retail</span>, where correctness, auditability
                 and uptime matter.
               </p>
               <dl className="mt-6 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-line bg-line">
@@ -123,7 +128,8 @@ export default function About() {
                     <span className="font-mono text-xs text-faint">{exp.period}</span>
                   </div>
                   <p className="text-sm font-medium text-accent">
-                    {exp.company} <span className="text-faint">· {exp.location}</span>
+                    {exp.company}
+                    {exp.location && <span className="text-faint"> · {exp.location}</span>}
                   </p>
                   <p className="mt-2 leading-relaxed text-muted">{exp.description}</p>
                 </li>

@@ -90,12 +90,13 @@ export default function Terminal() {
       case 'whoami':
         say('Aslam Muhammed');
         say('.NET Developer & IT Systems Engineer — Abu Dhabi');
-        say('4+ yrs · enterprise retail · full-stack · infrastructure');
+        say('5 yrs · enterprise ERP & retail · full-stack · infrastructure');
         break;
       case 'projects':
       case 'work':
+        say('tricore-migration        ePROMIS → Tricore ERP, solo (SQL Server)');
         say('almadinahypermarket.ae   live retail site (React)');
-        say('helpdesk-portal          IT ops platform, 80+ outlets (.NET 10)');
+        say('helpdesk-portal          IT ops platform, 19 branches (.NET 10)');
         say('madina-insight           competitor pricing intel (.NET 10)');
         say('assetcore                asset lifecycle + audit (.NET 10)');
         say('retail-mobile            Zebra price-checker (React Native)');
@@ -163,7 +164,7 @@ export default function Terminal() {
         say('~/abu-dhabi-uae');
         break;
       case 'uptime':
-        say('4+ years in production · zero unplanned downtime');
+        say('5 years shipping production systems');
         break;
       case 'echo':
         say(cmd.slice(4).trim());
