@@ -19,6 +19,10 @@
       scroll-behavior: smooth;
     }
   }
+  /* Arriving on a link into the page (#work/tricore): jump, don't animate (index.html). */
+  html.jump {
+    scroll-behavior: auto;
+  }
 
   body {
     min-height: 100vh;
@@ -35,6 +39,17 @@
   :focus-visible {
     outline: 2px solid rgb(var(--focus));
     outline-offset: 2px;
+  }
+  /* A control scrolled into view by focus stops short of the fixed bars by more than its
+     ring (2px + 2px gap), so the ring is never under the top bar or the status bar.
+     Section and row anchors are not controls: they still land right under the top bar. */
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [tabindex]:not([tabindex='-1']) {
+    scroll-margin-block: 8px;
   }
 
   ::selection {

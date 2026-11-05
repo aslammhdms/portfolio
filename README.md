@@ -18,8 +18,15 @@ prerendered at build time.
 
 ## Content
 
-Everything the hero, top bar, status bar, terminal and palette show comes from the typed modules in
-`src/content/` (profile, now, availability, experience, projects, skills, history).
+Everything the hero, Work, top bar, status bar, terminal and palette show comes from the typed modules
+in `src/content/` (profile, now, availability, experience, projects, diagrams, skills, history).
+
+- **Work** (`projects.ts`): four featured rows with one structure (figures or an honest status/scope
+  line, three bullets, stack, case study) and two "Also built" rows. Every row has its own address,
+  `#work/<id>` (also the row's element id), which opens its case study; "Copy link" copies it.
+- **Diagrams** (`diagrams.ts`): private systems are drawn as module-level diagrams in HTML, never
+  screenshots, each with a "Read as text" list. Node and step ids are written out as `data-node` /
+  `data-step` attributes for the terminal. The diagram details are drafts awaiting Aslam's sign-off.
 
 ## Getting started
 

@@ -4,6 +4,8 @@ import '@fontsource-variable/cascadia-mono/wght.css';
 import './index.css';
 import './styles/chrome.css';
 import './styles/hero.css';
+import './styles/sections.css';
+import './styles/work.css';
 import Root from './Root';
 
 const container = document.getElementById('root')!;

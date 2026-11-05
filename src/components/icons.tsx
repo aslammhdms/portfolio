@@ -52,3 +52,20 @@ export const CommandIcon = (p: IconProps) => (
     <path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
   </Icon>
 );
+
+/** Disclosure mark: a plus whose upright stroke folds away (CSS) to leave a minus when open. */
+export const PlusIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M3 8h10" />
+    <path className="plus-v" d="M8 3v10" />
+  </Icon>
+);
+
+/** Two chain links, for 'Copy link'. */
+export const LinkIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M6.5 9.5l3-3" />
+    <path d="M7.2 4.6l1.1-1.1a2.8 2.8 0 0 1 4 4l-1.1 1.1" />
+    <path d="M8.8 11.4l-1.1 1.1a2.8 2.8 0 0 1-4-4l1.1-1.1" />
+  </Icon>
+);

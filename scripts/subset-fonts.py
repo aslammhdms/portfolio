@@ -4,8 +4,8 @@
   AM Display  only the glyphs of "Aslam Muhammed", wdth + wght axes kept.
               Inlined as a data: URI in index.html (font-display: block) so the
               LCP heading never waits for a network font.
-  AM Figures  0-9, + ~ . , (report figures such as "100+" and "~90"; used in a
-              later milestone).
+  AM Figures  0-9, + ~ . , and the en dash (report figures such as "100+", "~90"
+              and "2–3", and the project indices in Work).
               Written to public/fonts/am-figures.woff2.
 
 Why renamed: Mona Sans is licensed under the SIL OFL with the Reserved Font
@@ -50,7 +50,7 @@ INJECT_START = "<!-- am-display:start -->"
 INJECT_END = "<!-- am-display:end -->"
 
 NAME_TEXT = "Aslam Muhammed"
-FIGURES_TEXT = "0123456789+~.,"
+FIGURES_TEXT = "0123456789+~.,\u2013"
 
 
 def check_source() -> None:

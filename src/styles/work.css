@@ -1,0 +1,1014 @@
+/* ============================================================
+   01 — Work: four featured rows on the rail grid, their
+   diagrams, and 'Also built'.
+
+   ≥1280  rail 1–2 (index, meta), text 3–7, visual 8–12. At 1440
+          a column is 87.33px: rail 198.7px, text and visual 532.7px.
+   1024–1279  the rail becomes a meta line; text 1–6, visual 7–12.
+   <1024  one column: meta line, title, summary, figures, bullets,
+          visual, stack, case study.
+   Rows are 96px apart with a hairline between them.
+   ============================================================ */
+
+.work {
+  padding-block: 128px 96px;
+}
+.work-head {
+  margin-bottom: 64px;
+}
+
+.work-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* ---------- A featured row ----------
+   Mobile first: one column (meta line, title, summary, figures, bullets, visual,
+   stack, case study). 1024+: text in columns 1–6, visual 7–12. 1280+: the rail. */
+.work-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  padding-block: 40px;
+  border-top: 1px solid rgb(var(--rule));
+}
+.row-rail,
+.row-title,
+.row-body,
+.row-foot,
+.row-visual {
+  min-width: 0;
+  max-width: 640px;
+}
+.row-rail {
+  grid-row: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 12px;
+}
+.row-title {
+  grid-row: 2;
+  margin: 0;
+  font-size: 24px;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.012em;
+  color: rgb(var(--ink));
+  text-wrap: balance;
+}
+.row-body {
+  grid-row: 3;
+  container-type: inline-size;
+}
+.row-visual {
+  grid-row: 4;
+  margin-top: 28px;
+}
+.row-foot {
+  grid-row: 5;
+  margin-top: 24px;
+}
+
+/* The index: '01' in the meta line; on the rail, large AM Figures (below). */
+.row-index {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  /* The height of a meta line, so it sits on the first one. */
+  line-height: 24px;
+  letter-spacing: 0.04em;
+  color: rgb(var(--ink-2));
+}
+
+/* Employer, period, role and status as one wrapping line ('Al Madina Group ·
+   Sep 2025 – Aug 2026 · …'). The separators work like .dot-list; the status gets an
+   invisible separator instead, so it never starts a line indented. */
+.project-meta {
+  --sep: 1.758em;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0 0 0 calc(-1 * var(--sep));
+  clip-path: inset(0 0 0 var(--sep));
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgb(var(--ink-3));
+}
+.row-rail .project-meta {
+  flex: 1 1 0;
+}
+/* Every meta line is 24px tall, the status pill's height plus a little, so lines
+   keep one rhythm whether or not the pill is on them. */
+.project-meta > div {
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+}
+.project-meta > div::before {
+  content: '·';
+  content: '·' / '';
+  /* Never squeezed when a long item (a two-line role) has to shrink to the line. */
+  flex: none;
+  width: var(--sep);
+  text-align: center;
+}
+.project-meta > .project-meta-status::before {
+  content: '';
+}
+.project-meta > div:first-child {
+  color: rgb(var(--ink-2));
+}
+.project-meta dd {
+  margin: 0;
+}
+
+@media (min-width: 768px) {
+  .work-row {
+    padding-block: 48px;
+  }
+  .row-title {
+    font-size: 30px;
+    line-height: 1.15;
+  }
+  .row-visual {
+    margin-top: 32px;
+  }
+  .row-foot {
+    margin-top: 28px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .work-row {
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    /* meta · title · body · foot · slack: the visual spans all five rows, and any
+       height it needs beyond the text lands in the last, empty one. */
+    grid-template-rows: auto auto auto auto 1fr;
+    column-gap: var(--gutter);
+  }
+  .row-rail,
+  .row-title,
+  .row-body,
+  .row-foot {
+    grid-column: 1 / span 6;
+    max-width: none;
+  }
+  .row-visual {
+    grid-column: 7 / span 6;
+    grid-row: 1 / span 5;
+    max-width: none;
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 1280px) {
+  .work-row {
+    grid-template-rows: auto auto auto 1fr;
+  }
+  .row-rail {
+    grid-column: 1 / span 2;
+    grid-row: 1 / span 4;
+    display: block;
+    margin-bottom: 0;
+  }
+  .row-title {
+    grid-column: 3 / span 5;
+    grid-row: 1;
+  }
+  .row-body {
+    grid-column: 3 / span 5;
+    grid-row: 2;
+  }
+  .row-foot {
+    grid-column: 3 / span 5;
+    grid-row: 3;
+  }
+  .row-visual {
+    grid-column: 8 / span 5;
+    grid-row: 1 / span 4;
+  }
+
+  /* Condensed, light AM Figures. The digits' tops sit 0.056em below the 0.8 line
+     box, which lands them on the title's cap line. */
+  .row-index {
+    display: block;
+    margin-top: -1px;
+    font-family: var(--font-figures);
+    font-size: 96px;
+    font-stretch: 75%;
+    font-weight: 300;
+    line-height: 0.8;
+    letter-spacing: -0.01em;
+    color: rgb(var(--ink-3));
+    font-synthesis: none;
+  }
+  /* On the rail, one item per line and no separators. */
+  .row-rail .project-meta {
+    display: block;
+    margin: 22px 0 0;
+    clip-path: none;
+  }
+  .row-rail .project-meta > div {
+    display: block;
+    min-height: 0;
+  }
+  .row-rail .project-meta > div::before {
+    content: none;
+  }
+  .row-rail .project-meta > div + div {
+    margin-top: 3px;
+  }
+  .row-rail .project-meta > .project-meta-status {
+    margin-top: 14px;
+  }
+}
+
+/* ---------- Text column ---------- */
+.row-summary {
+  margin: 12px 0 0;
+  font-size: 19px;
+  line-height: 1.5;
+  color: rgb(var(--ink-2));
+}
+
+/* Figures and the status / scope line sit between two hairlines. */
+.figures,
+.row-line {
+  margin: 24px 0 0;
+  border-top: 1px solid rgb(var(--rule));
+  border-bottom: 1px solid rgb(var(--rule));
+}
+
+/* Report figures: '19 BRANCHES · 100+ STAFF · ~90 DATA ENTITIES'. Each figure keeps its
+   unit beside it, top-aligned to the numerals' cap line; a hairline separates figures.
+   If they do not fit on one line they wrap, and the separator of a figure that starts
+   a line is clipped away (as in .dot-list). */
+.figures {
+  --fig-gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px var(--fig-gap);
+  padding: 18px 0 16px;
+  list-style: none;
+  /* Pull left by one separator (gap + 1px rule) and clip it; the hairlines above and
+     below are clipped by the same amount, so they still start at the column edge. */
+  margin-left: calc(-1 * (var(--fig-gap) + 1px));
+  clip-path: inset(0 0 0 calc(var(--fig-gap) + 1px));
+  padding-left: 0;
+}
+.figure {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  padding-left: var(--fig-gap);
+  border-left: 1px solid rgb(var(--rule));
+}
+.figure-value {
+  font-family: var(--font-figures);
+  font-size: 64px;
+  font-stretch: 75%;
+  font-weight: 300;
+  line-height: 0.8;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  color: rgb(var(--ink));
+  font-synthesis: none;
+}
+.figure-unit {
+  /* A compact block: one word per line, unless the content joins words with a
+     no-break space ('at a time'). */
+  width: min-content;
+  padding-top: 1px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+
+/* Narrow text columns: the unit goes under its numeral. */
+@container (max-width: 499px) {
+  .figures {
+    --fig-gap: 16px;
+  }
+  .figure {
+    flex-direction: column;
+    gap: 10px;
+  }
+}
+
+.row-line {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 13px 0 14px;
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: rgb(var(--ink));
+}
+.row-line-label {
+  flex: none;
+  min-width: 52px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 450;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+/* The status text hangs past its dot when it wraps. */
+.row-line-text {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+}
+.row-line-text .dot {
+  flex: none;
+  margin: 0;
+  transform: translateY(-2px);
+}
+
+.row-bullets {
+  display: grid;
+  gap: 12px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.row-bullets > li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: rgb(var(--ink-2));
+}
+/* A short rule as the marker: square, quiet, in ink-3. */
+.row-bullets > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.8em;
+  width: 10px;
+  height: 1px;
+  background: rgb(var(--ink-3));
+}
+.row-bullets b {
+  font-weight: 500;
+  color: rgb(var(--ink));
+}
+
+/* Stack line: 'STACK  .NET 10 · ASP.NET Core MVC · C# …' in Cascadia. */
+.stack-line {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: rgb(var(--ink-2));
+}
+.stack-line-label {
+  flex: none;
+  font-size: 11.5px;
+  font-weight: 450;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+.stack-line .dot-list {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 22px;
+  margin-top: 20px;
+}
+
+/* 'Read the case study +': the row's action, so it is round. */
+.case-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 0 16px 0 18px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: rgb(var(--ink));
+  transition: border-color 0.16s var(--ease-standard);
+}
+.case-toggle:hover {
+  border-color: rgb(var(--ink));
+}
+
+.copy-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 40px;
+  padding: 0 2px;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1;
+  color: rgb(var(--ink-2));
+  cursor: pointer;
+  transition: color 0.16s var(--ease-standard);
+}
+.copy-link:hover {
+  color: rgb(var(--ink));
+}
+/* The three labels share one grid cell, so the button keeps one width; the new
+   label fades in over 120 ms. */
+.swap {
+  display: inline-grid;
+}
+.swap > * {
+  grid-area: 1 / 1;
+  transition: opacity 0.12s var(--ease-standard);
+}
+.swap > :not([data-on]) {
+  visibility: hidden;
+  opacity: 0;
+}
+
+/* The case study: Problem / Approach / Outcome as ledger rows. */
+.case-study {
+  margin: 20px 0 0;
+  border-top: 1px solid rgb(var(--rule));
+}
+.case-study > div {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 16px;
+  padding: 14px 0 15px;
+  border-bottom: 1px solid rgb(var(--rule));
+}
+.case-study dt {
+  padding-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+.case-study dd {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgb(var(--ink-2));
+}
+
+/* ============================================================
+   Diagrams: a surface panel with a 1px rule, square frames,
+   real text. Solid strokes = built (or contributed) by me,
+   dashed = an existing system; the tags say it in words.
+   ============================================================ */
+.dg-figure {
+  margin: 0;
+}
+.dg {
+  container-type: inline-size;
+  padding: 20px;
+  border: 1px solid rgb(var(--rule));
+  background: rgb(var(--surface));
+}
+.dg-label {
+  margin: 0 0 16px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+.dg-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.dg-name {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: rgb(var(--ink));
+}
+.dg-detail {
+  display: block;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: rgb(var(--ink-3));
+}
+
+/* People (or clients) above the system, each with a line down into it. */
+.dg-actors {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.dg-actors-1 {
+  grid-template-columns: minmax(0, 1fr);
+}
+.dg-actor {
+  position: relative;
+  padding: 0 12px 30px;
+}
+.dg-actor::after {
+  content: '';
+  position: absolute;
+  left: 24px;
+  bottom: 0;
+  height: 20px;
+  border-left: 1px solid rgb(var(--rule-strong));
+}
+
+/* Frames: a system or a lane. */
+.dg-frame {
+  min-width: 0;
+  border: 1px solid rgb(var(--rule-strong));
+}
+.dg-frame[data-owner='existing'] {
+  border-style: dashed;
+}
+.dg-frame-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 0;
+  padding: 10px 12px;
+}
+.dg-frame-name {
+  font-size: 14.5px;
+  font-weight: 650;
+  line-height: 1.3;
+  color: rgb(var(--ink));
+}
+.dg-frame-head .dg-detail {
+  margin: 0;
+}
+/* Ownership in words, in a small square tag whose border repeats the frame's stroke. */
+.dg-tag {
+  margin-left: auto;
+  padding: 2px 6px;
+  border: 1px solid rgb(var(--rule-strong));
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: rgb(var(--ink-2));
+}
+.dg-tag[data-owner='existing'] {
+  border-style: dashed;
+}
+
+/* Cells (modules, flows, stores) with hairlines between them. Counts are chosen to
+   fill every row of the grid, so no empty cell shows the hairline colour. */
+.dg-cells {
+  display: grid;
+  gap: 1px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgb(var(--rule));
+  background: rgb(var(--rule));
+}
+.dg-cells-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.dg-cells-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+.dg-cells-4 {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.dg-cell {
+  min-width: 0;
+  padding: 10px 12px 11px;
+  background: rgb(var(--surface));
+  overflow-wrap: break-word;
+}
+
+/* Strips across the whole frame: the permission band, what it runs on. */
+.dg-strip {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding: 9px 12px 10px;
+  border-top: 1px solid rgb(var(--rule));
+}
+.dg-strip-label {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+.dg-strip .dot-list {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.dg-band .dot-list {
+  --sep: 0.66em;
+  font-size: 13.5px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgb(var(--ink));
+}
+.dg-base .dot-list {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: rgb(var(--ink-2));
+}
+
+/* The dashed line to an existing system, with its relation in words. */
+.dg-link {
+  position: relative;
+  margin: 0;
+  padding: 11px 0 11px 36px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+.dg-link::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed rgb(var(--rule-strong));
+}
+.dg-frame-ext {
+  align-self: flex-start;
+  min-width: min(100%, 300px);
+}
+
+/* Tricore: arrows between the lanes and the migration scripts. */
+.dg-arrow {
+  position: relative;
+  height: 26px;
+}
+.dg-arrow::before {
+  content: '';
+  position: absolute;
+  left: 24px;
+  top: 0;
+  bottom: 5px;
+  border-left: 1px solid rgb(var(--rule-strong));
+}
+.dg-arrow::after {
+  content: '';
+  position: absolute;
+  left: 20px;
+  bottom: 0;
+  border-top: 6px solid rgb(var(--rule-strong));
+  border-left: 4.5px solid transparent;
+  border-right: 4.5px solid transparent;
+}
+/* 'now: testing': the live mark, the diagram's only colour. */
+.dg-now {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: rgb(var(--accent-ink));
+  white-space: nowrap;
+}
+.dg-now .dot {
+  width: 6px;
+  height: 6px;
+  margin: 0;
+  transform: none;
+}
+
+/* Skien: two products inside one frame. */
+.dg-group {
+  border-top: 1px solid rgb(var(--rule));
+}
+.dg-group-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 10px;
+  margin: 0;
+  padding: 9px 12px 10px;
+}
+.dg-group-head .dg-detail {
+  margin: 0;
+}
+
+/* The website's scope panel. */
+.scope-domain {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: rgb(var(--ink));
+  overflow-wrap: anywhere;
+}
+.scope-pages {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgb(var(--rule));
+}
+.scope-pages > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2px 16px;
+  padding: 11px 0 12px;
+  border-bottom: 1px solid rgb(var(--rule));
+}
+.scope-pages .dg-detail {
+  margin: 0;
+}
+.scope-build {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: rgb(var(--ink-2));
+}
+
+/* Caption row under the panel, and the 'Read as text' list. */
+.dg-caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px 16px;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.4;
+  color: rgb(var(--ink-3));
+}
+.dg-caption-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 28px;
+  color: rgb(var(--ink-2));
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--rule-strong));
+  text-underline-offset: 4px;
+  transition: color 0.16s var(--ease-standard), text-decoration-color 0.16s var(--ease-standard);
+}
+.dg-caption-link:hover {
+  color: rgb(var(--ink));
+  text-decoration-color: rgb(var(--accent-ink));
+}
+.dg-text {
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: dg-step;
+  border-top: 1px solid rgb(var(--rule));
+}
+.dg-text > li {
+  counter-increment: dg-step;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr);
+  padding: 10px 0 11px;
+  border-bottom: 1px solid rgb(var(--rule));
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgb(var(--ink-2));
+}
+.dg-text > li::before {
+  content: counter(dg-step, decimal-leading-zero);
+  padding-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: rgb(var(--ink-3));
+}
+
+/* Narrow panels (phones, and the 1024–1279 visual column): flows in two columns. */
+@container (max-width: 440px) {
+  .dg-cells-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+/* Three cells become two plus one full-width cell, so names never break mid-word. */
+@container (max-width: 420px) {
+  .dg-cells-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .dg-cells-3 > li:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+}
+@container (max-width: 460px) {
+  .dg-strip {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 3px;
+  }
+}
+@container (max-width: 300px) {
+  .dg-tag {
+    margin-left: 0;
+  }
+}
+
+/* ============================================================
+   Also built: two compact entries (side by side from 900px, in
+   columns 3–7 and 8–12 on the rail grid), then LinkedIn.
+   ============================================================ */
+.also {
+  padding-top: 40px;
+  border-top: 1px solid rgb(var(--rule));
+}
+.also-title {
+  margin: 0 0 20px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-2));
+}
+.also-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 40px var(--gutter);
+  max-width: 640px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.also-item {
+  min-width: 0;
+}
+.also-name {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: rgb(var(--ink));
+}
+.also .project-meta {
+  margin-top: 8px;
+}
+.also-summary {
+  margin: 12px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: rgb(var(--ink-2));
+}
+.also .stack-line {
+  margin-top: 14px;
+}
+.also .row-actions {
+  margin-top: 12px;
+  gap: 6px 22px;
+}
+.also-details {
+  display: grid;
+  gap: 8px;
+  margin: 12px 0 0;
+  padding: 12px 0 0;
+  list-style: none;
+  border-top: 1px solid rgb(var(--rule));
+}
+.also-details > li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 15px;
+  line-height: 1.55;
+  color: rgb(var(--ink-2));
+}
+.also-details > li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.78em;
+  width: 10px;
+  height: 1px;
+  background: rgb(var(--ink-3));
+}
+.also-more {
+  margin: 40px 0 0;
+}
+
+@media (min-width: 768px) {
+  .also {
+    padding-top: 48px;
+  }
+}
+@media (min-width: 900px) {
+  .also-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: none;
+  }
+}
+@media (min-width: 1280px) {
+  .also {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    column-gap: var(--gutter);
+  }
+  .also-title {
+    grid-column: 1 / span 2;
+    margin: 0;
+    padding-top: 5px;
+  }
+  .also-list,
+  .also-more {
+    grid-column: 3 / -1;
+  }
+}
+
+/* ============================================================
+   Phones (type sizes and touch targets)
+   ============================================================ */
+@media (max-width: 767px) {
+  .work {
+    padding-block: 80px 64px;
+  }
+  .work-head {
+    margin-bottom: 40px;
+  }
+  .row-summary {
+    font-size: 17px;
+  }
+  .row-bullets > li {
+    font-size: 16px;
+  }
+  .figure-value {
+    font-size: 44px;
+  }
+  /* The row's controls get full 44px targets on phones, and stay on one line at 360. */
+  .case-toggle,
+  .copy-link {
+    min-height: 44px;
+  }
+  .row-actions {
+    column-gap: 16px;
+  }
+  .stack-line {
+    flex-direction: column;
+    /* Stretch, not baseline: the list's negative margin (see .dot-list) only applies
+       to a stretched item in a column flexbox. */
+    align-items: stretch;
+    gap: 2px;
+  }
+  .case-study > div {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+  .case-study dd {
+    font-size: 15.5px;
+  }
+  .dg {
+    padding: 16px;
+  }
+  .dg-text > li {
+    font-size: 14.5px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swap > * {
+    transition: none;
+  }
+}

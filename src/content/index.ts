@@ -4,6 +4,7 @@ export * from './now';
 export * from './availability';
 export * from './experience';
 export * from './projects';
+export * from './diagrams';
 export * from './skills';
 export * from './history';
 

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { profile, sections } from '../content';
 import useActiveSection from '../hooks/useActiveSection';
+import useActiveWorkRow from '../hooks/useActiveWorkRow';
 import { abuDhabiTime, offsetFromVisitor, type ClockParts } from '../lib/time';
 import { isApplePlatform } from '../lib/platform';
 import { focusTerminal } from '../lib/terminal';
@@ -14,16 +15,18 @@ interface StatusBarProps {
 const CLOCK_KEY = 'am:clock';
 
 /**
- * Fixed, tmux-style bar. Left: a path that follows the section in view. Right:
- * the Abu Dhabi clock (a button with a small popover: the time difference and a
- * Hide clock toggle), a '>_' button for the terminal and a Ctrl K button for
- * the palette. No uptime, host or availability. Everything time-based renders
- * after mount; only the ticking digits are hidden from screen readers. The phone
- * and reduced-motion variants (HH:MM, no 'GST') are pure CSS, so the prerendered
- * bar already has the right shape on every screen.
+ * Fixed, tmux-style bar. Left: a path that follows the section in view and, in
+ * Work, the project row being read (~/work/helpdesk). Right: the Abu Dhabi clock
+ * (a button with a small popover: the time difference and a Hide clock toggle),
+ * a '>_' button for the terminal and a Ctrl K button for the palette. No uptime,
+ * host or availability. Everything time-based renders after mount; only the
+ * ticking digits are hidden from screen readers. The phone and reduced-motion
+ * variants (HH:MM, no 'GST') are pure CSS, so the prerendered bar already has the
+ * right shape on every screen.
  */
 export default function StatusBar({ onOpenPalette }: StatusBarProps) {
   const active = useActiveSection();
+  const activeRow = useActiveWorkRow();
   const [time, setTime] = useState<ClockParts | null>(null);
   const [clockOn, setClockOn] = useState(true);
   const [apple, setApple] = useState(false);
@@ -81,15 +84,23 @@ export default function StatusBar({ onOpenPalette }: StatusBarProps) {
 
   const section = sections.find((s) => s.id === active);
   const showTime = clockOn && time;
+  // Inside Work, the path names the project row being read: ~/work/helpdesk.
+  const row = section?.id === 'work' ? activeRow : null;
 
   return (
     <div className="statusbar" role="region" aria-label="Status bar">
       <div className="shell statusbar-inner">
         <span className="sb-path">
           {section ? (
-            <>
-              ~/<span className="cur">{section.id}</span>
-            </>
+            row ? (
+              <>
+                ~/{section.id}/<span className="cur">{row}</span>
+              </>
+            ) : (
+              <>
+                ~/<span className="cur">{section.id}</span>
+              </>
+            )
           ) : (
             <span className="cur">~</span>
           )}

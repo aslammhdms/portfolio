@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import TopBar from './components/TopBar';
 import Hero from './components/hero/Hero';
-import Projects from './components/Projects';
+import Work from './components/work/Work';
 import PromptBand from './components/PromptBand';
 import About from './components/About';
 import Skills from './components/Skills';
@@ -67,7 +67,7 @@ function App() {
       <TopBar onOpenPalette={openPalette} />
       <main id="main">
         <Hero />
-        <Projects />
+        <Work />
         <PromptBand />
         <About />
         <Skills />

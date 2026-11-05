@@ -43,12 +43,14 @@
       - data-theme: dark for everyone unless light was explicitly saved.
       - 'intro': the first page view of a session plays the name lock-in and colour bloom,
         except under reduced motion or Save-Data.
+      - 'js': scripts run, so disclosures (case studies, "Read as text") start closed and
+        their buttons show. Without it, that content is simply printed open.
     -->
     <script>
       (function () {
         var d = document.documentElement;
         var font = '860 20px "AM Display"';
-        d.classList.add('amd');
+        d.classList.add('js', 'amd');
 
         var theme = 'dark';
         try {
@@ -58,6 +60,23 @@
         if (theme === 'light') {
           var meta = document.querySelector('meta[name="theme-color"]');
           if (meta) meta.setAttribute('content', '#F7F7F5');
+        }
+
+        // A link into the page (#work/tricore) jumps straight there on load instead of
+        // smooth-scrolling past everything above it. Smooth scrolling returns with the
+        // visitor's first interaction.
+        if (location.hash.length > 1) {
+          var events = ['pointerdown', 'keydown', 'wheel', 'touchstart'];
+          var unjump = function () {
+            d.classList.remove('jump');
+            events.forEach(function (t) {
+              removeEventListener(t, unjump, true);
+            });
+          };
+          d.classList.add('jump');
+          events.forEach(function (t) {
+            addEventListener(t, unjump, true);
+          });
         }
 
         try {

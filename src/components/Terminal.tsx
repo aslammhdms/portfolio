@@ -2,7 +2,17 @@ import { useEffect, useRef, useState } from 'react';
 import { useTheme } from '../contexts/ThemeContext';
 import { usePrefersReducedMotion } from '../hooks/useMediaQuery';
 import { TERMINAL_FOCUS_EVENT } from '../lib/terminal';
-import { featuredProjects, alsoBuilt, mailtoHref, profile, resumeHref, skillGroups, telHref, toolbox } from '../content';
+import {
+  alsoBuilt,
+  featuredProjects,
+  formatPeriod,
+  mailtoHref,
+  profile,
+  resumeHref,
+  skillGroups,
+  telHref,
+  toolbox,
+} from '../content';
 
 type Kind = 'cmd' | 'out' | 'err';
 interface Line {
@@ -131,7 +141,7 @@ export default function Terminal() {
       case 'projects':
       case 'work': {
         const width = Math.max(...[...featuredProjects, ...alsoBuilt].map((p) => p.id.length)) + 3;
-        [...featuredProjects, ...alsoBuilt].forEach((p) => say(`${p.id.padEnd(width)}${p.name} (${p.years})`));
+        [...featuredProjects, ...alsoBuilt].forEach((p) => say(`${p.id.padEnd(width)}${p.name} (${formatPeriod(p.period)})`));
         say('→ scrolling to work…');
         window.setTimeout(() => {
           window.location.hash = '#work';

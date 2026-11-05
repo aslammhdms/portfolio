@@ -46,6 +46,8 @@
   --font-mono: 'Cascadia Mono Variable', 'Cascadia Fallback Consolas', 'Cascadia Fallback', Consolas, Menlo,
     ui-monospace, 'DejaVu Sans Mono', monospace;
   --font-display: 'AM Display', var(--font-sans);
+  /* Report figures and the Work indices: condensed, light numerals (see 'AM Figures' below). */
+  --font-figures: 'AM Figures', var(--font-sans);
 
   /* Motion */
   --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
@@ -200,4 +202,19 @@
   ascent-override: 95.35%;
   descent-override: 24.09%;
   line-gap-override: 0%;
+}
+
+/* AM Figures: 0–9, + ~ . , and the en dash, cut from Mona Sans with its wdth and wght axes
+   (scripts/subset-fonts.py; renamed, see public/fonts/OFL.txt). Sets the report figures and
+   the project indices in Work at wdth 75 / wght 300. It is used only below the fold, so it is
+   not preloaded: it swaps in, and the figure rows leave room for the wider fallback. The URL
+   is root-relative so Vite prefixes the deploy base ('/' or '/portfolio/'). */
+@font-face {
+  font-family: 'AM Figures';
+  src: url('/fonts/am-figures.woff2') format('woff2');
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+2B-2C, U+2E, U+30-39, U+7E, U+2013;
 }
