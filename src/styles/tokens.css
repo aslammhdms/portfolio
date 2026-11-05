@@ -1,0 +1,203 @@
+/* ============================================================
+   Equal Measure — design tokens (Portfolio v4)
+
+   Colours are space-separated RGB channels so Tailwind's /alpha
+   modifiers keep working (bg-canvas/70). accent-wash and selection
+   are FIXED, pre-computed colours: never rebuild them from accent
+   with an alpha modifier, because the contrast of accent-ink and
+   ink on top of them depends on these exact values.
+
+   Contrast (WCAG 2.x) is noted next to each value; re-run the
+   numbers if any value changes.
+
+   Dark is the default for every visitor. Light applies only when
+   chosen ([data-theme="light"], set before paint in index.html).
+   ============================================================ */
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces */
+  --canvas: 19 19 19;            /* #131313 page */
+  --surface: 27 27 27;           /* #1B1B1B status bar, terminal, palette */
+  --raised: 36 36 36;            /* #242424 hover rows, keycaps */
+  --rule: 48 48 48;              /* #303030 hairlines; decorative only (1.41:1) */
+  --rule-strong: 118 118 118;    /* #767676 control borders: 4.09 canvas, 3.79 surface, 3.42 raised */
+
+  /* Text */
+  --ink: 237 237 234;            /* #EDEDEA 15.84 canvas, 14.68 surface, 13.23 raised */
+  --ink-2: 183 183 181;          /* #B7B7B5  9.25 canvas,  8.57 surface,  7.73 raised */
+  --ink-3: 143 143 143;          /* #8F8F8F  5.75 canvas,  5.33 surface,  4.80 raised */
+
+  /* Raspberry */
+  --accent: 194 56 125;          /* #C2387D fills; white label 5.05; 3.68 canvas, 3.07 raised */
+  --accent-hover: 174 47 111;    /* #AE2F6F hover/pressed fill; white label 6.11 */
+  --accent-ink: 255 90 165;      /* #FF5AA5 small marks + focus: 6.42 canvas, 5.95 surface, 5.36 raised */
+  --on-accent: 255 255 255;      /* #FFFFFF */
+  --accent-wash: 54 32 43;       /* #36202B = 16% accent over surface; accent-ink 5.19, ink 12.80, ink-3 4.64 */
+  --selection: 89 34 61;         /* #59223D = 40% accent over canvas; ink 10.40, ink-2 6.07 */
+  --focus: 255 90 165;           /* 2px ring with a 2px canvas gap */
+
+  /* Static key light behind the portrait. Neutral until the Abu Dhabi time of day is known (after mount). */
+  --keylight: rgba(255, 255, 255, 0.035);
+
+  /* Type */
+  --font-sans: 'Mona Sans Variable', 'Mona Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Cascadia Mono Variable', 'Cascadia Fallback Consolas', 'Cascadia Fallback', Consolas, Menlo,
+    ui-monospace, 'DejaVu Sans Mono', monospace;
+  --font-display: 'AM Display', var(--font-sans);
+
+  /* Motion */
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  /* Layout: page margin, fixed bar heights (scroll-padding uses them too) */
+  --margin: 20px;
+  --gutter: 12px;
+  --topbar-h: 64px;
+  --statusbar-h: 28px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --margin: 40px;
+    --gutter: 24px;
+    --topbar-h: 56px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --margin: 48px;
+  }
+}
+@media (min-width: 1280px) {
+  :root {
+    --margin: 64px;
+  }
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --canvas: 247 247 245;         /* #F7F7F5 */
+  --surface: 255 255 255;        /* #FFFFFF */
+  --raised: 238 238 235;         /* #EEEEEB */
+  --rule: 222 222 218;           /* #DEDEDA decorative */
+  --rule-strong: 135 135 131;    /* #878783 controls: 3.36 canvas, 3.61 surface, 3.10 raised */
+  --ink: 22 22 22;               /* #161616 16.87 canvas */
+  --ink-2: 74 74 72;             /* #4A4A48  8.28 canvas */
+  --ink-3: 103 103 100;          /* #676764  5.29 canvas, 4.88 raised */
+  --accent: 194 56 125;          /* #C2387D white label 5.05; 4.71 on canvas */
+  --accent-hover: 174 47 111;    /* #AE2F6F white label 6.11 */
+  --accent-ink: 179 40 112;      /* #B32870 text marks + focus: 5.67 canvas, 6.08 surface, 5.23 raised */
+  --on-accent: 255 255 255;
+  --accent-wash: 250 239 245;    /* #FAEFF5 = 8% accent over surface; accent-ink 5.42, ink 16.14 */
+  --selection: 236 209 221;      /* #ECD1DD = 20% accent over canvas; ink 12.69 */
+  --focus: 179 40 112;           /* #B32870, 5.67 on paper */
+  --keylight: transparent;       /* the key light is off in light mode */
+}
+
+/* Print: always the light values, on white. */
+@media print {
+  :root,
+  :root[data-theme] {
+    color-scheme: light;
+    --canvas: 255 255 255;
+    --surface: 255 255 255;
+    --raised: 245 245 243;
+    --rule: 222 222 218;
+    --rule-strong: 135 135 131;
+    --ink: 22 22 22;
+    --ink-2: 74 74 72;
+    --ink-3: 103 103 100;
+    --accent: 194 56 125;
+    --accent-hover: 174 47 111;
+    --accent-ink: 179 40 112;
+    --on-accent: 255 255 255;
+    --accent-wash: 250 239 245;
+    --selection: 236 209 221;
+    --focus: 179 40 112;
+    --keylight: transparent;
+  }
+}
+
+/* Size-adjusted local fallbacks for Mona Sans, so the swap barely moves text.
+   Computed from Mona Sans 5.3.0 (wght 400 / 700) against Arial metrics
+   (Liberation Sans is metric-compatible): size-adjust is the ratio of
+   letter-frequency-weighted average advances; the overrides are Mona's
+   ascent 1.09 / descent 0.32 divided by size-adjust. */
+@font-face {
+  font-family: 'Mona Sans Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans'), local('Helvetica'),
+    local('Helvetica Neue');
+  font-weight: 100 549;
+  size-adjust: 103.83%;
+  ascent-override: 104.98%;
+  descent-override: 30.82%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Mona Sans Fallback';
+  src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'), local('LiberationSans-Bold'),
+    local('Helvetica Bold'), local('Helvetica Neue Bold');
+  font-weight: 550 1000;
+  size-adjust: 101.29%;
+  ascent-override: 107.61%;
+  descent-override: 31.59%;
+  line-gap-override: 0%;
+}
+
+/* The hero role line only: Arial sized so 'Software Engineer · .NET & IT Systems' at
+   weight 500 is exactly as wide as in Mona Sans (17.976 em), so the fitted line never
+   overruns the name column while Mona Sans loads, or if it fails. */
+@font-face {
+  font-family: 'AM Role Fallback';
+  src: local('Arial'), local('ArialMT'), local('Liberation Sans'), local('LiberationSans'), local('Helvetica'),
+    local('Helvetica Neue');
+  size-adjust: 102.25%;
+  ascent-override: 106.6%;
+  descent-override: 31.3%;
+  line-gap-override: 0%;
+}
+
+/* Size-adjusted local fallbacks for Cascadia Mono (advance 0.586 em, ascent 0.928,
+   descent 0.234), so mono text keeps its width, and its line breaks, while Cascadia
+   loads: no jump when it arrives. Consolas advances 0.550 em; Menlo and DejaVu Sans
+   Mono 0.602 em; Liberation Mono 0.600 em. */
+@font-face {
+  font-family: 'Cascadia Fallback Consolas';
+  src: local('Consolas');
+  font-weight: 100 549;
+  size-adjust: 106.57%;
+  ascent-override: 87.05%;
+  descent-override: 21.99%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Cascadia Fallback Consolas';
+  src: local('Consolas Bold'), local('Consolas-Bold');
+  font-weight: 550 1000;
+  size-adjust: 106.57%;
+  ascent-override: 87.05%;
+  descent-override: 21.99%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Cascadia Fallback';
+  src: local('Menlo Regular'), local('Menlo-Regular'), local('DejaVu Sans Mono'), local('DejaVuSansMono'),
+    local('Liberation Mono'), local('LiberationMono');
+  font-weight: 100 549;
+  size-adjust: 97.3%;
+  ascent-override: 95.35%;
+  descent-override: 24.09%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Cascadia Fallback';
+  src: local('Menlo Bold'), local('Menlo-Bold'), local('DejaVu Sans Mono Bold'), local('DejaVuSansMono-Bold'),
+    local('Liberation Mono Bold'), local('LiberationMono-Bold');
+  font-weight: 550 1000;
+  size-adjust: 97.3%;
+  ascent-override: 95.35%;
+  descent-override: 24.09%;
+  line-gap-override: 0%;
+}

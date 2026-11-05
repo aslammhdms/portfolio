@@ -1,92 +1,80 @@
+@import './styles/tokens.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================================
-   Terminal Ink — design tokens
-   Dark is the default; .light overrides for the toggle.
-   Colors are space-separated RGB channels so Tailwind's
-   <alpha-value> opacity modifiers work (e.g. bg-accent/12).
-   ============================================================ */
-:root,
-.dark {
-  --canvas: 10 12 16;       /* #0A0C10 */
-  --surface: 18 21 27;      /* #12151B */
-  --elevated: 26 30 38;     /* #1A1E26 */
-  --line: 35 42 53;         /* #232A35 */
-  --fg: 231 234 240;        /* #E7EAF0 */
-  --muted: 144 153 168;     /* #9099A8 */
-  --faint: 113 122 138;     /* #717A8A */
-  --accent: 124 108 255;    /* #7C6CFF */
-  --accent-hover: 148 139 255; /* #948BFF */
-  --signal: 57 224 200;     /* #39E0C8 */
-  --on-accent: 10 12 16;    /* near-black text on the bright accent */
-}
-
-.light {
-  --canvas: 250 250 252;    /* #FAFAFC */
-  --surface: 255 255 255;   /* #FFFFFF */
-  --elevated: 245 246 249;  /* #F5F6F9 */
-  --line: 229 232 238;      /* #E5E8EE */
-  --fg: 19 23 32;           /* #131720 */
-  --muted: 82 91 106;       /* #525B6A */
-  --faint: 124 132 145;     /* #7C8491 */
-  --accent: 91 71 245;      /* #5B47F5 */
-  --accent-hover: 74 56 230;/* #4A38E6 */
-  --signal: 15 181 160;     /* #0FB5A0 */
-  --on-accent: 255 255 255; /* white text on the accent */
-}
-
 @layer base {
   html {
-    @apply scroll-smooth;
+    background-color: rgb(var(--canvas));
+    /* Keep focused and anchored elements clear of the sticky top bar and the fixed status bar. */
+    scroll-padding-top: var(--topbar-h);
+    scroll-padding-bottom: calc(var(--statusbar-h) + env(safe-area-inset-bottom, 0px));
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
-    @apply bg-canvas text-fg font-sans antialiased pb-7;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    min-height: 100vh;
+    background-color: rgb(var(--canvas));
+    color: rgb(var(--ink));
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Room for the fixed status bar, so the footer is never hidden under it. */
+    padding-bottom: calc(var(--statusbar-h) + env(safe-area-inset-bottom, 0px));
   }
 
-  /* Visible, on-brand focus ring for keyboard users */
+  /* One focus style everywhere: 2px accent-ink ring with a 2px gap that shows the canvas. */
   :focus-visible {
-    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-canvas rounded-sm;
+    outline: 2px solid rgb(var(--focus));
+    outline-offset: 2px;
   }
 
   ::selection {
-    background-color: rgb(var(--accent) / 0.3);
-    color: rgb(var(--fg));
+    background-color: rgb(var(--selection));
+    color: rgb(var(--ink));
   }
 
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
     *,
     *::before,
     *::after {
       animation-duration: 0.001ms !important;
+      animation-delay: 0s !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.001ms !important;
+      transition-delay: 0s !important;
     }
   }
 }
 
 @layer components {
+  /* The page container: min(1312px, viewport minus the margins). Margins 20 / 40 / 48 / 64 px
+     at <768 / ≥768 / ≥1024 / ≥1280 (see --margin in tokens.css). */
   .shell {
-    @apply mx-auto w-full max-w-shell px-5 sm:px-8;
+    width: min(1312px, 100% - 2 * var(--margin));
+    margin-inline: auto;
   }
 
-  /* Translucent + blurred so the scene video reads through behind content panels */
+  /* Information is square: hairline structure, no blur, no radius. */
   .card {
-    @apply rounded-card border border-line bg-surface/80 backdrop-blur-md;
+    @apply border border-rule bg-surface;
   }
 
   .chip {
-    @apply inline-flex items-center gap-1.5 rounded-md border border-line bg-elevated px-2.5 py-1 font-mono text-xs text-muted;
+    @apply inline-flex items-center gap-1.5 border border-rule bg-raised px-2.5 py-1 font-mono text-xs text-ink-2;
   }
 
+  /* Actions are round. */
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-colors duration-200;
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 text-[15px] font-semibold transition-colors duration-150;
   }
 
   .btn-primary {
@@ -94,78 +82,22 @@
   }
 
   .btn-ghost {
-    @apply btn border border-line bg-transparent text-fg hover:bg-elevated hover:border-accent/50;
+    @apply btn border border-rule-strong bg-transparent text-ink hover:border-ink;
   }
 
   .mono-label {
-    @apply font-mono text-xs uppercase tracking-[0.18em] text-faint;
+    @apply font-mono text-[11.5px] uppercase tracking-[0.06em] text-ink-3;
   }
 }
 
-@layer utilities {
-  /* Subtle dotted grid for the hero backdrop */
-  .grid-bg {
-    background-image: radial-gradient(rgb(var(--line) / 0.7) 1px, transparent 1px);
-    background-size: 28px 28px;
-  }
-
-  .text-gradient {
-    @apply bg-clip-text text-transparent;
-    background-image: linear-gradient(135deg, rgb(var(--fg)), rgb(var(--accent)));
-  }
-
-  /* ------------------------------------------------------------------
-     Scroll-scene backdrops
-     z-scale: backdrop 0 (aria-hidden, no pointer events) · section content
-     & Terminal & AsciiPortrait 10 · StatusBar 40 · Navbar 50 ·
-     CommandPalette 90 · skip link 100.
-     ------------------------------------------------------------------ */
-
-  /* On-brand CSS placeholder shown until/without a real clip (deepest fallback). */
-  .scene-placeholder {
-    background-color: rgb(var(--canvas));
-    background-repeat: no-repeat;
-    background-size: 200% 200%, 200% 200%;
-    animation: scene-drift 26s ease-in-out infinite alternate;
-  }
-  .scene-placeholder--indigo {
-    background-image: radial-gradient(60% 60% at 32% 26%, rgb(var(--accent) / 0.18), transparent 70%),
-      radial-gradient(55% 55% at 76% 70%, rgb(var(--signal) / 0.08), transparent 70%);
-  }
-  .scene-placeholder--teal {
-    background-image: radial-gradient(60% 60% at 28% 30%, rgb(var(--signal) / 0.16), transparent 70%),
-      radial-gradient(55% 55% at 78% 66%, rgb(var(--accent) / 0.10), transparent 70%);
-  }
-  .scene-placeholder--duo {
-    background-image: radial-gradient(55% 55% at 24% 34%, rgb(var(--signal) / 0.16), transparent 70%),
-      radial-gradient(55% 55% at 78% 30%, rgb(var(--accent) / 0.16), transparent 70%);
-  }
-}
-
-@keyframes scene-drift {
-  from {
-    background-position: 0% 0%, 100% 100%;
-  }
-  to {
-    background-position: 100% 50%, 0% 50%;
-  }
-}
-
-/* The scrubbed/looping video is decoration only — drop it for reduced motion and print. */
-@media (prefers-reduced-motion: reduce) {
-  .scene-video {
-    display: none !important;
-  }
-}
-@media print {
-  .scene-backdrop {
-    display: none !important;
-  }
-}
-
-/* Konami code easter egg — full-page barrel roll (disabled by reduced-motion) */
+/* Konami code easter egg: a one-second barrel roll (the reduced-motion rule above neutralises it).
+   While it turns, the page's corners swing past the viewport: clip them, so no horizontal
+   scrollbar flashes. */
 .konami {
   animation: barrel-roll 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+html.konami-roll {
+  overflow-x: hidden;
 }
 @keyframes barrel-roll {
   from {
@@ -179,7 +111,7 @@
   }
 }
 
-/* Themed scrollbar */
+/* Scrollbar in the page palette. */
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;
@@ -188,10 +120,22 @@
   background: rgb(var(--canvas));
 }
 ::-webkit-scrollbar-thumb {
-  background: rgb(var(--line));
+  background: rgb(var(--rule));
   border-radius: 9999px;
   border: 2px solid rgb(var(--canvas));
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgb(var(--faint));
+  background: rgb(var(--ink-3));
+}
+
+/* Print basics: one light column, no fixed chrome or interactive-only parts. */
+@media print {
+  body {
+    padding-bottom: 0;
+  }
+  a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.85em;
+    color: rgb(var(--ink-3));
+  }
 }

@@ -1,55 +1,56 @@
 /** @type {import('tailwindcss').Config} */
+
+// Every colour is a CSS variable from src/styles/tokens.css (RGB channels), so
+// the theme switch is one attribute and /alpha modifiers keep working.
+const token = (name) => `rgb(var(--${name}) / <alpha-value>)`;
+
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
-  darkMode: 'class',
+  content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
+  // Themes are driven by [data-theme] on <html>, not by dark: variants.
+  darkMode: ['selector', '[data-theme="dark"]'],
   theme: {
     extend: {
       colors: {
-        // Semantic tokens — driven by CSS variables in index.css so the
-        // light/dark toggle is a single source of truth (no dark: prefixes).
-        canvas: 'rgb(var(--canvas) / <alpha-value>)',
-        surface: 'rgb(var(--surface) / <alpha-value>)',
-        elevated: 'rgb(var(--elevated) / <alpha-value>)',
-        line: 'rgb(var(--line) / <alpha-value>)',
-        fg: 'rgb(var(--fg) / <alpha-value>)',
-        muted: 'rgb(var(--muted) / <alpha-value>)',
-        faint: 'rgb(var(--faint) / <alpha-value>)',
-        signal: 'rgb(var(--signal) / <alpha-value>)',
-        'on-accent': 'rgb(var(--on-accent) / <alpha-value>)',
-        accent: {
-          DEFAULT: 'rgb(var(--accent) / <alpha-value>)',
-          hover: 'rgb(var(--accent-hover) / <alpha-value>)',
-        },
+        canvas: token('canvas'),
+        surface: token('surface'),
+        raised: token('raised'),
+        rule: token('rule'),
+        'rule-strong': token('rule-strong'),
+        ink: token('ink'),
+        'ink-2': token('ink-2'),
+        'ink-3': token('ink-3'),
+        accent: token('accent'),
+        'accent-hover': token('accent-hover'),
+        'accent-ink': token('accent-ink'),
+        'on-accent': token('on-accent'),
+        'accent-wash': token('accent-wash'),
+        selection: token('selection'),
+
+        // Legacy aliases: the sections not yet rebuilt (About, Skills, Projects,
+        // Contact, Footer, Terminal, CommandPalette) keep their class names but
+        // render in the new palette. Remove once those sections are rebuilt.
+        fg: token('ink'),
+        muted: token('ink-2'),
+        faint: token('ink-3'),
+        line: token('rule'),
+        elevated: token('raised'),
+        signal: token('accent-ink'),
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
-        display: ['"Space Grotesk"', 'Inter', 'system-ui', 'sans-serif'],
-        mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
-      },
-      borderRadius: {
-        card: '10px',
-      },
-      maxWidth: {
-        shell: '1120px',
+        sans: ['var(--font-sans)'],
+        mono: ['var(--font-mono)'],
+        display: ['var(--font-display)'],
       },
       keyframes: {
         blink: {
           '0%, 49%': { opacity: '1' },
           '50%, 100%': { opacity: '0' },
         },
-        'float-slow': {
-          '0%, 100%': { transform: 'translateY(0)' },
-          '50%': { transform: 'translateY(-14px)' },
-        },
       },
       animation: {
         blink: 'blink 1.1s step-end infinite',
-        'float-slow': 'float-slow 7s ease-in-out infinite',
       },
     },
   },
   plugins: [],
-}
+};

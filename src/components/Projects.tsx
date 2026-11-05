@@ -1,359 +1,177 @@
-import { FiArrowUpRight } from 'react-icons/fi';
-import { HiOutlineLockClosed } from 'react-icons/hi';
 import SectionHeader from './SectionHeader';
-import Reveal from './Reveal';
+import { ArrowUpRightIcon } from './icons';
+import { alsoBuilt, featuredProjects, profile, type Project } from '../content';
 
-interface Project {
-  index: string;
-  name: string;
-  tagline: string;
-  role: string;
-  period: string;
-  problem: string;
-  build: string[];
-  stack: string[];
-  outcome: string;
-  link: { label: string; href?: string };
-  visual: { chrome: string; isBrowser: boolean; tiles: { label: string; value: string }[] };
-}
+// Interim Work section (rebuilt with project rows, figures and diagrams in a later
+// milestone). It already reads src/content, so the facts match the hero, the
+// terminal and the palette: four featured projects, then two compact "also built" rows.
 
-const projects: Project[] = [
-  {
-    index: '01',
-    name: 'Tricore ERP Migration',
-    tagline: 'Moving Tristar Engineering & Construction off its legacy ERP, as the company’s only developer.',
-    role: 'Software Engineer · Tristar Engineering & Construction',
-    period: '2026 – now',
-    problem:
-      'The company runs on ePROMIS, an aging ERP. Moving to Tricore ERP means rebuilding daily workflows and moving years of data without stopping operations.',
-    build: [
-      'Tricore inventory module: material issues, receipts, returns and transfers, matched to how each store already works.',
-      'SQL Server scripts to migrate ePROMIS data and grant store-level access, with checks before every change and audit logging.',
-      'Both systems run side by side during testing so staff can switch over without disruption.',
-    ],
-    stack: ['SQL Server', 'T-SQL', 'ePROMIS', 'Tricore ERP'],
-    outcome: 'In progress. Inventory screens are in testing against live store workflows.',
-    link: { label: 'Internal / private' },
-    visual: {
-      chrome: 'tricore — migration',
-      isBrowser: false,
-      tiles: [
-        { label: 'Developer', value: 'Solo' },
-        { label: 'From', value: 'ePROMIS' },
-        { label: 'Status', value: 'Live dev' },
-      ],
-    },
-  },
-  {
-    index: '02',
-    name: 'Al Madina Hypermarket',
-    tagline: 'Production marketing & store-locator site for a 50-year-old UAE retail chain.',
-    role: 'Frontend Developer · Al Madina Group',
-    period: '2025',
-    problem:
-      'The chain’s legacy site was slow and dated, and couldn’t cleanly present 19 branches, app downloads, offers and careers across devices.',
-    build: [
-      'Rebuilt as a fast React SPA with client-side routing.',
-      'Branch directory with 19 locations, live hours and GPS directions.',
-      'App-download flows, offers, gallery and careers pages.',
-      'Dark mode, restrained motion, fully responsive.',
-    ],
-    stack: ['React 18', 'Vite', 'Tailwind CSS', 'Framer Motion', 'React Router'],
-    outcome: 'Live in production at almadinahypermarket.ae, deployed on IIS / Windows Server.',
-    link: { label: 'almadinahypermarket.ae', href: 'https://almadinahypermarket.ae' },
-    visual: {
-      chrome: 'almadinahypermarket.ae',
-      isBrowser: true,
-      tiles: [
-        { label: 'Branches', value: '19' },
-        { label: 'Status', value: 'Live' },
-        { label: 'Devices', value: 'All' },
-      ],
-    },
-  },
-  {
-    index: '03',
-    name: 'Helpdesk Portal',
-    tagline: 'Al Madina’s internal IT operations platform, used by 100+ staff across 19 branches.',
-    role: 'Software Engineer · Al Madina Group',
-    period: '2025',
-    problem:
-      'IT support, asset tracking, procurement and inventory across 19 branches ran on scattered tools, spreadsheets and manual processes — with no single auditable system or real-time visibility.',
-    build: [
-      'Service-desk core: ticket intake, assignment and tracking with real-time SignalR updates.',
-      'Grew into modules for asset management, procurement, inventory checks, fleet and HR incident / warning workflows.',
-      'Granular role + permission system with branch-level data access control and a full audit trail.',
-      'RDLC + Excel reporting, plus a companion React Native mobile app on a dedicated API.',
-      'Integrated the Gravity ERP and added AI-assisted theft detection from CCTV (YOLOv8).',
-    ],
-    stack: ['.NET 10', 'ASP.NET Core MVC', 'C#', 'EF Core', 'SQL Server', 'SignalR', 'React Native'],
-    outcome: 'Production platform spanning ~90 data entities across dozens of modules, used by 100+ staff across 19 branches, on Windows Server.',
-    link: { label: 'Internal / private' },
-    visual: {
-      chrome: 'helpdesk — service desk',
-      isBrowser: false,
-      tiles: [
-        { label: 'Branches', value: '19' },
-        { label: 'Modules', value: '90+' },
-        { label: 'Mobile', value: 'RN' },
-      ],
-    },
-  },
-  {
-    index: '04',
-    name: 'Madina Insight',
-    tagline: 'Competitive pricing intelligence for hypermarket retail.',
-    role: 'Software Engineer · Al Madina Group',
-    period: '2025',
-    problem:
-      'Competitor promotional flyers were reviewed by hand — no structured way to compare their prices against the product catalog across branches, or to spot where the chain was being undercut.',
-    build: [
-      'Full-stack .NET 10 MVC application analyzing competitor flyers against the product catalog across branches.',
-      'PDF / image upload and processing pipeline for flyer ingestion.',
-      'Intelligent product-matching engine that surfaces pricing gaps and opportunities.',
-      'SQL Server backend with historical data for price-trend analysis.',
-    ],
-    stack: ['.NET 10 MVC', 'C#', 'EF Core', 'SQL Server', 'JavaScript'],
-    outcome:
-      'Management makes data-driven pricing decisions from structured competitor data instead of manual flyer reviews.',
-    link: { label: 'Internal / private' },
-    visual: {
-      chrome: 'madina-insight — pricing',
-      isBrowser: false,
-      tiles: [
-        { label: 'Ingest', value: 'PDF' },
-        { label: 'Matching', value: 'Auto' },
-        { label: 'Trends', value: 'SQL' },
-      ],
-    },
-  },
-  {
-    index: '05',
-    name: 'AssetCore',
-    tagline: 'IT asset-lifecycle management — the asset module of Al Madina’s IT platform.',
-    role: 'Software Engineer · Al Madina Group',
-    period: '2025',
-    problem:
-      'Devices moved between branches with no single source of truth — service history went untracked and reporting was manual.',
-    build: [
-      'End-to-end asset CRUD across categories, branches and vendors.',
-      'Inter-branch transfer workflows with approvals.',
-      'Per-asset service / maintenance history and document storage.',
-      'Audit logging and interactive dashboards with Excel / RDLC exports.',
-    ],
-    stack: ['.NET 10', 'C#', 'EF Core', 'SQL Server', 'Bootstrap 5'],
-    outcome: 'Production-ready, multi-branch asset tracking with a full audit trail — part of the wider Helpdesk platform.',
-    link: { label: 'Internal / private' },
-    visual: {
-      chrome: 'assetcore — dashboard',
-      isBrowser: false,
-      tiles: [
-        { label: 'Assets', value: 'CRUD' },
-        { label: 'Transfers', value: 'Flow' },
-        { label: 'Audit', value: 'Full' },
-      ],
-    },
-  },
-  {
-    index: '06',
-    name: 'Retail Mobile Apps',
-    tagline: 'Price-checking on Zebra handhelds, plus Al Madina’s customer-facing retail app.',
-    role: 'Software Engineer · Al Madina Group',
-    period: '2025',
-    problem:
-      'Floor staff had no instant way to verify prices and stock on the shop floor, and the customer app needed better product browsing and offer visibility — both against live ERP data.',
-    build: [
-      'Built a React Native price-checker for Zebra handheld devices with barcode scanning (Zebra SDK).',
-      'Real-time price and stock lookups for floor staff, straight from the ERP.',
-      'Enhanced the customer retail app: product browsing and promotional-offer visibility.',
-      'Integrated both apps with the Gravity ERP backend over RESTful APIs.',
-    ],
-    stack: ['React Native', 'REST APIs', 'Zebra SDK', 'SQL Server'],
-    outcome: 'In daily use by floor staff across branches; the customer app is live on the app stores.',
-    link: {
-      label: 'Al Madina AUH on Google Play',
-      href: 'https://play.google.com/store/apps/details?id=com.almadinahypermarket.mobileapp',
-    },
-    visual: {
-      chrome: 'pricecheck — zebra handheld',
-      isBrowser: false,
-      tiles: [
-        { label: 'Device', value: 'Zebra' },
-        { label: 'ERP', value: 'Gravity' },
-        { label: 'Data', value: 'Live' },
-      ],
-    },
-  },
-  {
-    index: '07',
-    name: 'Skien.Suite',
-    tagline: 'Modular ERP integrating core business operations for SME clients.',
-    role: 'Senior Software Developer · Skien Software Lab',
-    period: '2021 – 2025',
-    problem:
-      'Business clients needed unified operations — inventory, sales, accounting and more — instead of disconnected tools and spreadsheets.',
-    build: [
-      'Built and maintained core ERP modules in .NET.',
-      'Delivered customer-facing web and mobile features.',
-      'Contributed to Skien.eCommerce, an AI-assisted commerce product.',
-      'Mentored junior developers and led technical initiatives.',
-    ],
-    stack: ['.NET Core 6', 'C#', 'ASP.NET MVC', 'Entity Framework', 'SQL Server', 'Angular.js'],
-    outcome: 'Shipped to multiple business clients over four years, with 2 to 3 client implementations running at a time.',
-    link: { label: 'Internal / private' },
-    visual: {
-      chrome: 'skien.suite — erp',
-      isBrowser: false,
-      tiles: [
-        { label: 'Modules', value: 'ERP' },
-        { label: 'Clients', value: '2–3 live' },
-        { label: 'Tenure', value: '4 yrs' },
-      ],
-    },
-  },
-];
+const STATUS_LABEL: Record<Project['status'], string> = {
+  private: 'Private · internal system',
+  live: 'Live',
+  'in-progress': 'In progress',
+};
 
-function ProjectVisual({ project }: { project: Project }) {
-  const { visual, name } = project;
+/** Real figures in large type, or the honest status line when a project has none. */
+function ProjectPanel({ project }: { project: Project }) {
   return (
-    <div className="card overflow-hidden">
-      {/* Window chrome */}
-      <div className="flex items-center gap-2 border-b border-line bg-elevated px-4 py-2.5">
-        <span className="flex gap-1.5" aria-hidden="true">
-          <span className="h-3 w-3 rounded-full bg-line" />
-          <span className="h-3 w-3 rounded-full bg-line" />
-          <span className="h-3 w-3 rounded-full bg-line" />
-        </span>
-        <span className="ml-2 flex-1 truncate rounded-md bg-canvas/60 px-3 py-1 font-mono text-xs text-faint">
-          {visual.isBrowser ? 'https://' : '~/'}
-          {visual.chrome}
-        </span>
+    <div className="card min-w-0">
+      <div className="flex items-center justify-between gap-3 border-b border-rule px-4 py-2.5 font-mono text-xs text-ink-3">
+        <span className="truncate">~/work/{project.id}</span>
+        <span className="whitespace-nowrap">{STATUS_LABEL[project.status]}</span>
       </div>
-
-      {/* Faux UI body */}
-      <div className="relative overflow-hidden p-5">
-        <span
-          className="pointer-events-none absolute -right-4 -top-6 select-none font-display text-8xl font-bold text-fg/[0.04]"
-          aria-hidden="true"
-        >
-          {name.charAt(0)}
-        </span>
-        <div className="relative grid grid-cols-3 gap-3">
-          {visual.tiles.map((t) => (
-            <div key={t.label} className="rounded-lg border border-line bg-surface p-3">
-              <p className="font-display text-xl font-semibold text-accent">{t.value}</p>
-              <p className="mono-label mt-1 normal-case">{t.label}</p>
-            </div>
-          ))}
-        </div>
-        <div className="relative mt-4 space-y-2" aria-hidden="true">
-          <div className="h-2.5 w-3/4 rounded bg-line" />
-          <div className="h-2.5 w-full rounded bg-line/70" />
-          <div className="h-2.5 w-1/2 rounded bg-line/50" />
-        </div>
+      <div className="p-5">
+        {project.figures ? (
+          <ul className="grid grid-cols-3 gap-3" aria-label="Figures">
+            {project.figures.map((f) => (
+              <li key={f.unit} className="min-w-0 border-l border-rule pl-3">
+                <span className="block font-sans text-3xl font-semibold leading-none text-ink">{f.value}</span>{' '}
+                <span className="mono-label mt-2 block">{f.unit}</span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p className="text-ink-2">{project.statusLine}</p>
+        )}
+        {project.modules && (
+          <ul className="mt-5 flex flex-wrap gap-2" aria-label="Modules">
+            {project.modules.map((m) => (
+              <li key={m} className="chip">
+                {m}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
 }
 
+function ProjectLink({ project }: { project: Project }) {
+  if (!project.link) return <span className="font-mono text-xs text-ink-3">{STATUS_LABEL[project.status]}</span>;
+  return (
+    <a
+      href={project.link.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="btn-ghost max-w-full whitespace-normal text-left"
+    >
+      {project.link.label}
+      <ArrowUpRightIcon />
+      <span className="sr-only">(opens in a new tab)</span>
+    </a>
+  );
+}
+
 export default function Projects() {
   return (
-    <section id="projects" className="scroll-mt-20 py-24 md:py-32">
+    <section id="work" className="py-24 md:py-32">
       <div className="shell">
         <SectionHeader
-          index="04 — Work"
+          index="01 — Work"
           title="Selected projects."
-          subtitle="Systems I designed, built and shipped — what the problem was, what I built, and what it runs on."
+          subtitle="Systems I designed, built and shipped: what the problem was, what I built, and what it runs on."
         />
 
         <div className="space-y-20 md:space-y-28">
-          {projects.map((project, i) => {
-            const reverse = i % 2 === 1;
-            return (
-              <Reveal key={project.name}>
-                <article className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
-                  {/* Text */}
-                  <div className={reverse ? 'lg:order-2' : ''}>
-                    <div className="mb-3 flex items-center gap-3">
-                      <span className="font-mono text-sm text-accent">{project.index}</span>
-                      <span className="h-px w-10 bg-line" aria-hidden="true" />
-                      <span className="font-mono text-xs text-faint">{project.period}</span>
-                    </div>
-                    <h3 className="font-display text-2xl font-semibold tracking-tight md:text-3xl">
-                      {project.name}
-                    </h3>
-                    <p className="mt-2 text-lg text-muted">{project.tagline}</p>
-                    <p className="mt-1 font-mono text-xs text-faint">{project.role}</p>
+          {featuredProjects.map((project, i) => (
+            <article key={project.id} className="grid grid-cols-1 items-start gap-8 lg:grid-cols-2 lg:gap-14">
+              <div className="min-w-0">
+                <div className="mb-3 flex items-center gap-3">
+                  <span className="font-mono text-sm text-accent-ink">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="h-px w-10 bg-rule" aria-hidden="true" />
+                  <span className="font-mono text-xs text-ink-3">{project.years}</span>
+                </div>
+                <h3 className="font-sans text-2xl font-semibold tracking-tight md:text-3xl">{project.name}</h3>
+                <p className="mt-2 text-lg text-ink-2">{project.summary}</p>
+                <p className="mt-1 font-mono text-xs text-ink-3">
+                  {project.role} · {project.org}
+                </p>
 
-                    <div className="mt-5">
-                      <p className="mono-label mb-1.5">The problem</p>
-                      <p className="leading-relaxed text-muted">{project.problem}</p>
-                    </div>
-
-                    <div className="mt-4">
-                      <p className="mono-label mb-1.5">What I built</p>
-                      <ul className="space-y-1.5">
-                        {project.build.map((b) => (
-                          <li key={b} className="flex gap-2.5 leading-relaxed text-muted">
-                            <span className="mt-2 h-1 w-1 flex-shrink-0 rounded-full bg-accent" aria-hidden="true" />
-                            {b}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="mt-4">
-                      <p className="mono-label mb-1.5">Outcome</p>
-                      <p className="leading-relaxed text-muted">{project.outcome}</p>
-                    </div>
-
-                    <ul className="mt-5 flex flex-wrap gap-2">
-                      {project.stack.map((s) => (
-                        <li key={s} className="chip">
-                          {s}
-                        </li>
-                      ))}
-                    </ul>
-
-                    <div className="mt-6">
-                      {project.link.href ? (
-                        <a
-                          href={project.link.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="btn-ghost"
-                        >
-                          {project.link.label} <FiArrowUpRight size={16} />
-                        </a>
-                      ) : (
-                        <span className="inline-flex items-center gap-2 font-mono text-xs text-faint">
-                          <HiOutlineLockClosed size={14} /> {project.link.label}
-                        </span>
-                      )}
-                    </div>
+                {project.caseStudy && (
+                  <div className="mt-5">
+                    <p className="mono-label mb-1.5">The problem</p>
+                    <p className="leading-relaxed text-ink-2">{project.caseStudy.problem}</p>
                   </div>
+                )}
 
-                  {/* Visual */}
-                  <div className={reverse ? 'lg:order-1' : ''}>
-                    <ProjectVisual project={project} />
+                <div className="mt-4">
+                  <p className="mono-label mb-1.5">What I built</p>
+                  <ul className="space-y-1.5">
+                    {project.built.map((b) => (
+                      <li key={b} className="flex gap-2.5 leading-relaxed text-ink-2">
+                        <span className="mt-[0.7em] h-1 w-1 flex-shrink-0 rounded-full bg-ink-3" aria-hidden="true" />
+                        {b}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                {project.caseStudy && (
+                  <div className="mt-4">
+                    <p className="mono-label mb-1.5">Outcome</p>
+                    <p className="leading-relaxed text-ink-2">{project.caseStudy.outcome}</p>
                   </div>
-                </article>
-              </Reveal>
-            );
-          })}
+                )}
+
+                <ul className="mt-5 flex flex-wrap gap-2" aria-label="Stack">
+                  {project.stack.map((s) => (
+                    <li key={s} className="chip">
+                      {s}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="mt-6">
+                  <ProjectLink project={project} />
+                </div>
+              </div>
+
+              <ProjectPanel project={project} />
+            </article>
+          ))}
         </div>
 
-        <Reveal delay={0.05} className="mt-16 flex flex-wrap items-center justify-between gap-4 rounded-card border border-dashed border-line p-6">
-          <p className="text-muted">More projects and references available on request.</p>
-          <a
-            href="https://www.linkedin.com/in/aslammhdms"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="btn-ghost"
-          >
-            See more on LinkedIn <FiArrowUpRight size={16} />
+        <div className="mt-20 border-t border-rule pt-10">
+          <h3 className="mono-label">Also built</h3>
+          <ul className="mt-2">
+            {alsoBuilt.map((project) => (
+              <li key={project.id} className="grid grid-cols-1 gap-2 border-b border-rule py-6 md:grid-cols-12 md:gap-6">
+                <div className="min-w-0 md:col-span-4">
+                  <p className="text-lg font-semibold text-ink">{project.name}</p>
+                  <p className="font-mono text-xs text-ink-3">
+                    {project.org} · {project.years}
+                  </p>
+                </div>
+                <div className="min-w-0 md:col-span-8">
+                  <p className="leading-relaxed text-ink-2">{project.summary}</p>
+                  <p className="mt-2 font-mono text-xs text-ink-3">{project.stack.join(' · ')}</p>
+                  {project.link && (
+                    <a
+                      href={project.link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex items-center gap-1.5 font-mono text-[13px] text-ink-2 underline decoration-rule-strong underline-offset-4 hover:text-ink hover:decoration-accent-ink"
+                    >
+                      {project.link.label}
+                      <ArrowUpRightIcon />
+                      <span className="sr-only">(opens in a new tab)</span>
+                    </a>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-16 flex flex-wrap items-center justify-between gap-4 border border-dashed border-rule p-6">
+          <p className="text-ink-2">More projects and references available on request.</p>
+          <a href={profile.linkedin.url} target="_blank" rel="noopener noreferrer" className="btn-ghost">
+            See more on LinkedIn
+            <ArrowUpRightIcon />
+            <span className="sr-only">(opens in a new tab)</span>
           </a>
-        </Reveal>
+        </div>
       </div>
     </section>
   );

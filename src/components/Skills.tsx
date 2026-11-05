@@ -51,7 +51,7 @@ const groups: StackGroup[] = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="scroll-mt-20 py-24 md:py-32">
+    <section id="stack" className="py-24 md:py-32">
       <div className="shell">
         <SectionHeader
           index="03 — Stack"
@@ -63,10 +63,10 @@ export default function Skills() {
           {groups.map((group, i) => (
             <Reveal key={group.title} delay={(i % 3) * 0.06} className="card group p-6 transition-colors hover:border-accent/40">
               <div className="mb-5 flex items-center gap-3">
-                <span className="grid h-9 w-9 place-items-center rounded-lg border border-line bg-elevated text-accent">
+                <span className="grid h-9 w-9 place-items-center border border-line bg-elevated text-accent-ink">
                   <group.icon size={18} />
                 </span>
-                <h3 className="font-display text-lg font-semibold tracking-tight">{group.title}</h3>
+                <h3 className="font-sans text-lg font-semibold tracking-tight">{group.title}</h3>
               </div>
               <ul className="flex flex-wrap gap-2">
                 {group.items.map((item) => (

@@ -1,0 +1,480 @@
+/* ============================================================
+   Page chrome: skip link, top bar, menu sheet, status bar and
+   the Prompt band. Opaque surfaces, hairlines, no blur.
+   Z-order: content 0 · bars 40 · palette 90 · skip link 100.
+   ============================================================ */
+
+.skip-link {
+  position: fixed;
+  left: 16px;
+  top: 12px;
+  z-index: 100;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: rgb(var(--accent));
+  color: rgb(var(--on-accent));
+  font-weight: 600;
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: none;
+}
+
+/* Programmatic focus targets (sections reached from the menu) need no ring. */
+[tabindex='-1']:focus {
+  outline: none;
+}
+
+/* ---------- Top bar ---------- */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgb(var(--canvas));
+  /* The hairline is a shadow, not a border, so the bar is exactly --topbar-h tall
+     (the same value scroll-padding-top uses). */
+  box-shadow: 0 1px 0 transparent;
+  transition: box-shadow 0.16s var(--ease-standard);
+}
+.topbar[data-scrolled] {
+  box-shadow: 0 1px 0 rgb(var(--rule));
+}
+.topbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: var(--topbar-h);
+}
+
+/* The mini lockup. Safe default first; the equal-measure widths only under .amd. */
+.wordmark {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  font-weight: 650;
+  line-height: 1;
+  white-space: nowrap;
+  color: rgb(var(--ink));
+  text-decoration: none;
+}
+.amd .wordmark {
+  font-family: var(--font-display);
+  font-weight: 400;
+  word-spacing: 0.05em;
+  font-synthesis: none;
+}
+/* In the fallback styles (no AM Display, or the visitor's own text spacing) the name
+   sets wider: let it wrap onto two lines rather than push the bar off the screen. */
+html:not(.amd) .wordmark {
+  min-width: 0;
+  white-space: normal;
+}
+.amd .wordmark .a {
+  font-stretch: 125%;
+  font-weight: 860;
+}
+.amd .wordmark .m {
+  font-stretch: 75%;
+  font-weight: 419;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.topbar-nav ul {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.topbar-link {
+  display: inline-block;
+  padding-block: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgb(var(--ink-2));
+  text-decoration: none;
+  transition: color 0.16s var(--ease-standard);
+}
+.topbar-link:hover {
+  color: rgb(var(--ink));
+}
+.topbar-link[aria-current] {
+  color: rgb(var(--ink));
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 7px;
+  text-decoration-color: rgb(var(--accent-ink));
+}
+
+.search-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 186px;
+  height: 36px;
+  padding: 0 5px 0 13px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(var(--ink-2));
+  white-space: nowrap;
+  cursor: pointer;
+  transition: border-color 0.16s var(--ease-standard), color 0.16s var(--ease-standard);
+}
+.search-pill:hover {
+  border-color: rgb(var(--ink));
+  color: rgb(var(--ink));
+}
+/* Fixed width, so swapping 'Ctrl K' for '⌘ K' after mount moves nothing. */
+.keycap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  width: 54px;
+  margin-left: auto;
+  padding: 1px 0;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: rgb(var(--ink-2));
+}
+.keycap .icon {
+  width: 10px;
+  height: 10px;
+  stroke-width: 2.2;
+}
+
+.topbar-resume {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding-block: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgb(var(--ink));
+  text-decoration: none;
+  white-space: nowrap;
+}
+.topbar-resume:hover {
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--accent-ink));
+  text-underline-offset: 7px;
+}
+
+.topbar-pill {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  /* 44px touch targets at every compact width (the bar is 56 / 64px tall). */
+  height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgb(var(--ink));
+  white-space: nowrap;
+  cursor: pointer;
+}
+.topbar-pill:hover {
+  border-color: rgb(var(--ink));
+}
+
+/* Compact bar below 1100px: wordmark + Search pill + Menu pill. */
+@media (max-width: 1099px) {
+  .topbar-right {
+    gap: 8px;
+  }
+  .topbar-nav,
+  .search-pill,
+  .topbar-resume {
+    display: none;
+  }
+  .topbar-pill {
+    display: inline-flex;
+  }
+}
+@media (max-width: 767px) {
+  .topbar-inner {
+    gap: 12px;
+  }
+  /* Without AM Display the name sets wider (normal width); keep it inside the bar. */
+  html:not(.amd) .wordmark {
+    font-size: 14px;
+    letter-spacing: -0.01em;
+  }
+}
+/* Narrow phones (320–361px): the Search pill becomes a round icon button so the 16px
+   wordmark and both pills fit. Its accessible name stays 'Search' (aria-label). */
+@media (max-width: 361px) {
+  .topbar-pill-search {
+    width: 44px;
+    padding: 0;
+  }
+  .topbar-pill-search .topbar-pill-label {
+    display: none;
+  }
+}
+
+/* ---------- Menu sheet (native modal <dialog>: inert background, Esc closes) ---------- */
+.menu-sheet {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgb(var(--canvas));
+  color: rgb(var(--ink));
+  overscroll-behavior: contain;
+}
+.menu-sheet::backdrop {
+  background: rgb(var(--canvas) / 0.72);
+}
+.menu-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: var(--topbar-h);
+  border-bottom: 1px solid rgb(var(--rule));
+}
+.menu-sheet-close {
+  display: inline-flex;
+}
+.menu-sheet-nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.menu-sheet-nav a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 56px;
+  border-bottom: 1px solid rgb(var(--rule));
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: rgb(var(--ink));
+  text-decoration: none;
+}
+.menu-sheet-nav a[aria-current] .menu-sheet-index {
+  color: rgb(var(--accent-ink));
+}
+.menu-sheet-index {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  color: rgb(var(--ink-3));
+}
+.menu-sheet-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 24px;
+}
+.menu-sheet-actions .pill {
+  flex: 1 1 0;
+  height: 48px;
+}
+:root.sheet-open {
+  overflow: hidden;
+}
+
+/* ---------- Status bar ---------- */
+.statusbar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  border-top: 1px solid rgb(var(--rule));
+  background: rgb(var(--surface));
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: rgb(var(--ink-3));
+}
+.statusbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: calc(var(--statusbar-h) - 1px);
+}
+.sb-path {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sb-path .cur {
+  color: rgb(var(--ink));
+}
+.sb-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sb-clock-wrap {
+  position: relative;
+}
+.sb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 24px;
+  min-width: 24px;
+  padding: 0 6px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 4px;
+  background: transparent;
+  font: inherit;
+  color: rgb(var(--ink-2));
+  white-space: nowrap;
+  cursor: pointer;
+}
+.sb-btn:hover {
+  border-color: rgb(var(--ink));
+  color: rgb(var(--ink));
+}
+/* The bar is only 4px taller than its buttons and sits on the viewport edge, so the
+   ring is drawn inside the button (over its border) and is never cut off. */
+.sb-btn:focus-visible {
+  outline-offset: -2px;
+}
+.sb-btn .icon {
+  width: 10px;
+  height: 10px;
+  stroke-width: 2.2;
+}
+.sb-clock {
+  border-color: transparent;
+  padding: 0 4px;
+}
+/* .sb-clock-label holds 'AUH', the digits and 'GST' in one inline run, so the real
+   spaces between them keep their full mono cell (as flex items they were dropped).
+   Width reserved in CSS, so the prerendered bar is already the right size on every
+   screen: HH:MM:SS on desktop; HH:MM on phones and under reduced motion. */
+.sb-digits {
+  display: inline-block;
+  min-width: 8ch;
+  text-align: left;
+}
+@media (max-width: 767px), (prefers-reduced-motion: reduce) {
+  .sb-digits {
+    min-width: 5ch;
+  }
+  .sb-secs {
+    display: none;
+  }
+}
+.sb-pop {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 8px);
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+  padding: 7px 10px 8px;
+  border: 1px solid rgb(var(--rule-strong));
+  background: rgb(var(--raised));
+  color: rgb(var(--ink-2));
+  white-space: nowrap;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+.sb-pop[hidden] {
+  display: none;
+}
+.sb-pop-toggle {
+  min-height: 24px;
+  padding: 0 8px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 4px;
+  background: transparent;
+  font: inherit;
+  color: rgb(var(--ink-2));
+  cursor: pointer;
+}
+.sb-pop-toggle:hover {
+  border-color: rgb(var(--ink));
+  color: rgb(var(--ink));
+}
+@media (max-width: 767px) {
+  .sb-palette,
+  .sb-tz {
+    display: none;
+  }
+  /* The popover hangs from the bar's right edge, not the clock, and wraps if it must,
+     so a long difference ('13 h 30 min ahead of you') stays on a 320px screen. */
+  .statusbar-inner {
+    position: relative;
+  }
+  .sb-clock-wrap {
+    position: static;
+  }
+  .sb-pop {
+    max-width: 100%;
+    white-space: normal;
+  }
+}
+
+/* ---------- Prompt band (the terminal, right after Work) ---------- */
+.prompt-band {
+  border-top: 1px solid rgb(var(--rule));
+  padding-block: 56px;
+}
+.prompt-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  row-gap: 20px;
+}
+.prompt-rail {
+  grid-column: 1 / span 3;
+}
+.prompt-rail p {
+  margin-top: 10px;
+  max-width: 22em;
+  font-size: 15px;
+  line-height: 1.5;
+  color: rgb(var(--ink-2));
+}
+.prompt-terminal {
+  grid-column: 4 / -1;
+  min-width: 0;
+}
+@media (max-width: 1023px) {
+  .prompt-rail,
+  .prompt-terminal {
+    grid-column: 1 / -1;
+  }
+}
+
+@media print {
+  .topbar,
+  .statusbar,
+  .prompt-band,
+  .skip-link {
+    display: none !important;
+  }
+}

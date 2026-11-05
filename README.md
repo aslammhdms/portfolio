@@ -1,46 +1,55 @@
 # Aslam Muhammed — Portfolio
 
-> Portfolio of Aslam Muhammed — .NET Developer & IT Systems Engineer, Abu Dhabi.
+> Portfolio of Aslam Muhammed — Software Engineer · .NET & IT Systems, Abu Dhabi.
 
-A fast, accessible single-page portfolio built with React, TypeScript, Vite and Tailwind CSS.
+A fast, accessible single-page portfolio built with React, TypeScript, Vite and Tailwind CSS,
+prerendered at build time.
 
-## Design — "Terminal Ink"
+## Design — v4 "Equal Measure"
 
-A dark-first, developer-leaning aesthetic:
+- **Palette:** neutral graphite (`#131313` canvas) with one Raspberry accent: `#C2387D` fills with
+  white labels, `#FF5AA5` for small live marks and the focus ring. Dark for every visitor; an
+  optional light theme is saved only when chosen. Tokens live in `src/styles/tokens.css` as RGB
+  channels so Tailwind's `/alpha` modifiers work; `accent-wash` and `selection` are fixed colours.
+- **Type:** Mona Sans (body and UI), Cascadia Mono (labels, terminal, status bar), and "AM Display",
+  a 12-glyph renamed subset of Mona Sans for the equal-measure name lockup, inlined in `index.html`.
+- **Structure:** hairlines and ledgers instead of cards, information square, actions round. Motion
+  only in the name lock-in and the portrait's colour bloom on the first visit of a session.
 
-- **Palette:** near-black ink canvas, hairline borders, a single electric-indigo accent (`#7C6CFF`) plus a teal signal colour. Light theme available via toggle.
-- **Type:** Space Grotesk (display) · Inter (body) · JetBrains Mono (labels & code motifs).
-- **System:** semantic CSS-variable tokens, 4px spacing scale, tight radii, elevation by hairline rather than heavy shadow.
-- **Motion:** restrained fade-and-rise reveals; fully honours `prefers-reduced-motion`.
+## Content
 
-## Sections
-
-Hero (positioning) → About (bio, experience timeline, education) → Stack → Featured Projects (case-study depth) → Contact.
-
-## Tech stack
-
-React 18 · TypeScript · Vite · Tailwind CSS · Framer Motion · React Icons.
+Everything the hero, top bar, status bar, terminal and palette show comes from the typed modules in
+`src/content/` (profile, now, availability, experience, projects, skills, history).
 
 ## Getting started
 
 ```bash
 npm install
-npm run dev      # dev server on http://localhost:3000
-npm run build    # type-check + production build to dist/
+npm run dev      # dev server on http://localhost:3000 (client-rendered)
+npm run build    # type-check, client build, SSR build, prerender into dist/index.html
 npm run preview  # preview the production build
 npm run lint     # ESLint (max-warnings 0)
 ```
 
 ## Deployment
 
-Configured for **GitHub Pages** under the `/portfolio/` base path (see `vite.config.ts`).
+**Cloudflare Workers (primary).** Cloudflare runs `npm run build`, then `npx wrangler deploy`
+serves `./dist` as static assets (see `wrangler.toml`). The site is built for the domain root.
 
-```bash
-npm run deploy   # builds and publishes dist/ to the gh-pages branch
-```
+**GitHub Pages (legacy).** `npm run deploy` runs `predeploy` → `npm run build:pages`, which builds
+with `--mode pages` so every URL (scripts, fonts, images, the résumé) resolves under `/portfolio/`,
+then publishes `dist/` to the `gh-pages` branch. A `BASE` environment variable overrides the base
+for any other host, e.g. `BASE=/sub/ npm run build`.
 
-> Public assets (profile image, résumé) live in `public/` and are referenced via
-> `import.meta.env.BASE_URL` so they resolve correctly under the Pages base path.
+## Maintenance scripts (not part of the build)
+
+The build never needs Python; these outputs are committed.
+
+- `scripts/subset-fonts.py` (fontTools + brotli) cuts AM Display and AM Figures from the pinned
+  `@fontsource-variable/mona-sans@5.3.0`, renames them (the OFL reserves the name "Mona"), writes
+  `public/fonts/am-figures.woff2` and `public/fonts/OFL.txt`, and updates the inline `@font-face`
+  in `index.html`.
+- `scripts/portrait-images.py` (Pillow) writes the portrait derivatives in `public/images/`.
 
 ## Contact
 

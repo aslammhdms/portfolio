@@ -1,0 +1,713 @@
+/* ============================================================
+   Hero: NOW eyebrow, equal-measure name, role, lede, portrait,
+   ledger and actions. Values follow the approved mockup
+   (desktop 1440 × 900, phone 390 × 844).
+
+   Grid: 12 columns in .shell (max 1312px). At 1440 a column is
+   87.33px with 24px gutters, so 6 columns = 644px for the name.
+   ============================================================ */
+
+.hero {
+  /* Vertical rhythm at 1440 × 900; tightened for short screens below. */
+  --hero-pt: 44px;
+  --eyebrow-gap: 36px;
+  --lede-gap: 20px;
+  --ledger-gap: 48px;
+  --cta-gap: 22px;
+  /* Centre of the portrait column (10–12) relative to the page centre:
+     container/2 − portrait/2, where portrait = container/4 − 18px. */
+  --portrait-x: calc(50% + min(1312px, 100% - 2 * var(--margin)) * 0.375 + 9px);
+  position: relative;
+  isolation: isolate;
+  padding-top: var(--hero-pt);
+  padding-bottom: 16px;
+}
+
+/* Static key light behind the portrait. Its colour follows Abu Dhabi time of
+   day (set after mount); neutral in the prerendered HTML; off in light mode. */
+.hero-light {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(560px 520px at var(--portrait-x) 46%, var(--keylight), transparent 70%);
+}
+[data-theme='light'] .hero-light {
+  display: none;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: start;
+}
+
+/* ---------- NOW eyebrow ---------- */
+.hero-eyebrow {
+  /* Stacked above the H1: the lockup's tight line-height lets the font's ascent box
+     rise over this line, and that box would otherwise paint over it (forced-colours
+     backplate) and take its clicks. */
+  position: relative;
+  z-index: 1;
+  grid-column: 1 / span 10;
+  grid-row: 1;
+  margin: 0 0 var(--eyebrow-gap);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgb(var(--ink-2));
+  /* When the long line has to wrap (tablets), no short last line. */
+  text-wrap: balance;
+}
+.hero-now {
+  /* 10px to the line in all: a real space follows (so the text reads 'NOW Software…'),
+     and the space is one Cascadia cell, 0.586em. */
+  margin-right: calc(10px - 0.586em);
+  white-space: nowrap;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: rgb(var(--accent-ink));
+}
+.hero-now-short {
+  display: none;
+}
+.dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 8px;
+  border-radius: 50%;
+  background: rgb(var(--accent-ink));
+  transform: translateY(-1px);
+}
+
+/* ---------- Name column: the lockup, role and lede share one container ---------- */
+.hero-namecol {
+  grid-column: 1 / span 6;
+  grid-row: 2;
+  min-width: 0;
+  container-type: inline-size;
+}
+
+/* Safe default: correct in any font. Wraps, sized with clamp(), never overflows.
+   The equal-measure lockup below applies only under .amd (the inline AM Display
+   face is usable), set before paint by index.html. */
+.hero-name {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: clamp(2.75rem, 1.5rem + 6vw, 6rem);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: rgb(var(--ink));
+  overflow-wrap: break-word;
+}
+
+.amd .hero-name {
+  font-family: var(--font-display);
+  /* Both inks measure 3.595 em in AM Display, so they span exactly the column. */
+  font-size: calc(100cqi / 3.595);
+  font-weight: 400;
+  line-height: 0.88;
+  letter-spacing: 0;
+  font-synthesis: none;
+  /* Trim to cap height and baseline (ascent 1.09, descent 0.32, cap 0.729), so the
+     box spans exactly the ink and the portrait can align to the cap line. */
+  margin-top: -0.096em;
+  margin-bottom: -0.055em;
+}
+.amd .hero-name > span {
+  display: block;
+  white-space: nowrap;
+}
+.amd .hero-name .l1 {
+  font-stretch: 125%;
+  font-weight: 860;
+  margin-left: 0.006em;
+}
+.amd .hero-name .l2 {
+  font-stretch: 75%;
+  font-weight: 419;
+  margin-left: -0.055em;
+}
+
+.hero-role {
+  margin: 16px 0 0;
+  font-size: clamp(1.125rem, 0.9rem + 1vw, 1.75rem);
+  font-weight: 500;
+  line-height: 1.2;
+  color: rgb(var(--ink));
+}
+.amd .hero-role {
+  /* Until Mona Sans arrives (or if it never does), a fallback sized to this exact
+     string keeps the fitted line inside the column (see 'AM Role Fallback'). */
+  font-family: 'Mona Sans Variable', 'AM Role Fallback', var(--font-sans);
+  /* Fitted to the name: the role's ink measures 17.909 em with a 0.03 em left bearing. */
+  margin-top: calc(100cqi * 0.044);
+  margin-left: -0.03em;
+  font-size: calc(100cqi / 17.909);
+  white-space: nowrap;
+}
+
+.hero-lede {
+  margin: var(--lede-gap) 0 0;
+  max-width: 34em;
+  font-size: 19px;
+  line-height: 1.5;
+  color: rgb(var(--ink-2));
+}
+.hero-lede b {
+  font-weight: 500;
+  color: rgb(var(--ink));
+}
+
+/* ---------- Name lock-in (first view of a session) ----------
+   Pure CSS from a narrower, lighter start state. Only the glyphs change: the
+   line boxes keep their size, so nothing around the name moves (CLS 0). */
+@keyframes am-lock-a {
+  from {
+    font-stretch: 100%;
+    font-weight: 600;
+  }
+  to {
+    font-stretch: 125%;
+    font-weight: 860;
+  }
+}
+@keyframes am-lock-m {
+  from {
+    font-weight: 300;
+  }
+  to {
+    font-weight: 419;
+  }
+}
+.amd.intro .hero-name .l1 {
+  animation: am-lock-a 0.9s var(--ease-settle) both;
+}
+.amd.intro .hero-name .l2 {
+  animation: am-lock-m 0.9s var(--ease-settle) both;
+}
+
+/* ---------- Portrait: warm monochrome under a colour layer that blooms from the face ---------- */
+@property --bloom {
+  syntax: '<percentage>';
+  inherits: false;
+  initial-value: 150%;
+}
+@keyframes am-bloom {
+  from {
+    --bloom: 0%;
+  }
+  to {
+    --bloom: 150%;
+  }
+}
+
+.hero-portrait {
+  grid-column: 10 / -1;
+  grid-row: 2;
+  align-self: stretch;
+  position: relative;
+  margin: 0;
+  min-height: 0;
+}
+.portrait-frame {
+  position: absolute;
+  inset: 0 0 34px 0;
+  overflow: hidden;
+  background: rgb(var(--surface));
+}
+.portrait-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+.portrait-mono {
+  filter: grayscale(1) sepia(0.12) contrast(1.04) brightness(0.94);
+}
+.portrait-colour {
+  -webkit-mask-image: radial-gradient(circle at 48% 40%, #000 calc(var(--bloom) - 35%), transparent var(--bloom));
+  mask-image: radial-gradient(circle at 48% 40%, #000 calc(var(--bloom) - 35%), transparent var(--bloom));
+  transition: opacity 0.35s var(--ease-standard);
+}
+.hero-portrait[data-colour='off'] .portrait-colour {
+  opacity: 0;
+}
+/* After the name settles, colour spreads outward from the face. */
+.intro .portrait-colour {
+  animation: am-bloom 0.8s 0.5s ease-out both;
+}
+
+.portrait-meta {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.portrait-place {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+.portrait-toggle {
+  min-height: 24px;
+  padding: 2px 11px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: rgb(var(--ink-2));
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.16s var(--ease-standard), border-color 0.16s var(--ease-standard);
+}
+.portrait-toggle:hover {
+  color: rgb(var(--ink));
+  border-color: rgb(var(--ink));
+}
+.portrait-toggle[aria-pressed='false'] {
+  color: rgb(var(--ink-3));
+}
+
+/* Phone thumbnail (colour), shown beside the lede below 768px. */
+.hero-thumb {
+  display: none;
+  margin: 0;
+  overflow: hidden;
+  background: rgb(var(--surface));
+}
+.hero-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 30%;
+}
+
+/* ---------- Ledger: four facts between hairlines ---------- */
+.hero-ledger {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: var(--ledger-gap) 0 0;
+  border-top: 1px solid rgb(var(--rule));
+  border-bottom: 1px solid rgb(var(--rule));
+}
+.ledger-cell {
+  min-width: 0;
+  padding: 14px 20px 16px 0;
+}
+.ledger-cell + .ledger-cell {
+  padding-left: 20px;
+  border-left: 1px solid rgb(var(--rule));
+}
+.ledger-label {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+.ledger-value {
+  margin: 6px 0 0;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.35;
+  color: rgb(var(--ink));
+}
+/* 'C# · .NET · SQL Server · React': every item carries a fixed-width '·' before it,
+   and the list is pulled left by that width inside a clipping box, so the separator
+   of whichever item starts a line is hidden. No line starts or ends with '·'. */
+.ledger-value.has-list {
+  overflow: hidden;
+}
+.ledger-list {
+  /* The width of ' · ' in Mona Sans 500, so the spacing matches running text. */
+  --sep: 0.66em;
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 0 0 calc(-1 * var(--sep));
+  padding: 0;
+  list-style: none;
+}
+.ledger-list > li {
+  white-space: nowrap;
+}
+.ledger-list > li::before {
+  content: '·';
+  content: '·' / ''; /* decorative: the list semantics carry the meaning */
+  display: inline-block;
+  width: var(--sep);
+  text-align: center;
+}
+.v-short {
+  display: none;
+}
+
+/* ---------- Actions: information is square, actions are round ---------- */
+.hero-actions {
+  grid-column: 1 / -1;
+  grid-row: 4;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: var(--cta-gap);
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 999px;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: background-color 0.16s var(--ease-standard), border-color 0.16s var(--ease-standard);
+}
+.pill-primary {
+  background: rgb(var(--accent));
+  color: rgb(var(--on-accent));
+}
+/* Forced colours drop the fill, so the borderless pill would lose its shape: give it
+   a border there (painted in the system colour). Normal rendering is unchanged. */
+@media (forced-colors: active) {
+  .pill-primary {
+    border: 1px solid;
+  }
+}
+.pill-primary:hover,
+.pill-primary:active {
+  background: rgb(var(--accent-hover));
+}
+.pill-outline {
+  border: 1px solid rgb(var(--rule-strong));
+  color: rgb(var(--ink));
+}
+.pill-outline:hover {
+  border-color: rgb(var(--ink));
+}
+.pill-meta {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 400;
+  color: rgb(var(--ink-3));
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 22px;
+  margin: 0 0 0 14px;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: rgb(var(--ink-2));
+}
+.hero-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 24px;
+  white-space: nowrap;
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--rule-strong));
+  text-underline-offset: 4px;
+  transition: color 0.16s var(--ease-standard), text-decoration-color 0.16s var(--ease-standard);
+}
+.hero-links a:hover {
+  color: rgb(var(--ink));
+  text-decoration-color: rgb(var(--accent-ink));
+}
+
+.icon {
+  width: 14px;
+  height: 14px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+
+/* Short laptop screens (1366 × 657, 1280 × 720, 1440 × 821, 1512 × 838 …):
+   the name drops to 5 columns, the lede keeps its first sentence and the
+   gaps follow the viewport height, so the actions clear the status bar. */
+@media (min-width: 1024px) and (max-height: 880px) {
+  .hero {
+    --hero-pt: clamp(12px, 3vh, 44px);
+    --eyebrow-gap: clamp(12px, 3vh, 36px);
+    --lede-gap: 12px;
+    --ledger-gap: clamp(16px, 3.5vh, 48px);
+    --cta-gap: clamp(12px, 2vh, 22px);
+  }
+  .hero-namecol {
+    grid-column: 1 / span 5;
+  }
+  .hero-lede-more {
+    display: none;
+  }
+  .ledger-cell {
+    padding-top: 10px;
+    padding-bottom: 12px;
+  }
+}
+
+/* Very short laptop windows (680px tall or less: 1440 × 640, 1366 × 625, 1280 × 600 …):
+   the lede goes too. Below about 600px the name column also narrows with the height,
+   so the name, role, ledger and both buttons still clear the status bar. */
+@media (min-width: 1024px) and (max-height: 680px) {
+  .hero-lede {
+    display: none;
+  }
+  .hero-namecol {
+    max-width: calc((100vh - 320px) * 1.79);
+  }
+}
+
+/* Below 1280px the ten-column eyebrow would wrap; it has its own row, so it may
+   run the full width without touching the portrait. */
+@media (max-width: 1279px) {
+  .hero-eyebrow {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Tablets: name in columns 1–8, portrait in 9–12, ledger 2 × 2. */
+@media (max-width: 1023px) {
+  .hero {
+    /* portrait = container/3 − 16px */
+    --portrait-x: calc(50% + min(1312px, 100% - 2 * var(--margin)) / 3 + 8px);
+  }
+  .hero-eyebrow {
+    grid-column: 1 / -1;
+  }
+  .hero-namecol {
+    grid-column: 1 / span 8;
+  }
+  .hero-portrait {
+    grid-column: 9 / -1;
+  }
+  /* The links no longer fit beside the buttons: they take their own row, flush left. */
+  .hero-links {
+    width: 100%;
+    margin-left: 0;
+  }
+  .hero-ledger {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .ledger-cell + .ledger-cell {
+    padding-left: 0;
+    border-left: 0;
+  }
+  .ledger-cell:nth-child(even) {
+    padding-left: 20px;
+    border-left: 1px solid rgb(var(--rule));
+  }
+  .ledger-cell:nth-child(n + 3) {
+    border-top: 1px solid rgb(var(--rule));
+  }
+}
+
+/* Tablets on shorter screens (768–1023 wide, up to 1000px tall): the laptop's tighter
+   rhythm and a one-sentence lede, so the buttons clear the status bar. */
+@media (min-width: 768px) and (max-width: 1023px) and (max-height: 1000px) {
+  .hero {
+    --hero-pt: clamp(12px, 3vh, 44px);
+    --eyebrow-gap: clamp(12px, 3vh, 36px);
+    --lede-gap: 12px;
+    --ledger-gap: clamp(16px, 3vh, 48px);
+    --cta-gap: clamp(12px, 2vh, 22px);
+  }
+  .hero-lede-more {
+    display: none;
+  }
+  .ledger-cell {
+    padding-top: 10px;
+    padding-bottom: 12px;
+  }
+}
+/* …and at 820px tall or less the lede goes and the buttons move above the ledger,
+   as on short phones. */
+@media (min-width: 768px) and (max-width: 1023px) and (max-height: 820px) {
+  .hero-lede {
+    display: none;
+  }
+  .hero-actions {
+    grid-row: 3;
+  }
+  .hero-ledger {
+    grid-row: 4;
+  }
+}
+
+/* Phones: full-width name, colour thumbnail beside a one-sentence lede, short
+   ledger values, two 48px buttons side by side, then the text links. */
+@media (max-width: 767px) {
+  .hero {
+    --hero-pt: 10px;
+    --eyebrow-gap: 18px;
+    --lede-gap: 14px;
+    --ledger-gap: 16px;
+    --cta-gap: 14px;
+  }
+  .hero-light {
+    background: radial-gradient(320px 300px at 80% 36%, var(--keylight), transparent 70%);
+  }
+  .hero-eyebrow {
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .hero-now-long {
+    display: none;
+  }
+  .hero-now-short {
+    display: inline;
+  }
+  .hero-namecol {
+    grid-column: 1 / -1;
+  }
+  .hero-portrait {
+    display: none;
+  }
+  .hero-thumb {
+    display: block;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    justify-self: end;
+    align-self: end;
+    width: 64px;
+    height: 80px;
+    margin-bottom: 2px;
+  }
+  .hero-lede {
+    min-height: 80px;
+    padding-right: 80px;
+    font-size: 15.5px;
+  }
+  .hero-lede-more {
+    display: none;
+  }
+
+  .ledger-cell {
+    padding: 10px 8px 11px 0;
+  }
+  .ledger-cell:nth-child(even) {
+    padding-left: 12px;
+  }
+  .ledger-value {
+    margin-top: 4px;
+    font-size: 15px;
+  }
+  .v-long,
+  .hide-phone {
+    display: none;
+  }
+  .v-short {
+    display: inline;
+  }
+
+  .hero-actions {
+    gap: 10px;
+  }
+  .pill {
+    flex: 1 1 0;
+    height: 48px;
+    padding: 0 12px;
+  }
+  .pill-meta {
+    display: none;
+  }
+  /* Rows 30px apart as in the mockup; each link keeps a 24px target (WCAG 2.5.8). */
+  .hero-links {
+    width: 100%;
+    margin: -2px 0 0;
+    gap: 6px 18px;
+    font-size: 12.5px;
+  }
+}
+
+/* Short phones (iPhone SE in Safari, 360 × 640): drop the lede and put the buttons
+   before the ledger, so both stay above the status bar. */
+@media (max-width: 767px) and (max-height: 700px) {
+  .hero {
+    --hero-pt: 8px;
+    --eyebrow-gap: 12px;
+    --cta-gap: 14px;
+    --ledger-gap: 14px;
+  }
+  .hero-lede,
+  .hero-thumb {
+    display: none;
+  }
+  .hero-actions {
+    grid-row: 3;
+  }
+  .hero-ledger {
+    grid-row: 4;
+  }
+}
+
+/* Phones and small tablets in landscape (667 × 375, 844 × 390, 932 × 430): the short NOW
+   line and a name column sized by the height, so the eyebrow, name, role and both
+   buttons sit above the status bar; the links and the ledger follow. */
+@media (max-width: 1023px) and (max-height: 600px) and (orientation: landscape) {
+  .hero-now-long {
+    display: none;
+  }
+  .hero-now-short {
+    display: inline;
+  }
+  .hero-namecol {
+    grid-column: 1 / span 6;
+    max-width: calc((100vh - 210px) * 1.75);
+    max-width: calc((100svh - 210px) * 1.75);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .amd.intro .hero-name > span,
+  .intro .portrait-colour {
+    animation: none;
+  }
+  .portrait-colour {
+    transition: none;
+  }
+}
+
+@media print {
+  .hero-light,
+  .portrait-meta {
+    display: none;
+  }
+}

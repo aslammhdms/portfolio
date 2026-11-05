@@ -1,66 +1,21 @@
 import { HiOutlineBriefcase, HiOutlineAcademicCap, HiOutlineBadgeCheck } from 'react-icons/hi';
 import SectionHeader from './SectionHeader';
 import Reveal from './Reveal';
+import { bio, certifications, education, experience, formatMonth, formatRange, profile } from '../content';
 
-const experiences: { title: string; company: string; period: string; location?: string; description: string }[] = [
-  {
-    title: 'Software Engineer',
-    company: 'Tristar Engineering & Construction',
-    period: 'Sep 2026 – Present',
-    location: 'Abu Dhabi, UAE',
-    description:
-      'Sole developer leading the company’s move from the legacy ePROMIS ERP to Tricore ERP. Building the inventory module (material issues, receipts, returns and transfers), writing SQL Server migration and access scripts, and running both systems side by side so staff can switch without disruption.',
-  },
-  {
-    title: 'Software Engineer',
-    company: 'Al Madina Group',
-    period: 'Sep 2025 – Aug 2026',
-    location: 'Abu Dhabi, UAE',
-    description:
-      'Building and maintaining enterprise applications for a 50-year-old retail group — including the production company website — and supporting the systems and infrastructure that keep them running.',
-  },
-  {
-    title: 'Senior Software Developer',
-    company: 'Skien Software Lab',
-    period: 'Sep 2023 – Sep 2025',
-    description:
-      'Led .NET web and mobile delivery for business clients. Built backend services with .NET Core, C#, EF Core and SQL Server, and front ends with Angular.js and jQuery. Core contributor to Skien.Suite (ERP) and Skien.eCommerce; mentored junior developers.',
-  },
-  {
-    title: 'Software Developer',
-    company: 'Skien Software Lab',
-    period: 'Oct 2021 – Sep 2023',
-    description:
-      'Engineered and maintained .NET applications end to end — backend APIs, data models and front-end features — and handled troubleshooting and performance fixes for client systems.',
-  },
-  {
-    title: 'Onsite Support Engineer',
-    company: 'Foodworld Group',
-    period: 'May 2023 – Feb 2024',
-    location: 'Bahrain',
-    description:
-      'Provided onsite application support, resolving live technical issues, performing data corrections and working directly with the client to optimize performance.',
-  },
-];
-
-const education = [
-  { degree: 'Bachelor of Computer Applications (BCA)', school: 'University of Calicut', period: '2018 – 2021' },
-];
-
-const certifications = [{ title: '1 Million Prompters', issuer: 'AI & Prompt Engineering', year: '2024' }];
-
+// Not yet rebuilt (later milestone): the old card layout, now reading src/content.
 const facts = [
-  { label: 'Experience', value: '5 years' },
-  { label: 'Based in', value: 'Abu Dhabi, UAE' },
-  { label: 'Languages', value: 'English · Arabic' },
+  { label: 'Experience', value: `${profile.yearsOfExperience} years` },
+  { label: 'Based in', value: profile.location.short },
+  { label: 'Languages', value: profile.languages.join(' · ') },
 ];
 
 export default function About() {
   return (
-    <section id="about" className="scroll-mt-20 py-24 md:py-32">
+    <section id="experience" className="py-24 md:py-32">
       <div className="shell">
         <SectionHeader
-          index="02 — About"
+          index="02 — Experience"
           title="Engineer across the full stack."
           subtitle="I build the software and run the systems behind it — comfortable from C# and SQL Server up to the browser, and from CI pipelines to production servers."
         />
@@ -69,14 +24,8 @@ export default function About() {
           {/* Left rail: bio + facts + education + certs */}
           <div className="space-y-6">
             <Reveal className="card p-6">
-              <p className="leading-relaxed text-muted">
-                I like owning a problem end to end — designing the
-                data model, writing the backend, shipping the UI, and making sure it deploys cleanly
-                and stays reliable. Most of my work has been in{' '}
-                <span className="text-fg">ERP and enterprise retail</span>, where correctness, auditability
-                and uptime matter.
-              </p>
-              <dl className="mt-6 grid grid-cols-1 gap-px overflow-hidden rounded-lg border border-line bg-line">
+              <p className="leading-relaxed text-muted">{bio}</p>
+              <dl className="mt-6 grid grid-cols-1 gap-px overflow-hidden border border-line bg-line">
                 {facts.map((f) => (
                   <div key={f.label} className="flex items-center justify-between bg-surface px-4 py-3">
                     <dt className="mono-label">{f.label}</dt>
@@ -86,21 +35,23 @@ export default function About() {
               </dl>
             </Reveal>
 
-            <Reveal delay={0.05} className="card p-6">
+            <Reveal className="card p-6">
               <h3 className="mb-4 flex items-center gap-2.5 text-lg font-semibold">
-                <HiOutlineAcademicCap className="text-accent" size={20} /> Education
+                <HiOutlineAcademicCap className="text-accent-ink" size={20} aria-hidden="true" /> Education
               </h3>
               <ul className="space-y-4">
                 {education.map((e) => (
                   <li key={e.degree} className="border-l border-line pl-4">
                     <p className="font-medium text-fg">{e.degree}</p>
                     <p className="text-sm text-muted">{e.school}</p>
-                    <p className="font-mono text-xs text-faint">{e.period}</p>
+                    <p className="font-mono text-xs text-faint">
+                      {e.start} – {e.end}
+                    </p>
                   </li>
                 ))}
               </ul>
               <h3 className="mb-4 mt-6 flex items-center gap-2.5 text-lg font-semibold">
-                <HiOutlineBadgeCheck className="text-accent" size={20} /> Certifications
+                <HiOutlineBadgeCheck className="text-accent-ink" size={20} aria-hidden="true" /> Certifications
               </h3>
               <ul className="space-y-4">
                 {certifications.map((c) => (
@@ -115,25 +66,37 @@ export default function About() {
           </div>
 
           {/* Right: experience timeline */}
-          <Reveal delay={0.1} className="card p-6 lg:col-span-2 lg:p-8">
+          <Reveal className="card p-6 lg:col-span-2 lg:p-8">
             <h3 className="mb-8 flex items-center gap-2.5 text-lg font-semibold">
-              <HiOutlineBriefcase className="text-accent" size={20} /> Experience
+              <HiOutlineBriefcase className="text-accent-ink" size={20} aria-hidden="true" /> Experience
             </h3>
             <ol className="relative space-y-9 before:absolute before:left-[5px] before:top-2 before:h-[calc(100%-1rem)] before:w-px before:bg-line">
-              {experiences.map((exp) => (
-                <li key={`${exp.company}-${exp.period}`} className="relative pl-7">
-                  <span className="absolute left-0 top-1.5 h-[11px] w-[11px] rounded-full border-2 border-canvas bg-accent" />
-                  <div className="flex flex-wrap items-baseline justify-between gap-x-3">
-                    <h4 className="text-lg font-semibold text-fg">{exp.title}</h4>
-                    <span className="font-mono text-xs text-faint">{exp.period}</span>
-                  </div>
-                  <p className="text-sm font-medium text-accent">
-                    {exp.company}
-                    {exp.location && <span className="text-faint"> · {exp.location}</span>}
-                  </p>
-                  <p className="mt-2 leading-relaxed text-muted">{exp.description}</p>
-                </li>
-              ))}
+              {experience.flatMap((job) =>
+                job.roles.map((role, i) => (
+                  <li key={`${job.id}-${role.start}`} className="relative pl-7">
+                    <span className="absolute left-0 top-1.5 h-[11px] w-[11px] rounded-full border-2 border-canvas bg-ink-3" />
+                    <div className="flex flex-wrap items-baseline justify-between gap-x-3">
+                      <h4 className="text-lg font-semibold text-fg">{role.title}</h4>
+                      <span className="font-mono text-xs text-faint">{formatRange(role.start, role.end)}</span>
+                    </div>
+                    <p className="text-sm font-medium text-ink">
+                      {job.company}
+                      <span className="text-faint"> · {job.location}</span>
+                    </p>
+                    <p className="mt-2 leading-relaxed text-muted">{i === 0 ? job.summary : role.highlights[0]}</p>
+                    {i === 0 && job.onsite && (
+                      <p className="mt-2 border-l border-line pl-3 text-sm leading-relaxed text-muted">
+                        <span className="font-mono text-xs text-faint">
+                          Onsite · {job.onsite.client}, {job.onsite.location} · {formatMonth(job.onsite.start)} –{' '}
+                          {formatMonth(job.onsite.end)}
+                        </span>
+                        <br />
+                        {job.onsite.summary}
+                      </p>
+                    )}
+                  </li>
+                ))
+              )}
             </ol>
           </Reveal>
         </div>

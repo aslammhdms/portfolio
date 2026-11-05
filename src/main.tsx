@@ -1,13 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
-import './index.css'
-import { ThemeProvider } from './contexts/ThemeContext.tsx'
+import { createRoot, hydrateRoot } from 'react-dom/client';
+import '@fontsource-variable/mona-sans/wght.css';
+import '@fontsource-variable/cascadia-mono/wght.css';
+import './index.css';
+import './styles/chrome.css';
+import './styles/hero.css';
+import Root from './Root';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>,
-)
+const container = document.getElementById('root')!;
+
+// The production build prerenders the page into #root (scripts/prerender.mjs), so
+// React hydrates it. The dev server serves an empty #root and renders from scratch.
+if (container.hasChildNodes()) {
+  hydrateRoot(container, <Root />);
+} else {
+  createRoot(container).render(<Root />);
+}
