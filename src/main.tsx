@@ -1,6 +1,5 @@
 import { createRoot, hydrateRoot } from 'react-dom/client';
-import '@fontsource-variable/mona-sans/wght.css';
-import '@fontsource-variable/cascadia-mono/wght.css';
+import './styles/fonts.css';
 import './index.css';
 import './styles/chrome.css';
 import './styles/hero.css';

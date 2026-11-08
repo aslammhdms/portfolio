@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Resize public/images/aslam.jpg into the hero portrait derivatives.
+"""Resize assets-src/aslam.jpg into the hero portrait derivatives.
 
   aslam-620.{webp,jpg}   desktop portrait at 1x (the frame is about 310 px wide)
   aslam-1240.{webp,jpg}  desktop portrait at 2x
@@ -22,7 +22,7 @@ except ImportError:  # pragma: no cover
     sys.exit("portrait-images: needs Pillow (pip install pillow)")
 
 ROOT = Path(__file__).resolve().parent.parent
-SOURCE = ROOT / "public" / "images" / "aslam.jpg"
+SOURCE = ROOT / "assets-src" / "aslam.jpg"
 OUT = ROOT / "public" / "images"
 
 

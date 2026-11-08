@@ -34,13 +34,13 @@
   .prompt-band,
   .skip-link,
   [role='dialog'],
+  .term-drawer,
   .email-menu-wrap,
   .hero-actions > .pill,
   .hero-links li:last-child,
   .portrait-toggle,
   .row-visual,
-  .row-bullets,
-  .row-foot,
+  .row-actions,
   .also .stack-line,
   .also .row-actions,
   .also-details,
@@ -147,9 +147,23 @@
     color: rgb(var(--ink)) !important;
   }
 
-  /* ---------- Work: title, meta, summary, figures ---------- */
+  /* ---------- Work: title, meta, summary, figures, bullets, stack, case study ----------
+     Diagrams stay hidden; the case study (problem, approach, outcome) is their text
+     equivalent, so it prints open. */
   .work-row {
     padding-block: 5mm !important;
+  }
+  .work .disclosure {
+    grid-template-rows: 1fr !important;
+    visibility: visible !important;
+    transition: none !important;
+  }
+  .work .row-bullets {
+    margin-top: 3mm !important;
+  }
+  .work .row-foot {
+    display: block !important;
+    margin-top: 3mm !important;
   }
   .row-summary,
   .also-summary {

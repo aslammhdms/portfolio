@@ -208,6 +208,13 @@ html:not(.js) .copy-link {
   color: rgb(var(--ink));
   text-decoration-color: rgb(var(--accent-ink));
 }
+/* Phones and touch screens: the quiet links are still the page's controls. */
+@media (max-width: 640px), (pointer: coarse) {
+  .text-toggle,
+  .text-link {
+    min-height: 44px;
+  }
+}
 
 /* ---------- Status: Private / In progress / Live ----------
    A label, not a control: a hairline border, no hover, no colour. (The live marks in

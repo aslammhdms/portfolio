@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type KeyboardEvent as ReactKeyEvent } from 'react';
 import {
   coreSkills,
   stackGroups,
@@ -51,6 +51,27 @@ interface StackRowProps {
 function StackRow({ rowId, title, note, skills, core = false, open, onToggle }: StackRowProps) {
   const evidenceId = `stack-${rowId}-evidence`;
   const current = open?.row === rowId ? skills.find((s) => s.name === open.skill) : undefined;
+  // One Tab stop per row (the last skill focused, else the first); the arrow keys move
+  // between its skills, so reaching Contact from Work takes a handful of Tabs, not forty.
+  const [stop, setStop] = useState<SkillName | null>(null);
+  const tabStop = skills.some((s) => s.name === stop) ? stop : skills[0]?.name;
+  const onKeyDown = (e: ReactKeyEvent<HTMLUListElement>) => {
+    const keys: Record<string, (i: number, n: number) => number> = {
+      ArrowRight: (i, n) => (i + 1) % n,
+      ArrowDown: (i, n) => (i + 1) % n,
+      ArrowLeft: (i, n) => (i - 1 + n) % n,
+      ArrowUp: (i, n) => (i - 1 + n) % n,
+      Home: () => 0,
+      End: (_, n) => n - 1,
+    };
+    const move = keys[e.key];
+    if (!move) return;
+    const buttons = Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>('button.skill'));
+    const i = buttons.indexOf(document.activeElement as HTMLButtonElement);
+    if (i < 0) return;
+    e.preventDefault();
+    buttons[move(i, buttons.length)].focus();
+  };
 
   return (
     <div className="stack-row" data-core={core ? '' : undefined}>
@@ -61,7 +82,7 @@ function StackRow({ rowId, title, note, skills, core = false, open, onToggle }: 
 
       <div className="stack-body">
         {/* Desktop and tablets: buttons. */}
-        <ul className="dot-list stack-items" role="list">
+        <ul className="dot-list stack-items" role="list" onKeyDown={onKeyDown}>
           {skills.map((skill) => {
             const pressed = current?.name === skill.name;
             return (
@@ -72,6 +93,8 @@ function StackRow({ rowId, title, note, skills, core = false, open, onToggle }: 
                   aria-expanded={pressed}
                   aria-controls={evidenceId}
                   data-skill={skill.name}
+                  tabIndex={skill.name === tabStop ? 0 : -1}
+                  onFocus={() => setStop(skill.name)}
                   onClick={() => onToggle(rowId, skill.name)}
                 >
                   {skill.name}

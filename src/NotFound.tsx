@@ -4,7 +4,7 @@ import { Wordmark } from './components/TopBar';
 
 const BASE = import.meta.env.BASE_URL;
 /** What the prerendered page says until the script below fills in the real address. */
-export const NOT_FOUND_FALLBACK = '/this-address';
+export const NOT_FOUND_FALLBACK = 'this address';
 
 /**
  * The 404 page (dist/404.html, prerendered; scripts/prerender.mjs adds the one line
@@ -18,7 +18,7 @@ export default function NotFound() {
     <StrictMode>
       <header className="topbar nf-bar" data-scrolled="">
         <div className="shell topbar-inner">
-          <Wordmark />
+          <Wordmark href={BASE} />
           <nav aria-label="Sections">
             <ul className="nf-nav">
               {sections.map((s) => (

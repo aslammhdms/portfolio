@@ -226,6 +226,14 @@
   }
 }
 
+/* Where the rail folds into a line (tablet width) the line is already full of mono
+   text: the status gets a line of its own rather than trailing the role. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .project-meta > .project-meta-status {
+    flex: 0 0 100%;
+  }
+}
+
 /* ---------- Text column ---------- */
 .row-summary {
   margin: 12px 0 0;
@@ -487,7 +495,7 @@
   container-type: inline-size;
   padding: 20px;
   border: 1px solid rgb(var(--rule));
-  background: rgb(var(--surface));
+  background: transparent;
 }
 .dg-label {
   margin: 0 0 16px;
@@ -791,6 +799,11 @@
   text-underline-offset: 4px;
   transition: color 0.16s var(--ease-standard), text-decoration-color 0.16s var(--ease-standard);
 }
+@media (max-width: 640px), (pointer: coarse) {
+  .dg-caption-link {
+    min-height: 44px;
+  }
+}
 .dg-caption-link:hover {
   color: rgb(var(--ink));
   text-decoration-color: rgb(var(--accent-ink));
@@ -1037,7 +1050,12 @@ html.rm .swap > * {
   font-size: 14px;
   cursor: pointer;
 }
-.trace-btn[aria-pressed='true'] {
+@media (max-width: 640px), (pointer: coarse) {
+  .trace-btn {
+    height: 44px;
+  }
+}
+.trace-btn[data-active] {
   border-color: rgb(var(--ink));
   background: rgb(var(--raised));
 }

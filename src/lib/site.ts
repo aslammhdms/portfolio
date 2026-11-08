@@ -134,7 +134,3 @@ export function konami() {
     window.setTimeout(() => root.classList.remove('replay'), 1000);
   }, 1000);
 }
-
-export function barrelRoll() {
-  konami();
-}

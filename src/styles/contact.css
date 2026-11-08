@@ -365,10 +365,11 @@ html:not(.js) .footer-keys {
     margin-left: 0;
     margin-top: 6px;
   }
-  .footer-print {
-    min-height: 40px;
+  .footer-print,
+  .footer-link {
+    min-height: 44px;
   }
   .theme-switch button {
-    min-height: 34px;
+    min-height: 40px;
   }
 }

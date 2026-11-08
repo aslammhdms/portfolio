@@ -74,7 +74,7 @@ export default function TerminalDrawer() {
       className="term term-drawer"
       data-open={shown ? '' : undefined}
       data-skin={term.skin}
-      role="dialog"
+      role="region"
       aria-label="Terminal"
       onKeyDown={onKeyDown}
     >

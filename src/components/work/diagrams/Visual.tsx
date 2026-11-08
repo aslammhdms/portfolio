@@ -65,8 +65,7 @@ function DiagramFigure({ diagram }: { diagram: Diagram }) {
 
 /**
  * 'Trace a ticket' / 'Trace a receipt': follows one example through the drawing, one
- * numbered step at a time (lib/trace.ts). Pressed while a trace is shown; pressing
- * again clears it. The current step is also written out in a status line, so the
+ * numbered step at a time (lib/trace.ts). Pressing again clears it. The current step is also written out in a status line, so the
  * walk-through never depends on seeing the highlight.
  */
 function TraceControl({ id }: { id: string }) {
@@ -75,10 +74,15 @@ function TraceControl({ id }: { id: string }) {
   const current = status === 'idle' ? null : trace.steps[step - 1];
   return (
     <div className="dg-trace">
-      <button type="button" className="pill pill-outline trace-btn" aria-pressed={status !== 'idle'} onClick={() => toggleTrace(id)}>
+      <button type="button" className="pill pill-outline trace-btn" data-active={status !== 'idle' ? '' : undefined} onClick={() => toggleTrace(id)}>
         {trace.button}
+        {status !== 'idle' && <span className="sr-only"> (press again to clear)</span>}
       </button>
-      <p className="trace-status" role="status">
+      {/* One announcement when the walk ends; the per-step line below is for eyes only. */}
+      <span className="sr-only" role="status">
+        {status === 'done' ? `Trace finished: ${trace.steps.length} steps. The same list is under Read as text.` : ''}
+      </span>
+      <p className="trace-status" aria-hidden="true">
         {current && (
           <>
             <span className="trace-n">

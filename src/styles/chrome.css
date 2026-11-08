@@ -362,6 +362,17 @@ html:not(.amd) .wordmark {
 .sb-btn:focus-visible {
   outline-offset: -2px;
 }
+/* The bar stays 28px; on touch the hit area grows past it with a pseudo-element. */
+@media (max-width: 640px), (pointer: coarse) {
+  .sb-btn {
+    position: relative;
+  }
+  .sb-btn::after {
+    content: '';
+    position: absolute;
+    inset: -10px -2px;
+  }
+}
 .sb-btn .icon {
   width: 10px;
   height: 10px;
@@ -579,4 +590,18 @@ html.rm .sb-digits .roll {
 }
 .nf-path {
   margin-left: auto;
+}
+
+/* Very short viewports (a phone on its side, or 400% zoom on a laptop: 256 px tall):
+   two fixed bars would take a third of the screen. The status bar's controls (clock,
+   terminal, theme, shortcuts) all have a second home in the footer, so it steps aside
+   and the top bar shrinks. */
+@media (max-height: 300px) {
+  :root {
+    --topbar-h: 48px;
+    --statusbar-h: 0px;
+  }
+  .statusbar {
+    display: none;
+  }
 }

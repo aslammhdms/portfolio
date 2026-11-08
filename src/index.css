@@ -14,6 +14,11 @@
     text-size-adjust: 100%;
   }
 
+  /* The skip link's target takes focus so the next Tab starts inside it; no ring on a landmark. */
+  main:focus {
+    outline: none;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     html {
       scroll-behavior: smooth;

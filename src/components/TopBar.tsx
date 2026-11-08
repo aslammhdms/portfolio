@@ -10,9 +10,10 @@ interface TopBarProps {
 }
 
 /** The mini lockup: the same two widths as the hero name, at 16px. */
-export function Wordmark({ className = 'wordmark' }: { className?: string }) {
+/** `href` defaults to the top of this page; the 404 page passes the site root instead. */
+export function Wordmark({ className = 'wordmark', href = `#${TOP_ID}` }: { className?: string; href?: string }) {
   return (
-    <a href={`#${TOP_ID}`} className={className}>
+    <a href={href} className={className}>
       <span className="a">{profile.givenName}</span> <span className="m">{profile.familyName}</span>
     </a>
   );

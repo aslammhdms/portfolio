@@ -290,6 +290,18 @@ html.rm .pal-sheet {
 .keys-secret {
   color: rgb(var(--ink-3));
 }
+/* The ten Konami keycaps take the row's width on a phone: label on top, caps below. */
+@media (max-width: 480px) {
+  .keys-list li.keys-secret {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 4px 16px;
+    padding-block: 10px;
+  }
+  .keys-secret .keys-combo {
+    justify-content: flex-start;
+  }
+}
 .keys-secret .keys-combo kbd {
   color: rgb(var(--ink-2));
 }

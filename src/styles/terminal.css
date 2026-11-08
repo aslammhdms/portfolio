@@ -275,8 +275,14 @@
   visibility: visible;
   transition: transform 0.24s var(--ease-standard), visibility 0s;
 }
+/* The drawer is a full-width bar: a frame round all of it would read as a highlighted
+   card. Focus shows on the prompt line (below), the buttons and the log instead. */
 .term-drawer:focus-within {
-  outline-offset: -2px;
+  outline: none;
+}
+.term-drawer .t-input:focus-within {
+  outline: 2px solid rgb(var(--focus));
+  outline-offset: 2px;
 }
 .term-drawer .t-body {
   flex: 1 1 auto;
@@ -311,7 +317,7 @@ html.drawer-open {
     min-height: 44px;
   }
   .term-btn {
-    min-height: 36px;
+    min-height: 44px;
   }
   /* 16px stops iOS zooming the page when the prompt takes focus. */
   .t-input input {

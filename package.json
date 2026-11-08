@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs && node scripts/build-vcard.mjs",
-    "build:pages": "tsc && vite build --mode pages && vite build --ssr src/entry-server.tsx --outDir dist-ssr --mode pages && node scripts/prerender.mjs && node scripts/build-vcard.mjs",
+    "build": "tsc && vite build && vite build --ssr src/entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs && node scripts/build-vcard.mjs && node scripts/build-sitemap.mjs",
+    "build:pages": "tsc && vite build --mode pages && vite build --ssr src/entry-server.tsx --outDir dist-ssr --mode pages && node scripts/prerender.mjs && node scripts/build-vcard.mjs && node scripts/build-sitemap.mjs",
     "preview": "vite preview",
     "check:budgets": "node scripts/check-budgets.mjs",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
