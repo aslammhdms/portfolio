@@ -56,6 +56,8 @@ export default function ProjectRow({ project, index, caseOpen, onToggleCase }: P
 
       <div className="row-body">
         <p className="row-summary">{project.summary}</p>
+        {/* The CV view hides the visual and its caption link, so a public link is printed as text. */}
+        {project.link && <p className="print-link">{project.link.href}</p>}
         <Facts facts={project.facts} />
         <ul className="row-bullets" role="list">
           {project.bullets.map((bullet) => (

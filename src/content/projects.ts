@@ -12,6 +12,7 @@
  */
 import { formatMonth } from './experience';
 import { helpdeskMap, skienMap, tricoreRun, websiteScope, type ProjectVisual } from './diagrams';
+import type { SkillName } from './skills';
 
 export type ProjectId =
   | 'helpdesk'
@@ -69,12 +70,19 @@ export type ProjectFacts =
 interface ProjectBase {
   id: ProjectId;
   name: string;
+  /** For tight lists: the Stack section's evidence links and the print view. */
+  shortName: string;
   org: string;
   role: string;
   period: Period;
   status: ProjectStatus;
   summary: string;
   stack: string[];
+  /**
+   * The skills this project is evidence for. The Stack section's receipts, counts and
+   * Core row are derived from these lists (src/content/derive.ts), never typed by hand.
+   */
+  skills: SkillName[];
   link?: ProjectLink;
 }
 
@@ -106,6 +114,7 @@ export const featuredProjects: FeaturedProject[] = [
     id: 'helpdesk',
     featured: true,
     name: 'HelpDesk platform',
+    shortName: 'HelpDesk',
     ...AL_MADINA,
     status: 'private',
     summary: 'The helpdesk and operations platform behind Al Madina’s hypermarket branches.',
@@ -132,6 +141,7 @@ export const featuredProjects: FeaturedProject[] = [
       },
     ],
     stack: ['.NET 10', 'ASP.NET Core MVC', 'C#', 'EF Core', 'SQL Server', 'SignalR', 'React Native (Expo)', 'IIS'],
+    skills: ['C#', '.NET / .NET Core', 'ASP.NET Core MVC', 'Web API / REST', 'Entity Framework / EF Core', 'SignalR', 'SQL Server', 'RDLC reporting', 'React Native / Expo', 'IIS / Windows Server', 'Gravity ERP integration'],
     caseStudy: {
       problem:
         'IT support, asset tracking, procurement and inventory across 19 branches ran on scattered tools, spreadsheets and manual processes, with no single auditable system or real-time visibility.',
@@ -145,6 +155,7 @@ export const featuredProjects: FeaturedProject[] = [
     id: 'tricore',
     featured: true,
     name: 'Tricore ERP migration',
+    shortName: 'Tricore migration',
     org: 'Tristar Engineering & Construction',
     role: 'Software Engineer',
     period: { start: '2026-09', end: null },
@@ -166,6 +177,7 @@ export const featuredProjects: FeaturedProject[] = [
       },
     ],
     stack: ['SQL Server', 'T-SQL', 'ePROMIS', 'Tricore ERP'],
+    skills: ['SQL Server', 'T-SQL', 'Data migration', 'ePROMIS', 'Tricore ERP'],
     caseStudy: {
       problem:
         'The company runs on ePROMIS, an ageing ERP. Moving to Tricore means rebuilding daily workflows and moving years of data without stopping operations.',
@@ -179,6 +191,7 @@ export const featuredProjects: FeaturedProject[] = [
     id: 'skien-suite',
     featured: true,
     name: 'Skien.Suite & Skien.eCommerce',
+    shortName: 'Skien.Suite',
     org: 'Skien Software Lab',
     role: 'Software Developer, then Senior Software Developer',
     period: { start: '2021', end: '2025' },
@@ -206,6 +219,7 @@ export const featuredProjects: FeaturedProject[] = [
       },
     ],
     stack: ['.NET Core', 'C#', 'ASP.NET MVC', 'Entity Framework', 'SQL Server', 'Angular.js', 'JavaScript', 'jQuery'],
+    skills: ['C#', '.NET / .NET Core', 'ASP.NET MVC', 'Entity Framework / EF Core', 'SQL Server', 'Angular.js', 'JavaScript', 'jQuery'],
     caseStudy: {
       problem:
         'Business clients needed unified operations (inventory, sales, accounting and more) instead of disconnected tools and spreadsheets.',
@@ -219,6 +233,7 @@ export const featuredProjects: FeaturedProject[] = [
     id: 'almadina-website',
     featured: true,
     name: 'Al Madina Hypermarket website',
+    shortName: 'Al Madina website',
     ...AL_MADINA,
     status: 'live',
     summary: 'The production site of a 50-year-old UAE retail group.',
@@ -238,6 +253,7 @@ export const featuredProjects: FeaturedProject[] = [
       },
     ],
     stack: ['React 18', 'Vite', 'Tailwind CSS', 'Framer Motion', 'React Router'],
+    skills: ['React', 'Tailwind CSS', 'IIS / Windows Server'],
     caseStudy: {
       problem:
         'The chain’s legacy site was slow and dated, and could not cleanly present its branches, offers, careers and app downloads across devices.',
@@ -255,11 +271,13 @@ export const alsoBuilt: CompactProject[] = [
     id: 'madina-insight',
     featured: false,
     name: 'Madina Insight',
+    shortName: 'Madina Insight',
     ...AL_MADINA,
     status: 'private',
     summary:
       'Competitor-flyer pricing intelligence: PDF and image ingestion, product matching against the catalogue, and price-trend history.',
     stack: ['.NET 10 MVC', 'C#', 'EF Core', 'SQL Server', 'JavaScript'],
+    skills: ['C#', '.NET / .NET Core', 'ASP.NET Core MVC', 'Entity Framework / EF Core', 'SQL Server', 'JavaScript'],
     details: [
       'An upload and processing pipeline for competitor flyers (PDF and images).',
       'Product matching against the catalogue that surfaces pricing gaps across branches.',
@@ -270,11 +288,13 @@ export const alsoBuilt: CompactProject[] = [
     id: 'retail-mobile',
     featured: false,
     name: 'Retail mobile apps',
+    shortName: 'Retail apps',
     ...AL_MADINA,
     status: 'live',
     summary:
       'A React Native price checker for Zebra handhelds, with barcode scanning and live price and stock from Gravity ERP, plus improvements to the public Al Madina AUH app.',
     stack: ['React Native', 'Zebra SDK', 'REST', 'SQL Server'],
+    skills: ['React Native / Expo', 'Web API / REST', 'SQL Server', 'Zebra SDK', 'Gravity ERP integration'],
     details: [
       'A price checker for floor staff on Zebra handhelds, with barcode scanning through the Zebra SDK.',
       'Real-time price and stock lookups from Gravity ERP over REST.',

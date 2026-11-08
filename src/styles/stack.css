@@ -1,0 +1,226 @@
+/* ============================================================
+   03 — Stack, with receipts.
+
+   Ledger rows: the group label in the rail (columns 1–2), the
+   skills inline in 3–12 in Mona 500 with thin dots between them.
+   No chips, icons, logos or bars. Every skill is a button; the
+   open one shows ONE evidence line under its row, on the fixed
+   accent-wash token. Core is its own row, with a count per skill.
+   Phones: one skill per line with its projects as a mono sub-line.
+   ============================================================ */
+
+.stack-rows {
+  border-bottom: 1px solid rgb(var(--rule));
+}
+
+.stack-row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  padding: 22px 0 24px;
+  border-top: 1px solid rgb(var(--rule));
+}
+.stack-label {
+  grid-column: 1 / span 2;
+  margin: 0;
+  /* Puts the label's cap line near the skills' cap line (19px at 1.45). */
+  padding-top: 7px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 450;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-2));
+}
+.stack-note {
+  display: block;
+  margin-top: 6px;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  color: rgb(var(--ink-3));
+}
+.stack-body {
+  grid-column: 3 / -1;
+  min-width: 0;
+}
+
+/* Skills inline: '·' separators as in .dot-list, at the width of ' · ' in Mona Sans. */
+.stack-items,
+.stack-plain {
+  --sep: 0.66em;
+  row-gap: 2px;
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgb(var(--ink));
+}
+.stack-items > li::before,
+.stack-plain > li::before {
+  color: rgb(var(--ink-3));
+}
+.stack-plain {
+  color: rgb(var(--ink-2));
+}
+
+/* A skill is a button that looks like a word: the underline appears on hover, and an
+   open skill keeps a solid accent-ink underline (aria-expanded carries the state). */
+.skill {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  white-space: nowrap;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 5px;
+  transition: text-decoration-color 0.16s var(--ease-standard);
+}
+.skill:hover {
+  text-decoration-color: rgb(var(--rule-strong));
+}
+.skill[aria-expanded='true'] {
+  text-decoration-color: rgb(var(--accent-ink));
+  text-decoration-thickness: 2px;
+}
+/* Without scripts a skill could not open anything: show it as plain text. */
+html:not(.js) .skill {
+  cursor: default;
+  text-decoration: none;
+}
+
+/* '×5': how many projects on the page used it. */
+.skill-count {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: rgb(var(--ink-3));
+}
+
+/* The evidence line: 'SQL Server → Tricore migration · HelpDesk · …'. */
+.evidence:not([data-open]) {
+  display: none;
+}
+.evidence-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+  margin: 14px 0 0;
+  padding: 12px 16px 13px;
+  background: rgb(var(--accent-wash));
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: rgb(var(--ink));
+}
+.evidence-skill {
+  font-weight: 600;
+}
+.evidence-line > .icon {
+  align-self: center;
+  color: rgb(var(--accent-ink));
+}
+.evidence-line .evidence-links {
+  flex: 1 1 16em;
+  min-width: 0;
+}
+.evidence-links {
+  --sep: 0.66em;
+}
+.evidence-links a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  color: rgb(var(--ink));
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--accent-ink));
+  text-underline-offset: 4px;
+}
+.evidence-links a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* The phone list is hidden on wider screens. */
+.stack-phone {
+  display: none;
+}
+
+@media (max-width: 1279px) {
+  .stack-label {
+    grid-column: 1 / span 3;
+  }
+  .stack-body {
+    grid-column: 4 / -1;
+  }
+}
+
+/* Phones: label above, then one skill per line with its projects underneath in mono;
+   the Core row stays one inline list with its counts. No buttons to open. */
+@media (max-width: 767px) {
+  .stack-row {
+    display: block;
+    padding: 20px 0 22px;
+  }
+  .stack-label {
+    padding-top: 0;
+  }
+  .stack-body {
+    margin-top: 12px;
+  }
+  .stack-items,
+  .evidence {
+    display: none !important;
+  }
+  .stack-phone:not(.stack-phone-core) {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .stack-phone-core {
+    --sep: 0.66em;
+    display: flex;
+    row-gap: 2px;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.45;
+    color: rgb(var(--ink));
+  }
+  .stack-phone-core > li::before {
+    color: rgb(var(--ink-3));
+  }
+  .stack-phone .skill-name {
+    display: block;
+    font-size: 17px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: rgb(var(--ink));
+  }
+  .stack-phone-core .skill-name {
+    display: inline;
+  }
+  .stack-phone .evidence-links {
+    --sep: 1.758em;
+    margin-top: 2px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: rgb(var(--ink-3));
+  }
+  .stack-phone .evidence-links a {
+    color: rgb(var(--ink-2));
+    text-decoration-color: rgb(var(--rule-strong));
+  }
+  .stack-plain {
+    font-size: 17px;
+  }
+}

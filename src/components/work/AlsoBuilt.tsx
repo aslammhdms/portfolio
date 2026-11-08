@@ -38,6 +38,8 @@ export default function AlsoBuilt({ isOpen, onToggle }: AlsoBuiltProps) {
                 </h4>
                 <ProjectMeta project={project} showRole={false} />
                 <p className="also-summary">{project.summary}</p>
+                {/* The CV view hides the actions, so a public link is printed as text. */}
+                {project.link && <p className="print-link">{project.link.href}</p>}
                 <StackLine items={project.stack} id={key} />
                 <div className="row-actions">
                   <DisclosureToggle

@@ -1,0 +1,374 @@
+/* ============================================================
+   04 — Contact, the desktop email menu, and the footer colophon.
+   ============================================================ */
+
+.contact {
+  padding-bottom: 128px;
+}
+
+/* The address, set large and fitted to columns 1–8: the column is a size container
+   and the font size is its width divided by the address's advance in em (Mona Sans
+   600 at -0.01em: 12.50em, measured in Chromium, plus a hair of slack; the size-adjusted
+   Arial fallback is narrower, 12.27em). Long text spacing or a missing font may still need a break, so it
+   may wrap anywhere rather than overflow. */
+.contact-mail {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--gutter);
+  align-items: end;
+}
+.contact-address-col {
+  grid-column: 1 / span 8;
+  min-width: 0;
+  container-type: inline-size;
+}
+.contact-address {
+  --email-em: 12.55;
+  display: inline-block;
+  max-width: 100%;
+  font-size: calc(100cqi / var(--email-em));
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  overflow-wrap: anywhere;
+  color: rgb(var(--ink));
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 0.14em;
+  transition: text-decoration-color 0.16s var(--ease-standard);
+}
+.contact-address:hover {
+  text-decoration-color: rgb(var(--accent-ink));
+}
+.contact-mail-actions {
+  grid-column: 9 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 20px;
+  /* Centred on the address's x-height band, not its descenders. */
+  padding-bottom: 0.4em;
+}
+
+.contact-ledger {
+  /* Five cells, sized to what they hold (the LinkedIn address is the longest). */
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr) minmax(0, 0.85fr) minmax(0, 0.85fr) minmax(0, 1.1fr);
+  margin-top: 56px;
+}
+.contact-ledger .facts-value {
+  font-size: 16px;
+}
+
+.copy-profile {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 36px;
+  margin-top: -4px;
+  padding: 0 16px 0 14px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: rgb(var(--ink));
+  cursor: pointer;
+  transition: border-color 0.16s var(--ease-standard);
+}
+.copy-profile:hover {
+  border-color: rgb(var(--ink));
+}
+
+.contact-time {
+  margin: 24px 0 0;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgb(var(--ink-2));
+}
+.contact-time-digits {
+  font-variant-numeric: tabular-nums;
+  color: rgb(var(--ink));
+}
+.contact-time-offset {
+  color: rgb(var(--ink-3));
+}
+
+@media (max-width: 1023px) {
+  .contact-address-col,
+  .contact-mail-actions {
+    grid-column: 1 / -1;
+  }
+  .contact-mail-actions {
+    margin-top: 20px;
+    padding-bottom: 0;
+  }
+  .contact-ledger {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* The fifth cell, Copy profile, takes a whole row. */
+  .contact-ledger .facts-cell-copy {
+    grid-column: 1 / -1;
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact {
+    padding-bottom: 80px;
+  }
+  .contact-mail-actions {
+    flex-wrap: nowrap;
+    gap: 10px;
+  }
+  .contact-mail-actions .pill {
+    flex: 1 1 0;
+  }
+  .contact-mail-actions .copy-text {
+    flex: none;
+    min-height: 48px;
+    padding: 0 18px;
+    border: 1px solid rgb(var(--rule-strong));
+    border-radius: 999px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 600;
+    color: rgb(var(--ink));
+  }
+  .contact-ledger {
+    margin-top: 40px;
+  }
+  /* Two columns of 48px tap targets. LinkedIn shows its short label here (.v-short, hero.css). */
+  .contact-ledger .facts-link {
+    min-height: 44px;
+  }
+
+  .contact-ledger .facts-cell-copy {
+    padding: 14px 0 16px;
+  }
+  .copy-profile {
+    width: 100%;
+    min-height: 48px;
+    margin-top: 6px;
+    justify-content: center;
+  }
+}
+
+/* ---------- 'Email me' menu (desktop) ----------
+   An overlay, so it is the one place with a shadow; square, like every sheet. */
+.email-menu-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.email-menu {
+  position: absolute;
+  left: 0;
+  top: calc(100% + 8px);
+  z-index: 50;
+  width: max-content;
+  min-width: 260px;
+  padding: 6px 0;
+  border: 1px solid rgb(var(--rule-strong));
+  background: rgb(var(--surface));
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+.email-menu[data-up] {
+  top: auto;
+  bottom: calc(100% + 8px);
+}
+:root[data-theme='light'] .email-menu {
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.14);
+}
+.email-menu-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 18px 11px 16px;
+  border: 0;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-align: left;
+  text-decoration: none;
+  color: rgb(var(--ink));
+  cursor: pointer;
+}
+.email-menu-item:hover,
+.email-menu-item:focus-visible {
+  background: rgb(var(--raised));
+}
+.email-menu-item:focus-visible {
+  outline-offset: -2px;
+}
+.email-menu-item > .icon {
+  margin-top: 3px;
+  color: rgb(var(--ink-3));
+}
+.email-menu-text {
+  display: grid;
+}
+.email-menu-meta {
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 400;
+  color: rgb(var(--ink-3));
+}
+
+/* ============================================================
+   Footer: one hairline row of colophon in 13px ink-3, with 40px
+   of clearance above the status bar. Three lines on phones.
+   ============================================================ */
+.footer {
+  border-top: 1px solid rgb(var(--rule));
+  padding-bottom: 12px;
+}
+.footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 28px;
+  padding-block: 20px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: rgb(var(--ink-3));
+}
+.footer-row p {
+  margin: 0;
+}
+.footer-copy {
+  white-space: nowrap;
+  color: rgb(var(--ink-2));
+}
+.footer-colophon {
+  flex: 1 1 340px;
+  min-width: 0;
+  max-width: 62ch;
+}
+.footer-keys {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 6px;
+}
+.footer-keys .keycap {
+  width: auto;
+  margin: 0;
+  padding: 1px 6px;
+}
+.footer-code {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: rgb(var(--ink-2));
+}
+.footer-link {
+  min-height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: rgb(var(--ink-2));
+  text-decoration: underline;
+  text-decoration-color: rgb(var(--rule-strong));
+  text-underline-offset: 4px;
+  cursor: pointer;
+}
+.footer-link:hover {
+  color: rgb(var(--ink));
+  text-decoration-color: rgb(var(--accent-ink));
+}
+.footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+  margin-left: auto;
+}
+.footer-print {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  padding: 0 14px 0 12px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  color: rgb(var(--ink));
+  cursor: pointer;
+  transition: border-color 0.16s var(--ease-standard);
+}
+.footer-print:hover {
+  border-color: rgb(var(--ink));
+}
+
+/* Dark / Light: two pills in one rounded group; the chosen one is filled in ink. */
+.theme-switch {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+}
+.theme-switch button {
+  min-height: 26px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1;
+  color: rgb(var(--ink-2));
+  cursor: pointer;
+  transition: color 0.16s var(--ease-standard), background-color 0.16s var(--ease-standard);
+}
+.theme-switch button:hover {
+  color: rgb(var(--ink));
+}
+.theme-switch button[aria-pressed='true'] {
+  background: rgb(var(--ink));
+  color: rgb(var(--canvas));
+}
+/* The switch needs scripts to work. */
+html:not(.js) .theme-switch,
+html:not(.js) .footer-print,
+html:not(.js) .footer-keys {
+  display: none;
+}
+
+.footer-printed {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .footer-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .footer-colophon {
+    flex: none;
+  }
+  /* No keyboard shortcuts on a phone. */
+  .footer-keys {
+    display: none;
+  }
+  .footer-actions {
+    margin-left: 0;
+    margin-top: 6px;
+  }
+  .footer-print {
+    min-height: 40px;
+  }
+  .theme-switch button {
+    min-height: 34px;
+  }
+}

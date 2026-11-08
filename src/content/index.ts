@@ -7,6 +7,8 @@ export * from './projects';
 export * from './diagrams';
 export * from './skills';
 export * from './history';
+export * from './site';
+export * from './derive';
 
 /** Page sections in order: id (used by anchors, the nav and the status bar path) and label. */
 export const sections = [

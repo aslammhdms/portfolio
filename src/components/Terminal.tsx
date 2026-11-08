@@ -9,9 +9,10 @@ import {
   mailtoHref,
   profile,
   resumeHref,
-  skillGroups,
+  stackGroups,
   telHref,
   toolbox,
+  vcardHref,
 } from '../content';
 
 type Kind = 'cmd' | 'out' | 'err';
@@ -129,8 +130,8 @@ export default function Terminal() {
     switch (name) {
       case 'help':
         say('available commands:');
-        say('  whoami · work · stack · resume · contact');
-        say('  linkedin · theme [dark|light] · clear');
+        say('  whoami · work · stack [term] · resume · contact');
+        say('  vcard · linkedin · theme [dark|light] · clear');
         say('…and a few hidden ones. sudo at your own risk.');
         break;
       case 'whoami':
@@ -150,10 +151,19 @@ export default function Terminal() {
       }
       case 'stack':
       case 'skills': {
-        // From src/content/skills.ts, so the terminal and the Stack section never drift apart.
-        const width = Math.max(...skillGroups.map((g) => g.title.length)) + 3;
-        skillGroups.forEach((g) => say(`${g.title.toLowerCase().padEnd(width)}${g.skills.map((s) => s.name).join(' · ')}`));
+        // Derived from src/content, so the terminal and the Stack section never drift apart.
+        const term = rest.join(' ');
+        if (term) {
+          // 'stack sql': each matching skill with the projects that used it.
+          const hits = stackGroups.flatMap((g) => g.skills).filter((s) => s.name.toLowerCase().includes(term));
+          if (hits.length === 0) err(`no skill matches '${term}'`);
+          hits.forEach((s) => say(`${s.name} → ${s.projects.map((p) => p.shortName).join(' · ')}`));
+          break;
+        }
+        const width = Math.max(...stackGroups.map((g) => g.title.length)) + 3;
+        stackGroups.forEach((g) => say(`${g.title.toLowerCase().padEnd(width)}${g.skills.map((s) => s.name).join(' · ')}`));
         say(`${'toolbox'.padEnd(width)}${toolbox.join(' · ')}`);
+        say("try 'stack sql' to see where a skill was used.");
         break;
       }
       case 'resume':
@@ -172,6 +182,10 @@ export default function Terminal() {
         say(`email   ${profile.email}`);
         say(`phone   ${profile.phone.display}`);
         say(`place   ${profile.location.short}`);
+        break;
+      case 'vcard':
+        say('saving contact card …');
+        window.location.href = vcardHref;
         break;
       case 'linkedin':
         say(`opening ${profile.linkedin.label} …`);

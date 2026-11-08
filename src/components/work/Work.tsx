@@ -1,10 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
-import { alsoBuilt, featuredProjects, projectFromHash, sections, workSection, type ProjectId } from '../../content';
+import { alsoBuilt, featuredProjects, projectFromHash, workSection, type ProjectId } from '../../content';
+import SectionRail from '../SectionRail';
 import AlsoBuilt from './AlsoBuilt';
 import ProjectRow from './ProjectRow';
-
-const SECTION = sections.find((s) => s.id === 'work')!;
-const SECTION_NUMBER = String(sections.indexOf(SECTION) + 1).padStart(2, '0');
 
 /**
  * 01 — Work. Four featured rows on the rail grid, then 'Also built'. Every row has an
@@ -40,24 +38,17 @@ export default function Work() {
   }, []);
 
   return (
-    <section id={SECTION.id} className="work" aria-labelledby="work-title">
+    <section id="work" className="work" aria-labelledby="work-title">
       <div className="shell">
-        <header className="section-head work-head">
-          <p className="section-rail">
-            <span className="section-rail-label">
-              {SECTION_NUMBER} — {SECTION.label}
-            </span>{' '}
-            <span>
-              {featuredProjects.length} featured · {alsoBuilt.length} more
-            </span>
-          </p>
-          <div className="section-intro">
-            <h2 id="work-title" className="section-title">
-              {workSection.title}
-            </h2>
-            <p className="section-lede">{workSection.intro}</p>
-          </div>
-        </header>
+        <SectionRail
+          id="work"
+          titleId="work-title"
+          title={workSection.title}
+          className="work-head"
+          meta={`${featuredProjects.length} featured · ${alsoBuilt.length} more`}
+        >
+          {workSection.intro}
+        </SectionRail>
 
         <ol className="work-list" role="list">
           {featuredProjects.map((project, index) => (

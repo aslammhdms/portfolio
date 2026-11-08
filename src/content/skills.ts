@@ -1,19 +1,42 @@
 /**
- * Skills, drafted from the résumé and the current Stack section. `usedIn` links a
- * skill to the projects that used it (the later "stack with receipts" derives the
- * core row and counts from it). Tools with no project evidence go in the toolbox.
+ * The skill catalogue for the Stack section, the terminal's `stack` and the palette.
+ *
+ * Skills do not list their own projects: each project names the skills it used
+ * (`skills` in projects.ts), and src/content/derive.ts inverts that into the evidence
+ * ("SQL Server → Tricore migration · HelpDesk · …"), the counts and the Core row. So
+ * the receipts can never claim more than the project data says. A skill in a group
+ * must be used by at least one project on the page (the prerender fails otherwise);
+ * tools with no project to point at go in the toolbox instead.
  */
-import type { ProjectId } from './projects';
 
-export interface Skill {
-  name: string;
-  usedIn: ProjectId[];
-}
+export const skillGroups = [
+  {
+    title: 'Backend',
+    skills: ['C#', '.NET / .NET Core', 'ASP.NET Core MVC', 'ASP.NET MVC', 'Web API / REST', 'Entity Framework / EF Core', 'SignalR'],
+  },
+  {
+    title: 'Data',
+    skills: ['SQL Server', 'T-SQL', 'Data migration', 'RDLC reporting'],
+  },
+  {
+    title: 'Front end & mobile',
+    skills: ['React', 'React Native / Expo', 'Angular.js', 'JavaScript', 'jQuery', 'Tailwind CSS'],
+  },
+  {
+    title: 'Infrastructure',
+    skills: ['IIS / Windows Server'],
+  },
+  {
+    title: 'Devices & ERP',
+    skills: ['Zebra SDK', 'Gravity ERP integration', 'ePROMIS', 'Tricore ERP'],
+  },
+] as const;
 
-export interface SkillGroup {
-  title: string;
-  skills: Skill[];
-}
+export type SkillGroupTitle = (typeof skillGroups)[number]['title'];
+export type SkillName = (typeof skillGroups)[number]['skills'][number];
+
+/** A skill counts as Core when this many projects on the page used it. */
+export const CORE_MIN_PROJECTS = 2;
 
 /** Hero ledger "Core stack". Each item is kept unbroken; React is dropped on phones. */
 export const coreStack: ReadonlyArray<{ label: string; phone: boolean }> = [
@@ -21,57 +44,6 @@ export const coreStack: ReadonlyArray<{ label: string; phone: boolean }> = [
   { label: '.NET', phone: true },
   { label: 'SQL Server', phone: true },
   { label: 'React', phone: false },
-];
-
-export const skillGroups: SkillGroup[] = [
-  {
-    title: 'Backend',
-    skills: [
-      { name: 'C#', usedIn: ['helpdesk', 'skien-suite', 'madina-insight'] },
-      { name: '.NET 10 / .NET Core', usedIn: ['helpdesk', 'skien-suite', 'madina-insight'] },
-      { name: 'ASP.NET Core MVC', usedIn: ['helpdesk', 'madina-insight'] },
-      { name: 'ASP.NET MVC', usedIn: ['skien-suite'] },
-      { name: 'Web API / REST', usedIn: ['helpdesk', 'retail-mobile'] },
-      { name: 'Entity Framework Core', usedIn: ['helpdesk', 'skien-suite', 'madina-insight'] },
-      { name: 'SignalR', usedIn: ['helpdesk'] },
-    ],
-  },
-  {
-    title: 'Data',
-    skills: [
-      { name: 'SQL Server', usedIn: ['tricore', 'helpdesk', 'madina-insight', 'retail-mobile', 'skien-suite'] },
-      { name: 'T-SQL', usedIn: ['tricore'] },
-      { name: 'Data migration', usedIn: ['tricore'] },
-      { name: 'RDLC reporting', usedIn: ['helpdesk'] },
-    ],
-  },
-  {
-    title: 'Front end & mobile',
-    skills: [
-      { name: 'React', usedIn: ['almadina-website'] },
-      { name: 'React Native / Expo', usedIn: ['helpdesk', 'retail-mobile'] },
-      { name: 'Angular.js', usedIn: ['skien-suite'] },
-      { name: 'JavaScript', usedIn: ['skien-suite', 'madina-insight'] },
-      { name: 'jQuery', usedIn: ['skien-suite'] },
-      { name: 'Tailwind CSS', usedIn: ['almadina-website'] },
-    ],
-  },
-  {
-    title: 'Infrastructure',
-    skills: [
-      { name: 'IIS', usedIn: ['helpdesk', 'almadina-website'] },
-      { name: 'Windows Server', usedIn: ['helpdesk', 'almadina-website'] },
-    ],
-  },
-  {
-    title: 'Devices & ERP',
-    skills: [
-      { name: 'Zebra SDK', usedIn: ['retail-mobile'] },
-      { name: 'ePROMIS', usedIn: ['tricore'] },
-      { name: 'Tricore ERP', usedIn: ['tricore'] },
-      { name: 'Gravity ERP integration', usedIn: ['helpdesk', 'retail-mobile'] },
-    ],
-  },
 ];
 
 /** "Also in my toolbox": used, but not claimed for a project on this page. */

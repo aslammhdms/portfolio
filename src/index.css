@@ -78,26 +78,9 @@
     margin-inline: auto;
   }
 
-  /* Information is square: hairline structure, no blur, no radius. */
-  .card {
-    @apply border border-rule bg-surface;
-  }
-
+  /* Terminal suggestion chips (the only chips left: they are commands, not skills). */
   .chip {
     @apply inline-flex items-center gap-1.5 border border-rule bg-raised px-2.5 py-1 font-mono text-xs text-ink-2;
-  }
-
-  /* Actions are round. */
-  .btn {
-    @apply inline-flex min-h-[44px] items-center justify-center gap-2 whitespace-nowrap rounded-full px-5 text-[15px] font-semibold transition-colors duration-150;
-  }
-
-  .btn-primary {
-    @apply btn bg-accent text-on-accent hover:bg-accent-hover;
-  }
-
-  .btn-ghost {
-    @apply btn border border-rule-strong bg-transparent text-ink hover:border-ink;
   }
 
   .mono-label {
@@ -141,16 +124,4 @@ html.konami-roll {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: rgb(var(--ink-3));
-}
-
-/* Print basics: one light column, no fixed chrome or interactive-only parts. */
-@media print {
-  body {
-    padding-bottom: 0;
-  }
-  a[href^='http']::after {
-    content: ' (' attr(href) ')';
-    font-size: 0.85em;
-    color: rgb(var(--ink-3));
-  }
 }

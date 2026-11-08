@@ -1,17 +1,15 @@
 import { mailtoHref, profile, resumeHref, telHref, vcardHref } from '../../content';
-import { ArrowRightIcon, ArrowUpRightIcon, DownloadIcon } from '../icons';
+import EmailButton from '../EmailButton';
+import { ArrowUpRightIcon, DownloadIcon } from '../icons';
 
 /**
- * How to act: Email me (the one raspberry fill in view), the résumé, then plain
- * text links. The address is shown as text at every size, so it can be copied.
+ * How to act: Email me (the one raspberry fill in view; a Copy / Open mail app menu on
+ * desktops), the résumé, then plain text links. The address is shown as text at every size, so it can be copied.
  */
 export default function HeroActions() {
   return (
     <div className="hero-actions">
-      <a className="pill pill-primary" href={mailtoHref}>
-        Email me
-        <ArrowRightIcon />
-      </a>
+      <EmailButton />
       <a className="pill pill-outline" href={resumeHref} download={profile.resume.fileName}>
         Resume
         <span className="pill-meta">PDF · {profile.resume.sizeLabel}</span>

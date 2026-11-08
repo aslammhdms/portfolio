@@ -69,3 +69,25 @@ export const LinkIcon = (p: IconProps) => (
     <path d="M8.8 11.4l-1.1 1.1a2.8 2.8 0 0 1-4-4l1.1-1.1" />
   </Icon>
 );
+
+/** Opens a menu (the desktop 'Email me'). */
+export const ChevronDownIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4 6.5l4 4 4-4" />
+  </Icon>
+);
+
+/** Two overlapping sheets, for 'Copy'. */
+export const CopyIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <rect x="5.5" y="5.5" width="8" height="8" rx="1" />
+    <path d="M10.5 3.5V3a.5.5 0 0 0-.5-.5H3a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .5.5h.5" />
+  </Icon>
+);
+
+/** A printer, for 'Print as CV'. */
+export const PrintIcon = (p: IconProps) => (
+  <Icon {...p}>
+    <path d="M4.5 6V2.5h7V6M4.5 11.5h-2v-5h11v5h-2M4.5 9.5h7v4h-7z" />
+  </Icon>
+);

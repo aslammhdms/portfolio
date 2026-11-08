@@ -3,8 +3,8 @@ import TopBar from './components/TopBar';
 import Hero from './components/hero/Hero';
 import Work from './components/work/Work';
 import PromptBand from './components/PromptBand';
-import About from './components/About';
-import Skills from './components/Skills';
+import Experience from './components/Experience';
+import Stack from './components/Stack';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import StatusBar from './components/StatusBar';
@@ -69,8 +69,8 @@ function App() {
         <Hero />
         <Work />
         <PromptBand />
-        <About />
-        <Skills />
+        <Experience />
+        <Stack />
         <Contact />
       </main>
       <Footer />

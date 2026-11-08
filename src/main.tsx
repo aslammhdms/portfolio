@@ -6,6 +6,10 @@ import './styles/chrome.css';
 import './styles/hero.css';
 import './styles/sections.css';
 import './styles/work.css';
+import './styles/experience.css';
+import './styles/stack.css';
+import './styles/contact.css';
+import './styles/print.css';
 import Root from './Root';
 
 const container = document.getElementById('root')!;
