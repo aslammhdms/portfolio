@@ -1,0 +1,384 @@
+/* ============================================================
+   Overlays: command palette, shortcuts sheet, toasts, and the
+   keycap that presses when its shortcut fires.
+   Z-order: bars 40 · terminal drawer 39 · palette and sheets 90.
+   ============================================================ */
+
+/* A keycap whose shortcut just fired presses for 90 ms (lib/site.ts pressKey). */
+[data-keycap] {
+  transition: transform 90ms var(--ease-standard), background-color 90ms var(--ease-standard);
+}
+[data-keycap][data-pressed] {
+  transform: translateY(1px);
+  background-color: rgb(var(--raised));
+}
+
+/* ---------- Command palette ---------- */
+.pal {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+}
+.pal-scrim {
+  position: absolute;
+  inset: 0;
+  /* A solid 72% canvas scrim: no blur. */
+  background: rgb(var(--canvas) / 0.72);
+}
+.pal-sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(600px, calc(100% - 32px));
+  max-height: min(560px, 76vh);
+  margin: 12vh auto 0;
+  overflow: hidden;
+  border: 1px solid rgb(var(--rule-strong));
+  background: rgb(var(--surface));
+  /* The system's only shadow. */
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  animation: pal-in 0.16s var(--ease-standard) both;
+}
+@keyframes pal-in {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.pal-field {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  padding: 0 16px;
+  border-bottom: 1px solid rgb(var(--rule));
+}
+/* The input never shows an outline, so its row carries the focus mark: a 2px accent rule. */
+.pal-field:focus-within {
+  box-shadow: inset 0 -2px 0 rgb(var(--focus));
+}
+.pal-chevron {
+  font-family: var(--font-mono);
+  color: rgb(var(--ink-3));
+}
+.pal-field input {
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 52px;
+  border: 0;
+  background: transparent;
+  font-family: var(--font-mono);
+  /* 16px stops iOS zooming the page when the field takes focus. */
+  font-size: 16px;
+  color: rgb(var(--ink));
+  caret-color: rgb(var(--accent-ink));
+}
+.pal-field input::placeholder {
+  color: rgb(var(--ink-3));
+  opacity: 1;
+}
+.pal-field input:focus,
+.pal-field input:focus-visible {
+  outline: none;
+}
+.pal-key {
+  padding: 0 6px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: rgb(var(--ink-2));
+}
+.pal-list {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  padding-block: 4px 8px;
+  overscroll-behavior: contain;
+}
+.pal-group {
+  padding: 10px 16px 4px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+.pal-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 40px;
+  padding: 0 16px;
+  border-left: 2px solid transparent;
+  font-size: 15px;
+  color: rgb(var(--ink-2));
+  cursor: pointer;
+}
+.pal-row[data-selected] {
+  border-left-color: rgb(var(--accent-ink));
+  background: rgb(var(--accent-wash));
+  color: rgb(var(--ink));
+}
+.pal-label {
+  flex: none;
+  max-width: 62%;
+}
+.pal-hit {
+  background: transparent;
+  color: rgb(var(--accent-ink));
+  font-weight: 650;
+}
+.pal-hint {
+  min-width: 0;
+  overflow: hidden;
+  text-align: right;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: rgb(var(--ink-3));
+}
+.pal-row[data-selected] .pal-hint {
+  color: rgb(var(--ink-2));
+}
+.pal-keys {
+  flex: none;
+  padding: 0 6px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 4px;
+}
+.pal-copied {
+  color: rgb(var(--ink));
+}
+.pal-empty {
+  margin: 0;
+  padding: 16px;
+  font-size: 15px;
+  color: rgb(var(--ink-2));
+}
+.pal-foot {
+  display: flex;
+  flex: none;
+  gap: 16px;
+  padding: 8px 16px;
+  border-top: 1px solid rgb(var(--rule));
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: rgb(var(--ink-3));
+}
+@media (max-width: 767px) {
+  /* A full-height sheet on phones. */
+  .pal-sheet {
+    width: 100%;
+    max-height: none;
+    height: 100%;
+    margin: 0;
+    border-width: 0;
+  }
+  .pal-row {
+    min-height: 48px;
+  }
+  .pal-foot {
+    display: none;
+  }
+  .pal-label {
+    max-width: 58%;
+  }
+}
+@media (hover: none) {
+  .pal-foot {
+    display: none;
+  }
+}
+html.rm .pal-sheet {
+  animation: none;
+}
+
+/* ---------- Shortcuts sheet (a native modal <dialog>) ---------- */
+.keys-sheet {
+  width: min(520px, calc(100% - 32px));
+  max-height: calc(100% - 48px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  border: 1px solid rgb(var(--rule-strong));
+  background: rgb(var(--surface));
+  color: rgb(var(--ink));
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+.keys-sheet::backdrop {
+  background: rgb(var(--canvas) / 0.72);
+}
+.keys-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 20px;
+  border-bottom: 1px solid rgb(var(--rule));
+}
+.keys-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 650;
+}
+.keys-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(var(--ink));
+  cursor: pointer;
+}
+.keys-close:hover {
+  border-color: rgb(var(--ink));
+}
+.keys-close .icon {
+  width: 11px;
+  height: 11px;
+}
+.keys-list {
+  margin: 0;
+  padding: 4px 20px;
+  list-style: none;
+}
+.keys-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  border-bottom: 1px solid rgb(var(--rule));
+  font-size: 15px;
+  color: rgb(var(--ink-2));
+}
+.keys-list li:last-child {
+  border-bottom: 0;
+}
+.keys-combo {
+  display: inline-flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+}
+.keys-combo kbd {
+  min-width: 24px;
+  padding: 1px 6px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: center;
+  color: rgb(var(--ink));
+}
+.keys-secret {
+  color: rgb(var(--ink-3));
+}
+.keys-secret .keys-combo kbd {
+  color: rgb(var(--ink-2));
+}
+.keys-switch {
+  padding: 12px 20px 16px;
+  border-top: 1px solid rgb(var(--rule));
+}
+.switch-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 15px;
+  text-align: left;
+  color: rgb(var(--ink));
+  cursor: pointer;
+}
+.switch-track {
+  position: relative;
+  flex: none;
+  width: 40px;
+  height: 22px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+}
+.switch-track::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgb(var(--ink-2));
+  transition: transform 0.16s var(--ease-standard);
+}
+.switch-row[aria-checked='true'] .switch-track {
+  border-color: rgb(var(--ink));
+  background: rgb(var(--raised));
+}
+.switch-row[aria-checked='true'] .switch-track::after {
+  transform: translateX(18px);
+  background: rgb(var(--ink));
+}
+.switch-note {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: rgb(var(--ink-3));
+}
+
+/* ---------- Toasts ---------- */
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--statusbar-h) + 16px + env(safe-area-inset-bottom, 0px));
+  z-index: 95;
+  display: grid;
+  gap: 8px;
+  width: min(440px, calc(100% - 32px));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.toast {
+  padding: 10px 16px;
+  border: 1px solid rgb(var(--rule-strong));
+  background: rgb(var(--raised));
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: rgb(var(--ink));
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  animation: pal-in 0.16s var(--ease-standard) both;
+}
+html.sb-hidden .toasts {
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+html.rm .toast {
+  animation: none;
+}
+@media print {
+  .pal,
+  .keys-sheet,
+  .toasts {
+    display: none !important;
+  }
+}

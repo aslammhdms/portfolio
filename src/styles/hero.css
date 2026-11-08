@@ -704,6 +704,13 @@
     transition: none;
   }
 }
+html.rm .amd.intro .hero-name > span,
+html.rm .intro .portrait-colour {
+  animation: none;
+}
+html.rm .portrait-colour {
+  transition: none;
+}
 
 @media print {
   .hero-light,

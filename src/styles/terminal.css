@@ -1,0 +1,339 @@
+/* ============================================================
+   The terminal: the compact Prompt band and the drawer. Square, opaque,
+   Cascadia 13.5/1.6; commands in ink, output in ink-2, '$' in ink-3 and
+   the accent caret as the only colour. `git checkout v1` recolours only
+   the panel (data-skin='v1'); nothing is saved.
+   ============================================================ */
+.term {
+  --t-prompt: var(--ink-3);
+  --t-banner: var(--ink-3);
+  border: 1px solid rgb(var(--rule));
+  background: rgb(var(--surface));
+  font-family: var(--font-mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: rgb(var(--ink-2));
+}
+.term:focus-within {
+  outline: 2px solid rgb(var(--focus));
+  outline-offset: 2px;
+}
+.term[data-skin='v1'] {
+  --surface: 10 12 16; /* #0A0C10 Terminal Ink */
+  --raised: 20 24 32;
+  --rule: 42 48 62;
+  --rule-strong: 120 130 150;
+  --ink: 230 233 240;
+  --ink-2: 170 177 192;
+  --ink-3: 130 138 156;
+  --accent-ink: 124 108 255; /* #7C6CFF */
+  --t-prompt: 57 224 200; /* #39E0C8 */
+  --t-banner: 57 224 200;
+}
+
+.term-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 40px;
+  padding: 4px 16px;
+  border-bottom: 1px solid rgb(var(--rule));
+  font-size: 11.5px;
+  line-height: 1.3;
+  color: rgb(var(--t-banner));
+}
+.term-head-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: rgb(var(--ink-3));
+}
+.keycap-inline {
+  padding: 0 5px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 4px;
+  font: inherit;
+  color: rgb(var(--ink-2));
+}
+.term-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 28px;
+  padding: 0 12px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  color: rgb(var(--ink-2));
+  cursor: pointer;
+  transition: border-color 0.16s var(--ease-standard), color 0.16s var(--ease-standard);
+}
+.term-btn:hover {
+  border-color: rgb(var(--ink));
+  color: rgb(var(--ink));
+}
+.term-btn .icon {
+  width: 10px;
+  height: 10px;
+  stroke-width: 2.2;
+}
+
+/* The band's height is reserved: 208px of log on desktop, 232px on phones. */
+.term-band .t-body {
+  height: 208px;
+}
+.t-body {
+  min-height: 0;
+}
+.t-log {
+  box-sizing: border-box;
+  height: 100%;
+  overflow: auto;
+  padding: 12px 16px;
+  overscroll-behavior: contain;
+}
+.t-log:focus-visible {
+  outline-offset: -2px;
+}
+.t-measure {
+  position: absolute;
+  visibility: hidden;
+  white-space: pre;
+  pointer-events: none;
+}
+.t-line {
+  margin: 0;
+}
+.t-cmd {
+  color: rgb(var(--ink));
+  overflow-wrap: anywhere;
+}
+.t-prompt {
+  color: rgb(var(--t-prompt));
+  user-select: none;
+  white-space: pre;
+}
+.t-out,
+.t-err {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.t-dim {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: rgb(var(--ink-3));
+}
+.t-pre {
+  white-space: pre;
+}
+.t-input {
+  display: flex;
+  align-items: baseline;
+}
+.t-input input {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: rgb(var(--ink));
+  caret-color: rgb(var(--accent-ink));
+}
+.t-input input:focus,
+.t-input input:focus-visible {
+  outline: none;
+}
+.t-caret {
+  display: inline-block;
+  width: 8px;
+  height: 15px;
+  margin-left: 1px;
+  transform: translateY(2px);
+  background: rgb(var(--accent-ink));
+  /* Blinks for about ten seconds, then stays on: nothing loops. */
+  animation: blink 1.1s step-end 9;
+}
+.t-caret-idle {
+  animation: none;
+}
+
+.term-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 10px 16px;
+  border-top: 1px solid rgb(var(--rule));
+}
+.term-chip {
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1px solid rgb(var(--rule-strong));
+  border-radius: 999px;
+  background: transparent;
+  font: inherit;
+  font-size: 12.5px;
+  color: rgb(var(--ink-2));
+  cursor: pointer;
+  transition: border-color 0.16s var(--ease-standard), color 0.16s var(--ease-standard);
+}
+.term-chip:hover {
+  border-color: rgb(var(--ink));
+  color: rgb(var(--ink));
+}
+
+/* neofetch and fonts */
+.t-fetch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin-block: 8px;
+}
+.t-portrait {
+  flex: none;
+  width: 132px;
+  height: 168px;
+  image-rendering: pixelated;
+  background: rgb(var(--surface));
+  border: 1px solid rgb(var(--rule));
+}
+.t-facts {
+  min-width: 0;
+  margin: 0;
+}
+.t-facts > div {
+  display: flex;
+  gap: 12px;
+}
+.t-facts dt {
+  flex: none;
+  width: 7ch;
+  color: rgb(var(--ink-3));
+}
+.t-facts dd {
+  margin: 0;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  color: rgb(var(--ink));
+}
+.t-facts-head dd {
+  margin-bottom: 4px;
+  color: rgb(var(--t-prompt, var(--ink)));
+  font-weight: 600;
+}
+.t-font {
+  margin-block: 8px;
+}
+.t-font-sample {
+  margin: 0;
+  overflow: hidden;
+  font-family: var(--font-display);
+  font-synthesis: none;
+  font-size: 36px;
+  line-height: 1.15;
+  white-space: nowrap;
+  color: rgb(var(--ink));
+}
+.t-font-axis {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 12px;
+  color: rgb(var(--ink-3));
+}
+.t-font-axis input {
+  flex: 1 1 160px;
+  max-width: 280px;
+  height: 24px;
+  accent-color: rgb(var(--ink-2));
+}
+.t-font-axis output {
+  min-width: 18ch;
+}
+
+/* ---------- Drawer ---------- */
+.term-drawer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: calc(var(--statusbar-h) + env(safe-area-inset-bottom, 0px));
+  /* Below the status bar (z 40): the drawer slides up from behind it. */
+  z-index: 39;
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+  border-width: 1px 0 0;
+  border-color: rgb(var(--rule-strong));
+  transform: translateY(100%);
+  visibility: hidden;
+  transition: transform 0.24s var(--ease-standard), visibility 0s linear 0.24s;
+}
+.term-drawer[data-open] {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.24s var(--ease-standard), visibility 0s;
+}
+.term-drawer:focus-within {
+  outline-offset: -2px;
+}
+.term-drawer .t-body {
+  flex: 1 1 auto;
+}
+.term-drawer .term-head,
+.term-drawer .t-log {
+  padding-inline: max(var(--margin), calc((100% - 1312px) / 2));
+}
+html.sb-hidden .term-drawer {
+  bottom: env(safe-area-inset-bottom, 0px);
+}
+html.drawer-open {
+  scroll-padding-bottom: calc(40vh + var(--statusbar-h) + 8px);
+}
+
+@media (max-width: 767px) {
+  .term-band .t-body {
+    height: 232px;
+  }
+  .term-hint {
+    display: none;
+  }
+  .term-drawer {
+    height: 70vh;
+    height: 70dvh;
+  }
+  html.drawer-open {
+    scroll-padding-bottom: calc(70vh + var(--statusbar-h) + 8px);
+  }
+  /* Tap targets: the chips are the phone's way to run commands. */
+  .term-chip {
+    min-height: 44px;
+  }
+  .term-btn {
+    min-height: 36px;
+  }
+  /* 16px stops iOS zooming the page when the prompt takes focus. */
+  .t-input input {
+    font-size: 16px;
+  }
+  .t-portrait {
+    width: 99px;
+    height: 126px;
+  }
+}
+@media (hover: none) {
+  .term-hint {
+    display: none;
+  }
+}
+
+html.rm .term-drawer {
+  transition: none;
+}
+@media print {
+  .term,
+  .term-drawer {
+    display: none !important;
+  }
+}

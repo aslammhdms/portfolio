@@ -9,6 +9,8 @@ import './styles/work.css';
 import './styles/experience.css';
 import './styles/stack.css';
 import './styles/contact.css';
+import './styles/terminal.css';
+import './styles/overlays.css';
 import './styles/print.css';
 import Root from './Root';
 

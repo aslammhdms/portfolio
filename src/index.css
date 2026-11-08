@@ -68,6 +68,25 @@
       transition-delay: 0s !important;
     }
   }
+  /* The in-page 'Reduce motion' (palette, terminal, footer) does the same as the OS setting. */
+  html.rm,
+  html.rm *,
+  html.rm *::before,
+  html.rm *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    transition-delay: 0s !important;
+  }
+  /* WCAG 2.2.2: the visitor can hide the status bar. */
+  html.sb-hidden {
+    --statusbar-h: 0px;
+  }
+  html.sb-hidden .statusbar {
+    display: none;
+  }
 }
 
 @layer components {
@@ -76,11 +95,6 @@
   .shell {
     width: min(1312px, 100% - 2 * var(--margin));
     margin-inline: auto;
-  }
-
-  /* Terminal suggestion chips (the only chips left: they are commands, not skills). */
-  .chip {
-    @apply inline-flex items-center gap-1.5 border border-rule bg-raised px-2.5 py-1 font-mono text-xs text-ink-2;
   }
 
   .mono-label {

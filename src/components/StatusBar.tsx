@@ -4,8 +4,30 @@ import useActiveSection from '../hooks/useActiveSection';
 import useActiveWorkRow from '../hooks/useActiveWorkRow';
 import { abuDhabiTime, offsetFromVisitor, type ClockParts } from '../lib/time';
 import { isApplePlatform } from '../lib/platform';
-import { focusTerminal } from '../lib/terminal';
+import { toggleDrawer, useTerm } from '../terminal/store';
+import { setPref, usePrefs } from '../lib/prefs';
 import { CommandIcon } from './icons';
+
+/**
+ * Clock digits that roll. Each character is its own element, keyed by place and value,
+ * so when a second ticks over only the digits that changed are replaced, and each
+ * replacement rolls up in 160 ms (CSS; off under reduced motion). The first paint does not roll.
+ */
+function Digits({ value }: { value: string }) {
+  const mounted = useRef(false);
+  useEffect(() => {
+    mounted.current = true;
+  }, []);
+  return (
+    <>
+      {[...value].map((ch, i) => (
+        <span key={`${i}${ch}`} className={mounted.current && ch !== ':' ? 'roll' : undefined}>
+          {ch}
+        </span>
+      ))}
+    </>
+  );
+}
 
 interface StatusBarProps {
   onOpenPalette: () => void;
@@ -33,6 +55,8 @@ export default function StatusBar({ onOpenPalette }: StatusBarProps) {
   const [popOpen, setPopOpen] = useState(false);
   const [offset, setOffset] = useState<string | null>(null);
   const clockRef = useRef<HTMLDivElement>(null);
+  const term = useTerm();
+  const { hideStatusBar } = usePrefs();
 
   useEffect(() => {
     try {
@@ -128,8 +152,10 @@ export default function StatusBar({ onOpenPalette }: StatusBarProps) {
                     <span className="sb-digits" aria-hidden="true">
                       {time && (
                         <>
-                          {time.hh}:{time.mm}
-                          <span className="sb-secs">:{time.ss}</span>
+                          <Digits value={`${time.hh}:${time.mm}`} />
+                          <span className="sb-secs">
+                            <Digits value={`:${time.ss}`} />
+                          </span>
                         </>
                       )}
                     </span>
@@ -147,17 +173,30 @@ export default function StatusBar({ onOpenPalette }: StatusBarProps) {
               <button type="button" className="sb-pop-toggle" aria-pressed={!clockOn} onClick={toggleClock}>
                 Hide clock
               </button>
+              <button type="button" className="sb-pop-toggle" onClick={() => setPref('hideStatusBar', !hideStatusBar)}>
+                Hide status bar
+              </button>
             </div>
           </div>
 
-          <button type="button" className="sb-btn" aria-label="Open the terminal" onClick={focusTerminal}>
+          <button
+            type="button"
+            className="sb-btn"
+            data-keycap="terminal"
+            aria-label="Terminal"
+            aria-expanded={term.drawerOpen}
+            aria-controls={term.drawerMounted ? 'term-drawer' : undefined}
+            aria-keyshortcuts="Control+Backquote"
+            onClick={toggleDrawer}
+          >
             &gt;_
           </button>
 
           <button
             type="button"
             className="sb-btn sb-palette"
-            aria-label={`Search (${apple ? '⌘' : 'Ctrl'} K)`}
+            data-keycap="palette"
+            aria-label={`${apple ? '⌘' : 'Ctrl'} K, search`}
             aria-haspopup="dialog"
             onClick={onOpenPalette}
           >

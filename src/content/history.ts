@@ -1,5 +1,5 @@
 /**
- * The site's own history, for the terminal's `git log` (later milestone).
+ * The site's own history, for the terminal's `git log`.
  * Hard-coded so a shallow CI clone cannot break it. Hashes and dates are the
  * real commits on this repository.
  */
@@ -16,4 +16,5 @@ export const history: HistoryEntry[] = [
   { hash: 'fd6607b', date: '2026-06-10', title: 'Live System: terminal, ⌘K palette, ASCII portrait, status bar' },
   { hash: 'a8073a4', date: '2026-06-16', title: 'Cinematic: scroll-scrubbed video backdrops' },
   { hash: '77d57e8', date: '2026-11-04', title: 'Tristar role, Tricore project, new résumé' },
+  { hash: 'dfe3c6f', date: '2026-11-05', title: 'v4 "Equal Measure": raspberry, equal-measure name, report figures, recruiter kit' },
 ];

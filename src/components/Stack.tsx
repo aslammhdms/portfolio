@@ -8,6 +8,7 @@ import {
   type SkillEvidence,
   type SkillName,
 } from '../content';
+import { STACK_SKILL_EVENT, scrollBehavior } from '../lib/site';
 import SectionRail from './SectionRail';
 import { ArrowRightIcon } from './icons';
 
@@ -70,6 +71,7 @@ function StackRow({ rowId, title, note, skills, core = false, open, onToggle }: 
                   className="skill"
                   aria-expanded={pressed}
                   aria-controls={evidenceId}
+                  data-skill={skill.name}
                   onClick={() => onToggle(rowId, skill.name)}
                 >
                   {skill.name}
@@ -124,6 +126,26 @@ export default function Stack() {
 
   const onToggle = (row: string, skill: SkillName) =>
     setOpen((cur) => (cur && cur.row === row && cur.skill === skill ? null : { row, skill }));
+
+  // The palette's Skills group (and the terminal) ask to show a skill's evidence: open its line
+  // in the skill's own group row and scroll the button into view.
+  useEffect(() => {
+    const onSkill = (e: Event) => {
+      const name = (e as CustomEvent<string>).detail;
+      const group = stackGroups.find((g) => g.skills.some((s) => s.name === name));
+      if (!group) return;
+      const row = group.title.toLowerCase().replace(/[^a-z]+/g, '-');
+      setOpen({ row, skill: name as SkillName });
+      window.requestAnimationFrame(() => {
+        const buttons = Array.from(document.querySelectorAll<HTMLElement>('button.skill[data-skill]'));
+        const button = buttons.find((b) => b.dataset.skill === name && b.offsetParent !== null) ?? buttons.find((b) => b.dataset.skill === name);
+        button?.scrollIntoView({ behavior: scrollBehavior(), block: 'center' });
+        button?.focus({ preventScroll: true });
+      });
+    };
+    window.addEventListener(STACK_SKILL_EVENT, onSkill);
+    return () => window.removeEventListener(STACK_SKILL_EVENT, onSkill);
+  }, []);
 
   // Escape closes the open evidence line.
   useEffect(() => {

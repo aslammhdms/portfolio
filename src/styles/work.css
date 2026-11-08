@@ -1012,3 +1012,116 @@
     transition: none;
   }
 }
+html.rm .swap > * {
+  transition: none;
+}
+
+/* ============================================================
+   Diagram traces ('Trace a ticket', 'Trace a receipt'). Started by the
+   visitor only, never looping. A traced part gets an ink inset line and a
+   small square number badge (data-lit = the step numbers that name it);
+   the part of the current step also gets the accent mark. The status line
+   writes the current step out, so nothing depends on seeing the highlight.
+   ============================================================ */
+.dg-trace {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 12px;
+}
+.trace-btn {
+  height: 36px;
+  padding: 0 16px;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+}
+.trace-btn[aria-pressed='true'] {
+  border-color: rgb(var(--ink));
+  background: rgb(var(--raised));
+}
+.trace-status {
+  flex: 1 1 240px;
+  min-width: 0;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: rgb(var(--ink-2));
+}
+.trace-n {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgb(var(--ink-3));
+}
+
+.dg [data-lit] {
+  position: relative;
+  box-shadow: inset 0 0 0 1px rgb(var(--ink));
+  transition: box-shadow 0.16s var(--ease-standard);
+}
+.dg [data-lit][data-lit-now] {
+  box-shadow: inset 0 0 0 2px rgb(var(--accent-ink));
+}
+.dg [data-lit]::before {
+  content: attr(data-lit);
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 1;
+  min-width: 16px;
+  padding: 0 4px;
+  background: rgb(var(--ink));
+  color: rgb(var(--canvas));
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+}
+.dg [data-lit][data-lit-now]::before {
+  background: rgb(var(--accent-ink));
+  color: rgb(var(--canvas));
+}
+/* Frames and strips already have text at their right edge: the badge sits on the top border. */
+.dg-frame[data-lit]::before {
+  top: -9px;
+  right: auto;
+  left: 10px;
+}
+/* The line under an actor is drawn with ::after; the badge uses ::before, so they coexist. */
+.dg-actor[data-lit] {
+  box-shadow: none;
+}
+.dg-actor[data-lit] .dg-name {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  text-decoration-color: rgb(var(--ink));
+}
+.dg-actor[data-lit][data-lit-now] .dg-name {
+  text-decoration-color: rgb(var(--accent-ink));
+}
+
+/* Rows the terminal's `stack sql` highlights for a few seconds. */
+[data-work-row][data-hl] {
+  box-shadow: -12px 0 0 -10px rgb(var(--accent-ink));
+}
+@media (max-width: 767px) {
+  [data-work-row][data-hl] {
+    box-shadow: -10px 0 0 -8px rgb(var(--accent-ink));
+  }
+}
+
+/* Replay of the name's lock-in (the Konami code). */
+.amd.replay .hero-name .l1 {
+  animation: am-lock-a 0.9s var(--ease-settle) both;
+}
+.amd.replay .hero-name .l2 {
+  animation: am-lock-m 0.9s var(--ease-settle) both;
+}
+html.rm .amd.replay .hero-name > span {
+  animation: none;
+}

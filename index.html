@@ -79,8 +79,19 @@
           });
         }
 
+        // Saved preferences: 'am:prefs' holds the in-page Reduce motion and Hide status bar.
+        var inPageReduce = false;
         try {
-          var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          var prefs = JSON.parse(localStorage.getItem('am:prefs') || '{}');
+          if (prefs.reduceMotion === true) {
+            inPageReduce = true;
+            d.classList.add('rm');
+          }
+          if (prefs.hideStatusBar === true) d.classList.add('sb-hidden');
+        } catch (e) {}
+
+        try {
+          var reduce = inPageReduce || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
           var saveData = navigator.connection && navigator.connection.saveData;
           if (!sessionStorage.getItem('am:intro')) {
             sessionStorage.setItem('am:intro', '1');

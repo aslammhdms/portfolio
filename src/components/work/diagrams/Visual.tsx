@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { DIAGRAM_CAPTION, type Diagram, type ProjectVisual, type ScopePanel } from '../../../content';
+import { DIAGRAM_CAPTION, traces, type Diagram, type ProjectVisual, type ScopePanel } from '../../../content';
+import { toggleTrace, useTrace } from '../../../lib/trace';
 import { ArrowUpRightIcon } from '../../icons';
 import { DisclosurePanel, DisclosureToggle } from '../Disclosure';
 import ModuleMap from './ModuleMap';
@@ -37,6 +38,7 @@ function DiagramFigure({ diagram }: { diagram: Diagram }) {
         <p className="dg-label">{diagram.label}</p>
         <DiagramBody diagram={diagram} />
       </div>
+      {traces[diagram.id] && <TraceControl id={diagram.id} />}
       <figcaption className="dg-caption">
         <span>{DIAGRAM_CAPTION}</span>
         <DisclosureToggle
@@ -58,6 +60,35 @@ function DiagramFigure({ diagram }: { diagram: Diagram }) {
         </ol>
       </DisclosurePanel>
     </figure>
+  );
+}
+
+/**
+ * 'Trace a ticket' / 'Trace a receipt': follows one example through the drawing, one
+ * numbered step at a time (lib/trace.ts). Pressed while a trace is shown; pressing
+ * again clears it. The current step is also written out in a status line, so the
+ * walk-through never depends on seeing the highlight.
+ */
+function TraceControl({ id }: { id: string }) {
+  const trace = traces[id];
+  const { status, step } = useTrace(id);
+  const current = status === 'idle' ? null : trace.steps[step - 1];
+  return (
+    <div className="dg-trace">
+      <button type="button" className="pill pill-outline trace-btn" aria-pressed={status !== 'idle'} onClick={() => toggleTrace(id)}>
+        {trace.button}
+      </button>
+      <p className="trace-status" role="status">
+        {current && (
+          <>
+            <span className="trace-n">
+              Step {step} of {trace.steps.length}
+            </span>{' '}
+            {current.text}
+          </>
+        )}
+      </p>
+    </div>
   );
 }
 

@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { useTheme, type Theme } from '../contexts/ThemeContext';
 import { colophon } from '../content';
 import { isApplePlatform } from '../lib/platform';
-import { focusTerminal } from '../lib/terminal';
+import { setPref, usePrefs } from '../lib/prefs';
+import { site } from '../lib/site';
+import { openDrawer } from '../terminal/store';
 import { CommandIcon, PrintIcon } from './icons';
 
 const THEMES: { id: Theme; label: string }[] = [
@@ -17,6 +19,7 @@ const THEMES: { id: Theme; label: string }[] = [
  */
 export default function Footer() {
   const { theme, setTheme } = useTheme();
+  const { reduceMotion, hideStatusBar } = usePrefs();
   // 'Ctrl K' on the server; Apple visitors get '⌘ K' after mount.
   const [apple, setApple] = useState(false);
   useEffect(() => setApple(isApplePlatform()), []);
@@ -27,7 +30,7 @@ export default function Footer() {
         <p className="footer-copy">{colophon.copyright}</p>
         <p className="footer-colophon">{colophon.text}</p>
         <p className="footer-keys">
-          <kbd className="keycap">
+          <kbd className="keycap" data-keycap="palette">
             {apple ? (
               <>
                 <CommandIcon />
@@ -38,11 +41,20 @@ export default function Footer() {
             )}
           </kbd>{' '}
           search · type <code className="footer-code">help</code> in the{' '}
-          <button type="button" className="footer-link" onClick={focusTerminal} aria-label="Open the terminal">
+          <button type="button" className="footer-link" onClick={openDrawer} aria-label="Open the terminal">
             terminal
+          </button>{' '}
+          · <button type="button" className="footer-link" onClick={() => site.openShortcuts()}>
+            all shortcuts
           </button>
         </p>
         <div className="footer-actions">
+          <button type="button" className="footer-print" aria-pressed={reduceMotion} onClick={() => setPref('reduceMotion', !reduceMotion)}>
+            Reduce motion
+          </button>
+          <button type="button" className="footer-print" aria-pressed={hideStatusBar} onClick={() => setPref('hideStatusBar', !hideStatusBar)}>
+            {hideStatusBar ? 'Show status bar' : 'Hide status bar'}
+          </button>
           <button type="button" className="footer-print" onClick={() => window.print()}>
             <PrintIcon />
             Print as CV

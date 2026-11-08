@@ -1,5 +1,6 @@
 import { renderToString } from 'react-dom/server';
 import Root from './Root';
+import NotFound from './NotFound';
 import { buildVCard, profile, unprovenSkills } from './content';
 
 /**
@@ -14,6 +15,11 @@ export function render(): string {
     throw new Error(`Skills with no project on the page: ${unprovenSkills.join(', ')}. Add them to a project's skills or to the toolbox.`);
   }
   return renderToString(<Root />);
+}
+
+/** The 404 page's body (dist/404.html). */
+export function render404(): string {
+  return renderToString(<NotFound />);
 }
 
 /** The contact card, generated from src/content (scripts/build-vcard.mjs writes it to dist/). */

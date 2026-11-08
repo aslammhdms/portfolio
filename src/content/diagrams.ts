@@ -44,6 +44,19 @@ export interface DiagramStep {
   nodes: string[];
 }
 
+/**
+ * A trace walks one real example through a diagram, step by step, only when the visitor
+ * asks (the diagram's button, or the terminal's `trace`). Each step lights the named
+ * parts (data-node ids) and prints its text. DRAFT, like the rest: for Aslam's sign-off.
+ */
+export interface Trace {
+  /** The button's label ('Trace a ticket'). */
+  button: string;
+  /** What is being followed, for the status line ('a ticket'). */
+  subject: string;
+  steps: DiagramStep[];
+}
+
 interface DiagramBase {
   /** Which project the drawing belongs to (data-diagram). */
   id: string;
@@ -52,6 +65,7 @@ interface DiagramBase {
   /** The figure's accessible name. */
   title: string;
   steps: DiagramStep[];
+  trace?: Trace;
 }
 
 /** HelpDesk: who uses it, the modules inside it, what holds them together, what it connects to. */
@@ -96,6 +110,9 @@ export interface ScopePanel {
 
 export type Diagram = ModuleMap | ParallelRun | ProductMap;
 export type ProjectVisual = Diagram | ScopePanel;
+
+/** Diagrams that can be traced, by diagram id. */
+export const traces: Record<string, Trace> = {};
 
 export const DIAGRAM_CAPTION = 'Diagram, not a screenshot (internal system).';
 
@@ -163,6 +180,25 @@ export const helpdeskMap: ModuleMap = {
       nodes: ['gravity-erp'],
     },
   ],
+  trace: {
+    button: 'Trace a ticket',
+    subject: 'a ticket',
+    steps: [
+      { id: '1', text: 'A member of branch staff raises a ticket in the web portal.', nodes: ['branch-staff'] },
+      { id: '2', text: 'The service desk receives it on the HelpDesk platform and sets its priority.', nodes: ['platform', 'service-desk'] },
+      {
+        id: '3',
+        text: 'It is assigned, and a real-time notification (SignalR) reaches the technician’s app.',
+        nodes: ['service-desk', 'mobile-api', 'technicians'],
+      },
+      { id: '4', text: 'The technician works the job from the app, through the Mobile API.', nodes: ['technicians', 'mobile-api'] },
+      {
+        id: '5',
+        text: 'The ticket is completed and closed. Roles, branch permissions and the audit trail cover every change, and it feeds the reports.',
+        nodes: ['access', 'reporting'],
+      },
+    ],
+  },
 };
 
 export const tricoreRun: ParallelRun = {
@@ -216,6 +252,17 @@ export const tricoreRun: ParallelRun = {
       nodes: ['tricore'],
     },
   ],
+  trace: {
+    button: 'Trace a receipt',
+    subject: 'a receipt',
+    steps: [
+      { id: '1', text: 'A receipt for incoming stock is entered in the Tricore inventory module.', nodes: ['tricore', 'tricore/receipts'] },
+      { id: '2', text: 'Store-level access decides who may post it for that store.', nodes: ['store-access'] },
+      { id: '3', text: 'Checks run before the change is written.', nodes: ['checks'] },
+      { id: '4', text: 'The change is saved and recorded in the audit log.', nodes: ['audit-log'] },
+      { id: '5', text: 'The same receipts flow still runs in ePROMIS while both systems run side by side.', nodes: ['epromis', 'epromis/receipts'] },
+    ],
+  },
 };
 
 export const skienMap: ProductMap = {
@@ -289,3 +336,6 @@ export const websiteScope: ScopePanel = {
   ],
   build: ['React SPA, client-side routing', 'Dark mode', 'Responsive', 'IIS / Windows Server'],
 };
+
+traces.helpdesk = helpdeskMap.trace!;
+traces.tricore = tricoreRun.trace!;
