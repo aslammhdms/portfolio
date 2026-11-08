@@ -12,7 +12,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const htmlPath = path.join(root, 'dist', 'index.html');
 const ROOT_MARKER = '<div id="root"></div>';
 
-const { render, render404 } = await import(pathToFileURL(path.join(root, 'dist-ssr', 'entry-server.js')).href);
+const { render, render404, jsonLd } = await import(pathToFileURL(path.join(root, 'dist-ssr', 'entry-server.js')).href);
 
 let html = await readFile(htmlPath, 'utf8');
 const template = html; // the untouched shell, for the 404 page
@@ -26,6 +26,9 @@ if (!appHtml.includes('Aslam')) throw new Error('prerender: the rendered app doe
 const rootHtml = `<div id="root">${appHtml}</div>`;
 html = html.replace(ROOT_MARKER, () => rootHtml);
 if (!html.includes(rootHtml)) throw new Error('prerender: #root does not hold the rendered app');
+
+// Structured data (Person), generated from src/content. Home page only.
+html = html.replace('</head>', () => `  <script type="application/ld+json">${jsonLd()}</script>\n  </head>`);
 
 // The deploy base ('/' or '/portfolio/') is whatever Vite used for the stylesheet link.
 const stylesheet = html.match(/<link\b[^>]*rel="stylesheet"[^>]*>/)?.[0] ?? '';
@@ -56,6 +59,7 @@ page = page
   .replace(/<script type="module"[^>]*><\/script>\s*/g, '')
   .replace(/<link rel="modulepreload"[^>]*>\s*/g, '')
   .replace(/<title>[\s\S]*?<\/title>/, () => '<title>Not found — Aslam Muhammed</title>')
+  .replace(/\s*<link rel="canonical"[^>]*>/, '')
   .replace('</head>', () => '  <meta name="robots" content="noindex" />\n  </head>');
 if (monaLatin) {
   page = page.replace('</title>', () => `</title>\n    <link rel="preload" href="${base}assets/${monaLatin}" as="font" type="font/woff2" crossorigin />`);

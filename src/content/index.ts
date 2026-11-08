@@ -22,3 +22,4 @@ export type SectionId = (typeof sections)[number]['id'];
 
 /** The hero's id; the wordmark links here and the status bar shows '~'. */
 export const TOP_ID = 'top';
+export * from './seo';

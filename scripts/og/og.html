@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>og</title>
+<!-- Link-preview card (1200x630). Rendered by scripts/build-og.mjs, which fills the two
+     placeholders below with the inline AM Display face and the file URLs of Mona Sans
+     and the portrait. Same tokens as the site (tokens.css), dark theme. -->
+<style>
+/*AM_DISPLAY*/
+@font-face {
+  font-family: 'Mona Sans Variable';
+  src: url('/*MONA*/') format('woff2');
+  font-weight: 200 900;
+  font-stretch: 75% 125%;
+}
+@font-face {
+  font-family: 'Cascadia Mono Variable';
+  src: url('/*CASCADIA*/') format('woff2');
+  font-weight: 200 700;
+}
+* { box-sizing: border-box; margin: 0; }
+html, body { width: 1200px; height: 630px; overflow: hidden; background: #131313; color: #EDEDEA; }
+.card { position: relative; width: 1200px; height: 630px; padding: 64px; }
+.name { position: absolute; left: 64px; top: 64px; width: 600px; font-family: 'AM Display'; font-size: calc(600px / 3.595);
+  line-height: 0.88; font-synthesis: none; margin-top: -0.096em; }
+.name span { display: block; white-space: nowrap; }
+.l1 { font-stretch: 125%; font-weight: 860; margin-left: 0.006em; }
+.l2 { font-stretch: 75%; font-weight: 419; margin-left: -0.055em; }
+.role { position: absolute; left: 64px; top: 372px; font-family: 'Mona Sans Variable'; font-size: 31px; font-weight: 500; line-height: 1.2; }
+.meta { position: absolute; left: 64px; bottom: 64px; width: 600px; border-top: 1px solid #767676; padding-top: 20px;
+  font-family: 'Cascadia Mono Variable'; font-size: 20px; letter-spacing: 0.04em; text-transform: uppercase; color: #B7B7B5; display: flex; align-items: center; gap: 12px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: #FF5AA5; flex: none; }
+.portrait { position: absolute; right: 64px; top: 64px; width: 376px; height: 502px; object-fit: cover; object-position: 50% 30%; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1 class="name"><span class="l1">Aslam</span><span class="l2">Muhammed</span></h1>
+  <p class="role">Software Engineer · .NET &amp; IT Systems</p>
+  <p class="meta"><span class="dot"></span>Abu Dhabi · .NET · SQL Server</p>
+  <img class="portrait" src="/*PORTRAIT*/" alt="" />
+</div>
+</body>
+</html>

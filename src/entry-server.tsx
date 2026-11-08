@@ -1,7 +1,7 @@
 import { renderToString } from 'react-dom/server';
 import Root from './Root';
 import NotFound from './NotFound';
-import { buildVCard, profile, unprovenSkills } from './content';
+import { buildVCard, personJsonLd, profile, unprovenSkills } from './content';
 
 /**
  * Build-time prerender (scripts/prerender.mjs puts the result into dist/index.html).
@@ -25,4 +25,10 @@ export function render404(): string {
 /** The contact card, generated from src/content (scripts/build-vcard.mjs writes it to dist/). */
 export function vcard(): { path: string; text: string } {
   return { path: profile.vcard.path, text: buildVCard() };
+}
+
+/** The home page's Person JSON-LD, serialised for a <script type="application/ld+json"> tag. */
+export function jsonLd(): string {
+  // '<' is escaped so no string in the content can close the script element.
+  return JSON.stringify(personJsonLd()).replace(/</g, '\\u003c');
 }

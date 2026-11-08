@@ -31,3 +31,4 @@ dist-ssr
 # Windows
 desktop.ini
 
+scripts/og/.render.html
