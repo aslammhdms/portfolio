@@ -40,6 +40,10 @@ export interface Job {
 export const bio =
   'I like owning a problem end to end: the data model, the backend, the screens, the deployment, and keeping it running after go-live. Most of my work has been in ERP and enterprise retail, where correctness, auditability and uptime matter.';
 
+/** The résumé's opening paragraph (scripts/build-resume.mjs). Third person without the pronoun, as résumés are written. */
+export const resumeSummary =
+  'Software engineer with 5 years of experience building business systems in .NET and SQL Server, with React Native for mobile. Currently the only developer at Tristar Engineering & Construction, moving the company from its old ePROMIS ERP to Tricore ERP. Before that, built a helpdesk and operations platform used by 100+ staff across 19 Al Madina Hypermarket branches, and spent four years on ERP and eCommerce products at Skien Software Lab.';
+
 export const experience: Job[] = [
   {
     id: 'tristar',

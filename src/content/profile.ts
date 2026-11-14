@@ -38,9 +38,9 @@ export const profile = {
   resume: {
     path: 'doc/Aslam_Muhammed_Resume.pdf',
     fileName: 'Aslam_Muhammed_Resume.pdf',
-    bytes: 77_581,
-    /** 77,581 B / 1024 = 75.8 KB, shown rounded. */
-    sizeLabel: '76 KB',
+    bytes: 185_227,
+    /** 185,227 B / 1024 = 180.9 KB, shown rounded. Built by scripts/build-resume.mjs. */
+    sizeLabel: '181 KB',
   },
   vcard: { path: 'aslam-muhammed.vcf', fileName: 'Aslam-Muhammed.vcf' },
 
