@@ -1,11 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import { profile, sections } from '../content';
 import useActiveSection from '../hooks/useActiveSection';
 import useActiveWorkRow from '../hooks/useActiveWorkRow';
 import { abuDhabiTime, offsetFromVisitor, type ClockParts } from '../lib/time';
 import { isApplePlatform } from '../lib/platform';
 import { toggleDrawer, useTerm } from '../terminal/store';
-import { setPref, usePrefs } from '../lib/prefs';
+import { setPref } from '../lib/prefs';
+import { toast } from '../lib/site';
 import { CommandIcon } from './icons';
 
 /**
@@ -56,7 +57,6 @@ export default function StatusBar({ onOpenPalette }: StatusBarProps) {
   const [offset, setOffset] = useState<string | null>(null);
   const clockRef = useRef<HTMLDivElement>(null);
   const term = useTerm();
-  const { hideStatusBar } = usePrefs();
 
   useEffect(() => {
     try {
@@ -104,6 +104,16 @@ export default function StatusBar({ onOpenPalette }: StatusBarProps) {
     } catch {
       /* storage blocked: the choice lasts for this page view */
     }
+  };
+
+  // The bar takes this button with it, so focus moves to the footer switch that brings
+  // the bar back, and a toast says where that is. A keyboard press (detail 0) scrolls
+  // there; a pointer press leaves the page where it is.
+  const hideBar = (e: MouseEvent<HTMLButtonElement>) => {
+    setPopOpen(false);
+    setPref('hideStatusBar', true);
+    document.getElementById('footer-statusbar-toggle')?.focus({ preventScroll: e.detail !== 0 });
+    toast('Status bar hidden. Show it again from the footer or the search palette.');
   };
 
   const section = sections.find((s) => s.id === active);
@@ -173,7 +183,7 @@ export default function StatusBar({ onOpenPalette }: StatusBarProps) {
               <button type="button" className="sb-pop-toggle" aria-pressed={!clockOn} onClick={toggleClock}>
                 Hide clock
               </button>
-              <button type="button" className="sb-pop-toggle" onClick={() => setPref('hideStatusBar', !hideStatusBar)}>
+              <button type="button" className="sb-pop-toggle" onClick={hideBar}>
                 Hide status bar
               </button>
             </div>

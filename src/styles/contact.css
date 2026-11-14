@@ -59,6 +59,17 @@
 .contact-ledger .facts-value {
   font-size: 16px;
 }
+/* Narrow desktops: the LinkedIn cell is as wide as its address, so the address and its
+   arrow stay on one line; the other four share what is left. */
+@media (min-width: 1024px) and (max-width: 1179px) {
+  .contact-ledger {
+    grid-template-columns: minmax(0, 0.95fr) auto minmax(0, 0.95fr) minmax(0, 0.8fr) minmax(0, 1.2fr);
+  }
+  .contact-ledger .facts-link[target='_blank'] {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+}
 
 .copy-profile {
   display: inline-flex;
@@ -308,6 +319,12 @@
 }
 .footer-print:hover {
   border-color: rgb(var(--ink));
+}
+/* Reduce motion and Hide status bar are switches: filled in ink while on. */
+.footer-print[aria-pressed='true'] {
+  border-color: rgb(var(--ink));
+  background: rgb(var(--ink));
+  color: rgb(var(--canvas));
 }
 
 /* Dark / Light: two pills in one rounded group; the chosen one is filled in ink. */

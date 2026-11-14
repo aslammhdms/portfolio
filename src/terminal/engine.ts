@@ -187,7 +187,14 @@ const COMMANDS: Command[] = [
         return;
       }
       say(`→ #${workAnchorId(project.id)}  ${project.name}`);
-      if (isPhone()) closeDrawer();
+      // On a phone the drawer covers the project, so it closes and focus goes back to
+      // whatever opened it (closeDrawer); the prompt is not refocused, or the keyboard
+      // would stay up over the project and the next key would scroll away from it.
+      if (isPhone() && getTerm().drawerOpen) {
+        closeDrawer();
+        jumpTo(workAnchorId(project.id));
+        return;
+      }
       jumpTo(workAnchorId(project.id));
       refocusPrompt();
     },

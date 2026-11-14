@@ -52,8 +52,15 @@ export default function Footer() {
           <button type="button" className="footer-print" aria-pressed={reduceMotion} onClick={() => setPref('reduceMotion', !reduceMotion)}>
             Reduce motion
           </button>
-          <button type="button" className="footer-print" aria-pressed={hideStatusBar} onClick={() => setPref('hideStatusBar', !hideStatusBar)}>
-            {hideStatusBar ? 'Show status bar' : 'Hide status bar'}
+          {/* A fixed label with aria-pressed, like Reduce motion: the state is the pressed state. */}
+          <button
+            type="button"
+            id="footer-statusbar-toggle"
+            className="footer-print"
+            aria-pressed={hideStatusBar}
+            onClick={() => setPref('hideStatusBar', !hideStatusBar)}
+          >
+            Hide status bar
           </button>
           <button type="button" className="footer-print" onClick={() => window.print()}>
             <PrintIcon />

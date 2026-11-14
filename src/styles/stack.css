@@ -90,12 +90,6 @@
   text-decoration-color: rgb(var(--accent-ink));
   text-decoration-thickness: 2px;
 }
-/* Without scripts a skill could not open anything: show it as plain text. */
-html:not(.js) .skill {
-  cursor: default;
-  text-decoration: none;
-}
-
 /* '×5': how many projects on the page used it. */
 .skill-count {
   font-family: var(--font-mono);
@@ -148,9 +142,58 @@ html:not(.js) .skill {
   text-decoration-thickness: 2px;
 }
 
-/* The phone list is hidden on wider screens. */
+/* The plain list: every skill with its project links, no buttons. Phones use it, and
+   so does any screen without scripts (the buttons could not open anything there). */
 .stack-phone {
   display: none;
+}
+.stack-phone:not(.stack-phone-core) {
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.stack-phone-core {
+  --sep: 0.66em;
+  row-gap: 2px;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: rgb(var(--ink));
+}
+.stack-phone-core > li::before {
+  color: rgb(var(--ink-3));
+}
+.stack-phone .skill-name {
+  display: block;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: rgb(var(--ink));
+}
+.stack-phone-core .skill-name {
+  display: inline;
+}
+.stack-phone .evidence-links {
+  --sep: 1.758em;
+  margin-top: 2px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgb(var(--ink-3));
+}
+.stack-phone .evidence-links a {
+  color: rgb(var(--ink-2));
+  text-decoration-color: rgb(var(--rule-strong));
+}
+html:not(.js) .stack-items {
+  display: none;
+}
+html:not(.js) .stack-phone:not(.stack-phone-core) {
+  display: grid;
+}
+html:not(.js) .stack-phone-core {
+  display: flex;
 }
 
 @media (max-width: 1279px) {
@@ -181,44 +224,9 @@ html:not(.js) .skill {
   }
   .stack-phone:not(.stack-phone-core) {
     display: grid;
-    gap: 12px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
   }
   .stack-phone-core {
-    --sep: 0.66em;
     display: flex;
-    row-gap: 2px;
-    font-size: 17px;
-    font-weight: 500;
-    line-height: 1.45;
-    color: rgb(var(--ink));
-  }
-  .stack-phone-core > li::before {
-    color: rgb(var(--ink-3));
-  }
-  .stack-phone .skill-name {
-    display: block;
-    font-size: 17px;
-    font-weight: 500;
-    line-height: 1.4;
-    color: rgb(var(--ink));
-  }
-  .stack-phone-core .skill-name {
-    display: inline;
-  }
-  .stack-phone .evidence-links {
-    --sep: 1.758em;
-    margin-top: 2px;
-    font-family: var(--font-mono);
-    font-size: 12.5px;
-    line-height: 1.5;
-    color: rgb(var(--ink-3));
-  }
-  .stack-phone .evidence-links a {
-    color: rgb(var(--ink-2));
-    text-decoration-color: rgb(var(--rule-strong));
   }
   .stack-plain {
     font-size: 17px;

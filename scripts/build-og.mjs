@@ -7,7 +7,8 @@
 //
 // The AM Display face is read from the inline block in index.html, so the card always
 // uses the same cut as the hero. The PNG is then reduced to a 256-colour palette with
-// Pillow (pip install pillow).
+// Pillow (pip install pillow): median cut with Floyd-Steinberg dithering, so the
+// portrait keeps its tonal ramp instead of banding.
 import { readFile, rm, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
@@ -48,10 +49,11 @@ await page.screenshot({ path: out, clip: { x: 0, y: 0, width: 1200, height: 630 
 await browser.close();
 await rm(tmp);
 
-// Quantise to a 256-colour palette: the card is flat colour plus one photo.
+// Quantise to a 256-colour palette: the card is flat colour plus one photo. Median cut
+// spends the palette on the photo's greys; the dither hides the steps between them.
 execFileSync('python3', ['-c', `
 from PIL import Image
 im = Image.open(r"${out}").convert("RGB")
-im.quantize(256, method=Image.Quantize.FASTOCTREE, dither=Image.Dither.NONE).save(r"${out}", optimize=True)
+im.quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG).save(r"${out}", optimize=True)
 `]);
 console.log(`build-og: wrote public/og.png`);

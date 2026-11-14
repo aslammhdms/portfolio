@@ -166,19 +166,31 @@
 
 /* Phones: one column. 'Sep 2026 – now · Abu Dhabi, UAE' on top. */
 @media (max-width: 767px) {
+  /* The place follows the role in the markup, so the row wraps and the role, the line
+     and the nested posting each take a full line after the dates and the place. */
   .exp-row {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    column-gap: 0;
     padding: 22px 0 24px;
   }
   .exp-dates,
   .exp-place {
-    display: inline;
     padding: 0;
     font-size: 12.5px;
   }
   .exp-place::before {
     content: ' · ';
     content: ' · ' / '';
+    white-space: pre;
+  }
+  .exp-role,
+  .exp-line,
+  .exp-sub-list {
+    order: 1;
+    flex: 0 0 100%;
+    min-width: 0;
   }
   .exp-role {
     margin-top: 8px;

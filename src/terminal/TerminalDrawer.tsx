@@ -46,6 +46,19 @@ export default function TerminalDrawer() {
     return () => document.documentElement.classList.remove('drawer-open');
   }, [open]);
 
+  // Esc closes the drawer from anywhere on the page, not only while focus is inside it
+  // (a dialog or the palette on top takes Esc first).
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: globalThis.KeyboardEvent) => {
+      if (e.key !== 'Escape' || e.defaultPrevented) return;
+      if (document.querySelector('.pal, dialog[open]')) return;
+      closeDrawer();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
   const onKeyDown = (e: KeyboardEvent<HTMLElement>) => {
     if (e.key === 'Escape') {
       e.stopPropagation();

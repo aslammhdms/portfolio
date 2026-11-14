@@ -98,7 +98,20 @@
   .section-head {
     break-after: avoid;
   }
-  .work-row,
+  /* A project with its case study is most of a page, so it may break between its parts;
+     only the small parts stay whole, and a heading never ends a page. */
+  .row-title,
+  .row-rail,
+  .row-summary,
+  .also-title {
+    break-after: avoid;
+  }
+  .row-rail,
+  .figures,
+  .row-line,
+  .row-bullets li,
+  .stack-line,
+  .case-study > div,
   .also-item,
   .exp-row,
   .exp-sub,
@@ -106,6 +119,12 @@
   .facts-ledger,
   .contact-mail {
     break-inside: avoid;
+  }
+  p,
+  li,
+  dd {
+    orphans: 3;
+    widows: 3;
   }
 
   /* ---------- Hero: the name at CV size, the whole NOW line, the portrait ---------- */
@@ -154,9 +173,12 @@
     padding-block: 5mm !important;
   }
   .work .disclosure {
-    grid-template-rows: 1fr !important;
+    display: block !important;
     visibility: visible !important;
     transition: none !important;
+  }
+  .work .disclosure-inner {
+    overflow: visible !important;
   }
   .work .row-bullets {
     margin-top: 3mm !important;
@@ -176,6 +198,39 @@
   .row-line {
     margin-top: 3mm !important;
     padding-block: 2.5mm !important;
+  }
+  /* Running text at CV size, and the case study rows closer together. */
+  .work .row-bullets li,
+  .case-study dd,
+  .also-details li,
+  .exp-line {
+    font-size: 10.5pt !important;
+    line-height: 1.45 !important;
+  }
+  .case-study {
+    margin-top: 3mm !important;
+  }
+  .case-study > div {
+    padding-block: 2mm !important;
+  }
+  /* A grid cannot break between its rows in every browser; a plain list can. */
+  .also {
+    padding-top: 5mm !important;
+  }
+  .also-title {
+    margin-bottom: 3mm !important;
+  }
+  .also-list {
+    display: block !important;
+  }
+  .also-item + .also-item {
+    margin-top: 5mm;
+  }
+  .exp-row {
+    padding-block: 4mm !important;
+  }
+  .exp-sub-list {
+    margin-top: 3mm !important;
   }
 
   /* ---------- Stack: the inline lists, not the phone list ---------- */
