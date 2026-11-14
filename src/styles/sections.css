@@ -147,11 +147,10 @@ html:not(.js) .disclosure-toggle,
 html:not(.js) .copy-link {
   display: none;
 }
-/* The same for every other control that only scripts can serve: search, the portrait's
-   colour switch, the diagram traces, the terminal band and the status bar's buttons. */
+/* The same for every other control that only scripts can serve: search, the
+   diagram traces, the terminal band and the status bar's buttons. */
 html:not(.js) .search-pill,
 html:not(.js) .topbar-pill-search,
-html:not(.js) .portrait-toggle,
 html:not(.js) .trace-btn,
 html:not(.js) .prompt-band,
 html:not(.js) .statusbar .sb-right {

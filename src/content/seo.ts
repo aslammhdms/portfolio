@@ -19,7 +19,6 @@ export function personJsonLd(): Record<string, unknown> {
     familyName: profile.familyName,
     jobTitle: profile.title,
     url: SITE_URL,
-    image: `${SITE_URL}images/aslam-1240.jpg`,
     email: profile.email,
     telephone: profile.phone.tel,
     address: {

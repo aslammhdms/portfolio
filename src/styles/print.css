@@ -5,10 +5,9 @@
    on white. A4 leaves about 688 CSS px of measure, so the phone
    layouts apply on their own: one column throughout. This file
    hides what only works on a screen (bars, terminal, palette,
-   menus, toggles, copy buttons) and every visual except the
-   portrait, condenses projects to title, summary and figures,
-   prints link addresses, and swaps the footer for one line
-   saying where the CV came from.
+   menus, toggles, copy buttons) and every visual, condenses
+   projects to title, summary and figures, prints link addresses,
+   and swaps the footer for one line saying where the CV came from.
    ============================================================ */
 
 @media print {
@@ -38,7 +37,6 @@
   .email-menu-wrap,
   .hero-actions > .pill,
   .hero-links li:last-child,
-  .portrait-toggle,
   .row-visual,
   .row-actions,
   .also .stack-line,
@@ -127,15 +125,13 @@
     widows: 3;
   }
 
-  /* ---------- Hero: the name at CV size, the whole NOW line, the portrait ---------- */
+  /* ---------- Hero: the name at CV size, the whole NOW line, the lede beside the name ---------- */
   .hero {
     padding: 0 !important;
   }
-  .hero-light {
-    display: none !important;
-  }
   .hero-namecol {
-    max-width: 74mm;
+    grid-column: 1 / span 6 !important;
+    max-width: 74mm !important;
   }
   .hero-now-long {
     display: inline !important;
@@ -150,14 +146,13 @@
   .hero-lede-more {
     display: inline !important;
   }
+  /* Columns 7-12, its first line on the name's cap line (as on a desktop screen). */
   .hero-lede {
-    padding-right: 0 !important;
-    max-width: 74mm;
+    grid-column: 7 / -1 !important;
+    grid-row: 2 !important;
+    margin: -0.39em 0 0 !important;
+    max-width: none !important;
     font-size: 10.5pt !important;
-  }
-  .hero-thumb {
-    width: 28mm !important;
-    height: 35mm !important;
   }
   .hero-links {
     margin-top: 2mm !important;

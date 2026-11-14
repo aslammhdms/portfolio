@@ -1,14 +1,13 @@
 // Renders the link-preview image public/og.png (1200x630) from scripts/og/og.html.
 // Committed output, so the site build never needs a browser. Re-run after changing the
-// template, the portrait or the title:
+// template, the name face or the title:
 //
 //   npx playwright install chromium   # once; Playwright is not a dependency of the site
 //   npm i --no-save playwright && node scripts/build-og.mjs
 //
 // The AM Display face is read from the inline block in index.html, so the card always
 // uses the same cut as the hero. The PNG is then reduced to a 256-colour palette with
-// Pillow (pip install pillow): median cut with Floyd-Steinberg dithering, so the
-// portrait keeps its tonal ramp instead of banding.
+// Pillow (pip install pillow): the card is two flat colours and the greys between them.
 import { readFile, rm, writeFile } from 'node:fs/promises';
 import { createRequire } from 'node:module';
 import { execFileSync } from 'node:child_process';
@@ -34,9 +33,7 @@ const fontFile = (pkg, name) => pathToFileURL(path.join(root, 'node_modules', '@
 let html = await readFile(path.join(root, 'scripts', 'og', 'og.html'), 'utf8');
 html = html
   .replace('/*AM_DISPLAY*/', () => amDisplay.replace(/<\/?style>/g, ''))
-  .replace('/*MONA*/', () => fontFile('mona-sans', 'mona-sans-latin-wght-normal.woff2'))
-  .replace('/*CASCADIA*/', () => fontFile('cascadia-mono', 'cascadia-mono-latin-wght-normal.woff2'))
-  .replace('/*PORTRAIT*/', () => pathToFileURL(path.join(root, 'public', 'images', 'aslam-1240.jpg')).href);
+  .replace('/*MONA*/', () => fontFile('mona-sans', 'mona-sans-latin-wght-normal.woff2'));
 
 const tmp = path.join(root, 'scripts', 'og', '.render.html');
 await writeFile(tmp, html);
@@ -49,11 +46,10 @@ await page.screenshot({ path: out, clip: { x: 0, y: 0, width: 1200, height: 630 
 await browser.close();
 await rm(tmp);
 
-// Quantise to a 256-colour palette: the card is flat colour plus one photo. Median cut
-// spends the palette on the photo's greys; the dither hides the steps between them.
+// Quantise to a 256-colour palette: ink on graphite needs no more, and nothing dithers.
 execFileSync('python3', ['-c', `
 from PIL import Image
 im = Image.open(r"${out}").convert("RGB")
-im.quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.FLOYDSTEINBERG).save(r"${out}", optimize=True)
+im.quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).save(r"${out}", optimize=True)
 `]);
 console.log(`build-og: wrote public/og.png`);

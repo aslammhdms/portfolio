@@ -21,11 +21,12 @@ no decoration that does not carry information.
   through `@fontsource-variable`. Two tiny renamed subsets of Mona Sans: **AM Display** (12 glyphs, the
   name lockup, inlined in `index.html` so the LCP heading never waits for the network) and **AM Figures**
   (`public/fonts/am-figures.woff2`, condensed light numerals for report figures and Work indices).
-- **Layout:** 12 columns; Work rows use a rail (columns 1–2), text (3–7) and visual (8–12). Hairlines
-  instead of cards. Information is square, actions are round.
-- **Signature moments:** the name lock-in and the portrait's colour bloom (first page view of a session
-  only; never under reduced motion or Save-Data); the equal-measure lockup that refits to its column;
-  Stack skills that link to the projects that used them; module-level diagrams for private systems;
+- **Layout:** 12 columns. The hero is type only: the name and its fitted role line take columns 1–7, and
+  the lede and four facts sit beside them in columns 9–12, from the name's cap line down to the role line
+  (one column on tablets and phones). Work rows use a rail (columns 1–2), text (3–7) and visual (8–12).
+  Hairlines instead of cards. Information is square, actions are round.
+- **Signature moments:** the name lock-in (first page view of a session only; never under reduced motion
+  or Save-Data); the equal-measure lockup that refits to its column; Stack skills that link to the projects that used them; module-level diagrams for private systems;
   a live terminal band that types `whoami` when it scrolls into view.
 - **Motion** is CSS-only and respects `prefers-reduced-motion` and the in-page *Reduce motion* preference.
 
@@ -53,7 +54,7 @@ Everything the page shows comes from typed modules in `src/content/`. Components
 
 | File | Holds |
 | --- | --- |
-| `profile.ts` | Name, title, contact details, résumé file, portrait, hero lede |
+| `profile.ts` | Name, title, contact details, résumé file, hero lede |
 | `now.ts`, `availability.ts` | The NOW line and the one availability line (hero and Contact only) |
 | `experience.ts`, `history.ts` | Jobs, education, certifications |
 | `projects.ts`, `diagrams.ts` | Featured and compact projects; module-level diagrams with "Read as text" steps |
@@ -92,10 +93,9 @@ Run by hand (outputs are committed; the site build needs neither Python nor a br
 - `scripts/subset-fonts.py` (fontTools + brotli) cuts AM Display and AM Figures from the pinned
   `@fontsource-variable/mona-sans@5.3.0`, renames them (the OFL reserves the name "Mona"), writes
   `public/fonts/am-figures.woff2` and `public/fonts/OFL.txt`, and updates the inline `@font-face` in `index.html`.
-- `scripts/portrait-images.py` (Pillow) writes the portrait derivatives in `public/images/`.
 - `scripts/build-og.mjs` renders `public/og.png` (1200×630 link preview) from `scripts/og/og.html` with
   Playwright (`npm i --no-save playwright`, then `node scripts/build-og.mjs`; Pillow shrinks the PNG).
-  Re-run it if the title or portrait changes.
+  Re-run it if the name face or the title changes.
 - `scripts/check-budgets.mjs` (`npm run check:budgets`) fails if eager JS is over 90 KB gzip, total JS over
   130 KB, CSS over 20 KB, or `dist/index.html` over 120 KB. It is not part of the Cloudflare build.
 

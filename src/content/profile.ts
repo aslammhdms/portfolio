@@ -44,13 +44,7 @@ export const profile = {
   },
   vcard: { path: 'aslam-muhammed.vcf', fileName: 'Aslam-Muhammed.vcf' },
 
-  portrait: {
-    alt: 'Aslam Muhammed, smiling, in a denim shirt',
-    /** Intrinsic size of the 620 / 1240 / 128 / 256 px derivatives (3:4 source). */
-    sizes: { 620: [620, 827], 1240: [1240, 1654], 128: [128, 171], 256: [256, 341] },
-  },
-
-  /** Abu Dhabi time for the status bar clock and the portrait key light. */
+  /** Abu Dhabi time for the status bar clock. */
   timeZone: { iana: 'Asia/Dubai', abbr: 'GST', code: 'AUH', utcOffsetMinutes: 240, label: 'GST, UTC+4' },
 
   /** Hero lede. The second sentence is dropped on phones and short screens. */

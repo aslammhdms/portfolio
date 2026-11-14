@@ -38,9 +38,6 @@
   --selection: 89 34 61;         /* #59223D = 40% accent over canvas; ink 10.40, ink-2 6.07 */
   --focus: 255 90 165;           /* 2px ring with a 2px canvas gap */
 
-  /* Static key light behind the portrait. Neutral until the Abu Dhabi time of day is known (after mount). */
-  --keylight: rgba(255, 255, 255, 0.035);
-
   /* Type */
   --font-sans: 'Mona Sans Variable', 'Mona Sans Fallback', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   --font-mono: 'Cascadia Mono Variable', 'Cascadia Fallback Consolas', 'Cascadia Fallback', Consolas, Menlo,
@@ -95,7 +92,6 @@
   --accent-wash: 250 239 245;    /* #FAEFF5 = 8% accent over surface; accent-ink 5.42, ink 16.14 */
   --selection: 236 209 221;      /* #ECD1DD = 20% accent over canvas; ink 12.69 */
   --focus: 179 40 112;           /* #B32870, 5.67 on paper */
-  --keylight: transparent;       /* the key light is off in light mode */
 }
 
 /* Print: always the light values, on white. */
@@ -118,7 +114,6 @@
     --accent-wash: 250 239 245;
     --selection: 236 209 221;
     --focus: 179 40 112;
-    --keylight: transparent;
   }
 }
 

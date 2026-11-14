@@ -191,13 +191,25 @@
   gap: 8px 24px;
   margin-block: 8px;
 }
-.t-portrait {
+/* The initials as in the hero lockup: wide and heavy, then condensed and light.
+   Trimmed to the cap height so the mark tops out with the first fact. */
+.t-mark {
   flex: none;
-  width: 132px;
-  height: 168px;
-  image-rendering: pixelated;
-  background: rgb(var(--surface));
-  border: 1px solid rgb(var(--rule));
+  margin: 0.1em 0 0;
+  font-family: var(--font-display);
+  font-synthesis: none;
+  font-size: 88px;
+  line-height: 0.729;
+  white-space: nowrap;
+  color: rgb(var(--ink));
+}
+.t-mark > :first-child {
+  font-stretch: 125%;
+  font-weight: 860;
+}
+.t-mark > :last-child {
+  font-stretch: 75%;
+  font-weight: 419;
 }
 .t-facts {
   min-width: 0;
@@ -323,9 +335,8 @@ html.drawer-open {
   .t-input input {
     font-size: 16px;
   }
-  .t-portrait {
-    width: 99px;
-    height: 126px;
+  .t-mark {
+    font-size: 64px;
   }
 }
 @media (hover: none) {

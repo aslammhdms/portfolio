@@ -1,39 +1,21 @@
 /* ============================================================
-   Hero: NOW eyebrow, equal-measure name, role, lede, portrait,
-   ledger and actions. Values follow the approved mockup
-   (desktop 1440 × 900, phone 390 × 844).
+   Hero: NOW eyebrow, the equal-measure name and its fitted role
+   line, a lede and four facts beside them, then the actions.
 
    Grid: 12 columns in .shell (max 1312px). At 1440 a column is
-   87.33px with 24px gutters, so 6 columns = 644px for the name.
+   87.33px with 24px gutters: the name takes 7 columns (756px),
+   column 8 is air, and the lede and the facts take columns 9-12.
    ============================================================ */
 
 .hero {
   /* Vertical rhythm at 1440 × 900; tightened for short screens below. */
   --hero-pt: 44px;
   --eyebrow-gap: 36px;
-  --lede-gap: 20px;
-  --ledger-gap: 48px;
-  --cta-gap: 22px;
-  /* Centre of the portrait column (10–12) relative to the page centre:
-     container/2 − portrait/2, where portrait = container/4 − 18px. */
-  --portrait-x: calc(50% + min(1312px, 100% - 2 * var(--margin)) * 0.375 + 9px);
+  --cta-gap: 40px;
   position: relative;
   isolation: isolate;
   padding-top: var(--hero-pt);
   padding-bottom: 16px;
-}
-
-/* Static key light behind the portrait. Its colour follows Abu Dhabi time of
-   day (set after mount); neutral in the prerendered HTML; off in light mode. */
-.hero-light {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background: radial-gradient(560px 520px at var(--portrait-x) 46%, var(--keylight), transparent 70%);
-}
-[data-theme='light'] .hero-light {
-  display: none;
 }
 
 .hero-grid {
@@ -82,9 +64,9 @@
   transform: translateY(-1px);
 }
 
-/* ---------- Name column: the lockup, role and lede share one container ---------- */
+/* ---------- Name column: the lockup and the role line share one container ---------- */
 .hero-namecol {
-  grid-column: 1 / span 6;
+  grid-column: 1 / span 7;
   grid-row: 2;
   min-width: 0;
   container-type: inline-size;
@@ -113,7 +95,7 @@
   letter-spacing: 0;
   font-synthesis: none;
   /* Trim to cap height and baseline (ascent 1.09, descent 0.32, cap 0.729), so the
-     box spans exactly the ink and the portrait can align to the cap line. */
+     box spans exactly the ink and the lede beside it can align to the cap line. */
   margin-top: -0.096em;
   margin-bottom: -0.055em;
 }
@@ -150,12 +132,26 @@
   white-space: nowrap;
 }
 
+/* ---------- Side column: the lede at the name's cap line, the facts down to the role line ---------- */
+.hero-side {
+  grid-column: 9 / -1;
+  grid-row: 2;
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 20px;
+  min-width: 0;
+}
 .hero-lede {
-  margin: var(--lede-gap) 0 0;
+  /* Pulled up by the half-leading above the capitals (line-height 1.5, cap height
+     0.729), so the first line's cap line sits on the name's. */
+  margin: -0.39em 0 0;
   max-width: 34em;
   font-size: 19px;
   line-height: 1.5;
   color: rgb(var(--ink-2));
+  text-wrap: pretty;
 }
 .hero-lede b {
   font-weight: 500;
@@ -190,133 +186,21 @@
   animation: am-lock-m 0.9s var(--ease-settle) both;
 }
 
-/* ---------- Portrait: warm monochrome under a colour layer that blooms from the face ---------- */
-@property --bloom {
-  syntax: '<percentage>';
-  inherits: false;
-  initial-value: 150%;
-}
-@keyframes am-bloom {
-  from {
-    --bloom: 0%;
-  }
-  to {
-    --bloom: 150%;
-  }
-}
-
-.hero-portrait {
-  grid-column: 10 / -1;
-  grid-row: 2;
-  align-self: stretch;
-  position: relative;
-  margin: 0;
-  min-height: 0;
-}
-.portrait-frame {
-  position: absolute;
-  inset: 0 0 34px 0;
-  overflow: hidden;
-  background: rgb(var(--surface));
-}
-.portrait-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  max-width: none;
-  object-fit: cover;
-  object-position: 50% 30%;
-}
-.portrait-mono {
-  filter: grayscale(1) sepia(0.12) contrast(1.04) brightness(0.94);
-}
-.portrait-colour {
-  -webkit-mask-image: radial-gradient(circle at 48% 40%, #000 calc(var(--bloom) - 35%), transparent var(--bloom));
-  mask-image: radial-gradient(circle at 48% 40%, #000 calc(var(--bloom) - 35%), transparent var(--bloom));
-  transition: opacity 0.35s var(--ease-standard);
-}
-.hero-portrait[data-colour='off'] .portrait-colour {
-  opacity: 0;
-}
-/* After the name settles, colour spreads outward from the face. */
-.intro .portrait-colour {
-  animation: am-bloom 0.8s 0.5s ease-out both;
-}
-
-.portrait-meta {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-}
-.portrait-place {
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  font-weight: 450;
-  line-height: 1.3;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: rgb(var(--ink-3));
-}
-.portrait-toggle {
-  min-height: 24px;
-  padding: 2px 11px;
-  border: 1px solid rgb(var(--rule-strong));
-  border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 11.5px;
-  line-height: 1.3;
-  color: rgb(var(--ink-2));
-  background: transparent;
-  cursor: pointer;
-  transition: color 0.16s var(--ease-standard), border-color 0.16s var(--ease-standard);
-}
-.portrait-toggle:hover {
-  color: rgb(var(--ink));
-  border-color: rgb(var(--ink));
-}
-.portrait-toggle[aria-pressed='false'] {
-  color: rgb(var(--ink-3));
-}
-
-/* Phone thumbnail (colour), shown beside the lede below 768px. */
-.hero-thumb {
-  display: none;
-  margin: 0;
-  overflow: hidden;
-  background: rgb(var(--surface));
-}
-.hero-thumb img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 30%;
-}
-
-/* ---------- Ledger: four facts between hairlines ---------- */
+/* ---------- Ledger: four facts between hairlines ----------
+   Beside the name: one fact to a row, label then value. Below 1024px: 2 × 2,
+   label over value. */
 .hero-ledger {
-  grid-column: 1 / -1;
-  grid-row: 3;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin: var(--ledger-gap) 0 0;
+  margin: 0;
   border-top: 1px solid rgb(var(--rule));
-  border-bottom: 1px solid rgb(var(--rule));
 }
 .ledger-cell {
+  display: grid;
+  grid-template-columns: 112px minmax(0, 1fr);
+  align-items: baseline;
+  column-gap: 16px;
   min-width: 0;
-  padding: 14px 20px 16px 0;
-}
-.ledger-cell + .ledger-cell {
-  padding-left: 20px;
-  border-left: 1px solid rgb(var(--rule));
+  padding: 11px 0 12px;
+  border-bottom: 1px solid rgb(var(--rule));
 }
 .ledger-label {
   font-family: var(--font-mono);
@@ -328,7 +212,7 @@
   color: rgb(var(--ink-3));
 }
 .ledger-value {
-  margin: 6px 0 0;
+  margin: 0;
   font-size: 17px;
   font-weight: 500;
   line-height: 1.35;
@@ -366,7 +250,7 @@
 /* ---------- Actions: information is square, actions are round ---------- */
 .hero-actions {
   grid-column: 1 / -1;
-  grid-row: 4;
+  grid-row: 3;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -460,75 +344,91 @@
    Responsive
    ============================================================ */
 
-/* Short laptop screens (1366 × 657, 1280 × 720, 1440 × 821, 1512 × 838 …):
-   the name drops to 5 columns, the lede keeps its first sentence and the
-   gaps follow the viewport height, so the actions clear the status bar. */
-@media (min-width: 1024px) and (max-height: 880px) {
-  .hero {
-    --hero-pt: clamp(12px, 3vh, 44px);
-    --eyebrow-gap: clamp(12px, 3vh, 36px);
-    --lede-gap: 12px;
-    --ledger-gap: clamp(16px, 3.5vh, 48px);
-    --cta-gap: clamp(12px, 2vh, 22px);
-  }
-  .hero-namecol {
-    grid-column: 1 / span 5;
-  }
-  .hero-lede-more {
-    display: none;
-  }
-  .ledger-cell {
-    padding-top: 10px;
-    padding-bottom: 12px;
-  }
-}
-
-/* Very short laptop windows (680px tall or less: 1440 × 640, 1366 × 625, 1280 × 600 …):
-   the lede goes too. Below about 600px the name column also narrows with the height,
-   so the name, role, ledger and both buttons still clear the status bar. */
-@media (min-width: 1024px) and (max-height: 680px) {
-  .hero-lede {
-    display: none;
-  }
-  .hero-namecol {
-    max-width: calc((100vh - 320px) * 1.79);
-  }
-}
-
-/* Below 1280px the ten-column eyebrow would wrap; it has its own row, so it may
-   run the full width without touching the portrait. */
+/* Laptops (1024-1279 wide): the eyebrow may run the full width, and the side
+   column takes five columns (8-12) so a fact still fits on one row. */
 @media (max-width: 1279px) {
   .hero-eyebrow {
     grid-column: 1 / -1;
   }
+  .hero-side {
+    grid-column: 8 / -1;
+  }
+  .hero-lede {
+    font-size: 17px;
+  }
+  .ledger-cell {
+    padding: 9px 0 10px;
+  }
 }
 
-/* Tablets: name in columns 1–8, portrait in 9–12, ledger 2 × 2. */
+/* Short laptop screens (1366 × 657, 1280 × 720, 1440 × 821, 1512 × 838 …): the gaps
+   follow the viewport height. */
+@media (min-width: 1024px) and (max-height: 880px) {
+  .hero {
+    --hero-pt: clamp(12px, 3vh, 44px);
+    --eyebrow-gap: clamp(12px, 3vh, 36px);
+    --cta-gap: clamp(14px, 3.5vh, 40px);
+  }
+}
+/* Any desktop window: the name column never grows taller than the screen can show
+   with the actions under it (the name and role are 0.554 of the column's width). */
+@media (min-width: 1024px) {
+  .hero-namecol {
+    max-width: calc((100vh - 258px) * 1.8);
+  }
+}
+/* The side column must never be taller than the name beside it, or the facts would
+   leave the role line. Narrower or shorter windows keep the lede's first sentence… */
+@media (min-width: 1024px) and (max-width: 1359px), (min-width: 1024px) and (max-height: 649px) {
+  .hero-lede-more {
+    display: none;
+  }
+}
+/* …and very short ones (1440 × 560, 1280 × 540 …) only the facts, set tighter. */
+@media (min-width: 1024px) and (max-height: 579px) {
+  .hero-lede {
+    display: none;
+  }
+  .hero-side {
+    justify-content: flex-end;
+  }
+  .ledger-cell {
+    padding: 6px 0 7px;
+  }
+}
+
+/* Tablets and phones: one column. The side box dissolves, so the lede, the ledger
+   (2 × 2, label over value) and the actions follow the name down the page grid. */
 @media (max-width: 1023px) {
   .hero {
-    /* portrait = container/3 − 16px */
-    --portrait-x: calc(50% + min(1312px, 100% - 2 * var(--margin)) / 3 + 8px);
-  }
-  .hero-eyebrow {
-    grid-column: 1 / -1;
+    --lede-gap: 22px;
+    --ledger-gap: 32px;
+    --cta-gap: 22px;
   }
   .hero-namecol {
-    grid-column: 1 / span 8;
+    grid-column: 1 / -1;
   }
-  .hero-portrait {
-    grid-column: 9 / -1;
+  .hero-side {
+    display: contents;
   }
-  /* The links no longer fit beside the buttons: they take their own row, flush left. */
-  .hero-links {
-    width: 100%;
-    margin-left: 0;
+  .hero-lede {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin-top: var(--lede-gap);
+    font-size: 19px;
   }
   .hero-ledger {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: var(--ledger-gap);
+    border-bottom: 1px solid rgb(var(--rule));
   }
-  .ledger-cell + .ledger-cell {
-    padding-left: 0;
-    border-left: 0;
+  .ledger-cell {
+    display: block;
+    padding: 14px 20px 16px 0;
+    border-bottom: 0;
   }
   .ledger-cell:nth-child(even) {
     padding-left: 20px;
@@ -537,17 +437,39 @@
   .ledger-cell:nth-child(n + 3) {
     border-top: 1px solid rgb(var(--rule));
   }
+  .ledger-value {
+    margin-top: 6px;
+  }
+  .hero-actions {
+    grid-row: 5;
+  }
+  /* The links no longer fit beside the buttons: they take their own row, flush left. */
+  .hero-links {
+    width: 100%;
+    margin-left: 0;
+  }
 }
 
-/* Tablets on shorter screens (768–1023 wide, up to 1000px tall): the laptop's tighter
-   rhythm and a one-sentence lede, so the buttons clear the status bar. */
+/* Tablets (768-1023 wide): the name is as wide as the screen's height allows, so
+   the name, role, lede, ledger and both buttons clear the status bar. */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-namecol {
+    max-width: calc((100vh - 560px) * 1.8);
+    max-width: calc((100svh - 560px) * 1.8);
+  }
+}
+/* Tablets on shorter screens (up to 1000px tall): tighter rhythm and a one-sentence lede. */
 @media (min-width: 768px) and (max-width: 1023px) and (max-height: 1000px) {
   .hero {
     --hero-pt: clamp(12px, 3vh, 44px);
     --eyebrow-gap: clamp(12px, 3vh, 36px);
-    --lede-gap: 12px;
-    --ledger-gap: clamp(16px, 3vh, 48px);
+    --lede-gap: 14px;
+    --ledger-gap: clamp(16px, 3vh, 32px);
     --cta-gap: clamp(12px, 2vh, 22px);
+  }
+  .hero-namecol {
+    max-width: calc((100vh - 470px) * 1.8);
+    max-width: calc((100svh - 470px) * 1.8);
   }
   .hero-lede-more {
     display: none;
@@ -560,29 +482,30 @@
 /* …and at 820px tall or less the lede goes and the buttons move above the ledger,
    as on short phones. */
 @media (min-width: 768px) and (max-width: 1023px) and (max-height: 820px) {
+  .hero-namecol {
+    max-width: calc((100vh - 250px) * 1.8);
+    max-width: calc((100svh - 250px) * 1.8);
+  }
   .hero-lede {
     display: none;
   }
   .hero-actions {
-    grid-row: 3;
+    grid-row: 4;
   }
   .hero-ledger {
-    grid-row: 4;
+    grid-row: 5;
   }
 }
 
-/* Phones: full-width name, colour thumbnail beside a one-sentence lede, short
-   ledger values, two 48px buttons side by side, then the text links. */
+/* Phones: full-width name, the lede across the full measure, short ledger values,
+   two 48px buttons side by side, then the text links. */
 @media (max-width: 767px) {
   .hero {
     --hero-pt: 10px;
     --eyebrow-gap: 18px;
     --lede-gap: 14px;
-    --ledger-gap: 16px;
+    --ledger-gap: 18px;
     --cta-gap: 14px;
-  }
-  .hero-light {
-    background: radial-gradient(320px 300px at 80% 36%, var(--keylight), transparent 70%);
   }
   .hero-eyebrow {
     font-size: 12px;
@@ -594,29 +517,14 @@
   .hero-now-short {
     display: inline;
   }
+  /* Wide, short phone windows (foldables, small tablets): the name stops growing
+     where the buttons would slip under the status bar. Phones never reach it. */
   .hero-namecol {
-    grid-column: 1 / -1;
-  }
-  .hero-portrait {
-    display: none;
-  }
-  .hero-thumb {
-    display: block;
-    grid-column: 1 / -1;
-    grid-row: 2;
-    justify-self: end;
-    align-self: end;
-    width: 64px;
-    height: 80px;
-    margin-bottom: 2px;
+    max-width: calc((100vh - 495px) * 1.8);
+    max-width: calc((100svh - 495px) * 1.8);
   }
   .hero-lede {
-    min-height: 80px;
-    padding-right: 80px;
-    font-size: 15.5px;
-  }
-  .hero-lede-more {
-    display: none;
+    font-size: 16px;
   }
 
   .ledger-cell {
@@ -656,6 +564,16 @@
     font-size: 12.5px;
   }
 }
+/* Phones under 800px tall keep the lede to its first sentence. */
+@media (max-width: 767px) and (max-height: 799px) {
+  .hero-namecol {
+    max-width: calc((100vh - 430px) * 1.8);
+    max-width: calc((100svh - 430px) * 1.8);
+  }
+  .hero-lede-more {
+    display: none;
+  }
+}
 
 /* Short phones (iPhone SE in Safari, 360 × 640): drop the lede and put the buttons
    before the ledger, so both stay above the status bar. */
@@ -666,15 +584,18 @@
     --cta-gap: 14px;
     --ledger-gap: 14px;
   }
-  .hero-lede,
-  .hero-thumb {
+  .hero-namecol {
+    max-width: calc((100vh - 215px) * 1.8);
+    max-width: calc((100svh - 215px) * 1.8);
+  }
+  .hero-lede {
     display: none;
   }
   .hero-actions {
-    grid-row: 3;
+    grid-row: 4;
   }
   .hero-ledger {
-    grid-row: 4;
+    grid-row: 5;
   }
 }
 
@@ -689,32 +610,16 @@
     display: inline;
   }
   .hero-namecol {
-    grid-column: 1 / span 6;
     max-width: calc((100vh - 210px) * 1.75);
     max-width: calc((100svh - 210px) * 1.75);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .amd.intro .hero-name > span,
-  .intro .portrait-colour {
+  .amd.intro .hero-name > span {
     animation: none;
   }
-  .portrait-colour {
-    transition: none;
-  }
 }
-html.rm .amd.intro .hero-name > span,
-html.rm .intro .portrait-colour {
+html.rm .amd.intro .hero-name > span {
   animation: none;
-}
-html.rm .portrait-colour {
-  transition: none;
-}
-
-@media print {
-  .hero-light,
-  .portrait-meta {
-    display: none;
-  }
 }

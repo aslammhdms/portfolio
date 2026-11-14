@@ -47,11 +47,3 @@ export function offsetFromVisitor(date = new Date()): string | null {
   const amount = [hours ? `${hours} h` : '', minutes ? `${minutes} min` : ''].filter(Boolean).join(' ');
   return `${amount} ${diff > 0 ? 'ahead of' : 'behind'} you`;
 }
-
-/** Colour of the static key light behind the portrait, by Abu Dhabi time of day. */
-export function keyLightFor(hour: number): string {
-  if (hour >= 5 && hour < 8) return 'rgba(255, 196, 150, 0.06)'; // dawn
-  if (hour >= 8 && hour < 16) return 'rgba(255, 255, 255, 0.04)'; // day
-  if (hour >= 16 && hour < 19) return 'rgba(255, 176, 130, 0.055)'; // dusk
-  return 'rgba(176, 196, 255, 0.045)'; // night
-}
